@@ -6,5 +6,14 @@ target 'RichPigAction4' do
   use_frameworks!
 
   # Pods for RichPigAction4
+ pod 'Alamofire', '~> 5.2'
+ pod 'iCarousel'
+ pod 'JGProgressHUD'
+ pod 'SDWebImage'
+ pod 'SnapKit', '~> 5.0.0'
+ pod 'iCarousel'
+ pod 'Firebase/Core'
+
+
 
 end

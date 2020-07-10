@@ -9,12 +9,22 @@
 import UIKit
 
 class ViewController: UIViewController {
+    let networkController = NetworkController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
+        networkController.requestWithUrl(url: MyUrl.tutorials.rawValue ) { (data) in
+            
+            do {
+                let okData = try JSONDecoder().decode(AllData.self, from: data)
+                print("解析成功：\(okData)")
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+    }// end of view did load
 
 
-}
+}// end of class
 

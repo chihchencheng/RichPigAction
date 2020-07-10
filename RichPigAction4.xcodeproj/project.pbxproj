@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,15 +13,12 @@
 		1416A62E24B85CD500A373AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1416A62C24B85CD500A373AC /* Main.storyboard */; };
 		1416A63024B85CD700A373AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1416A62F24B85CD700A373AC /* Assets.xcassets */; };
 		1416A63324B85CD700A373AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1416A63124B85CD700A373AC /* LaunchScreen.storyboard */; };
-		1416A63D24B85D3A00A373AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A63C24B85D3A00A373AC /* LoginViewController.swift */; };
-		1416A63F24B85D4400A373AC /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A63E24B85D4400A373AC /* RegisterViewController.swift */; };
-		1416A64124B85D4F00A373AC /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A64024B85D4F00A373AC /* LevelViewController.swift */; };
-		1416A64324B85D5A00A373AC /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A64224B85D5A00A373AC /* GalleryViewController.swift */; };
-		1416A64524B85D6400A373AC /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A64424B85D6400A373AC /* CourseViewController.swift */; };
 		1416A64724B85D9300A373AC /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A64624B85D9300A373AC /* NetworkController.swift */; };
-		1416A64B24B85DE900A373AC /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A64A24B85DE900A373AC /* InfoViewController.swift */; };
 		1416A64E24B85E1800A373AC /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A64D24B85E1800A373AC /* Models.swift */; };
-		1416A65024B85E4200A373AC /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A64F24B85E4200A373AC /* TabBarViewController.swift */; };
+		1416A65324B8606800A373AC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A65224B8606800A373AC /* Extensions.swift */; };
+		1416A65724B8969900A373AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1416A65624B8969800A373AC /* GoogleService-Info.plist */; };
+		1416A65924B8D3FF00A373AC /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A65824B8D3FF00A373AC /* File.swift */; };
+		29FEE1902610063C3A44676D /* Pods_RichPigAction4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83679279B37BBA3285F4E68 /* Pods_RichPigAction4.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,15 +30,14 @@
 		1416A62F24B85CD700A373AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1416A63224B85CD700A373AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1416A63424B85CD700A373AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1416A63C24B85D3A00A373AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		1416A63E24B85D4400A373AC /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		1416A64024B85D4F00A373AC /* LevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
-		1416A64224B85D5A00A373AC /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
-		1416A64424B85D6400A373AC /* CourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
 		1416A64624B85D9300A373AC /* NetworkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
-		1416A64A24B85DE900A373AC /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		1416A64D24B85E1800A373AC /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		1416A64F24B85E4200A373AC /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		1416A65224B8606800A373AC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1416A65624B8969800A373AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1416A65824B8D3FF00A373AC /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		CCE1D86C36BFEED944B17CA2 /* Pods-RichPigAction4.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichPigAction4.debug.xcconfig"; path = "Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4.debug.xcconfig"; sourceTree = "<group>"; };
+		D83679279B37BBA3285F4E68 /* Pods_RichPigAction4.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RichPigAction4.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9E3AAEA2D4A027347215C52 /* Pods-RichPigAction4.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichPigAction4.release.xcconfig"; path = "Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,17 +45,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29FEE1902610063C3A44676D /* Pods_RichPigAction4.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D1276CB8B2E003E0FF842F6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D83679279B37BBA3285F4E68 /* Pods_RichPigAction4.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1416A61A24B85CD500A373AC = {
 			isa = PBXGroup;
 			children = (
 				1416A62524B85CD500A373AC /* RichPigAction4 */,
 				1416A62424B85CD500A373AC /* Products */,
+				1DE98DFEB01E6B68D2F4730B /* Pods */,
+				0D1276CB8B2E003E0FF842F6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +81,8 @@
 		1416A62524B85CD500A373AC /* RichPigAction4 */ = {
 			isa = PBXGroup;
 			children = (
+				1416A65624B8969800A373AC /* GoogleService-Info.plist */,
+				1416A65124B8605600A373AC /* Resources */,
 				1416A64C24B85DFA00A373AC /* Models */,
 				1416A63B24B85D1D00A373AC /* Utils */,
 				1416A63A24B85D1600A373AC /* Controllers */,
@@ -91,13 +100,6 @@
 		1416A63A24B85D1600A373AC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1416A63C24B85D3A00A373AC /* LoginViewController.swift */,
-				1416A63E24B85D4400A373AC /* RegisterViewController.swift */,
-				1416A64024B85D4F00A373AC /* LevelViewController.swift */,
-				1416A64424B85D6400A373AC /* CourseViewController.swift */,
-				1416A64224B85D5A00A373AC /* GalleryViewController.swift */,
-				1416A64A24B85DE900A373AC /* InfoViewController.swift */,
-				1416A64F24B85E4200A373AC /* TabBarViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -114,8 +116,26 @@
 			isa = PBXGroup;
 			children = (
 				1416A64D24B85E1800A373AC /* Models.swift */,
+				1416A65824B8D3FF00A373AC /* File.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		1416A65124B8605600A373AC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1416A65224B8606800A373AC /* Extensions.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1DE98DFEB01E6B68D2F4730B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CCE1D86C36BFEED944B17CA2 /* Pods-RichPigAction4.debug.xcconfig */,
+				D9E3AAEA2D4A027347215C52 /* Pods-RichPigAction4.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,9 +145,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1416A63724B85CD700A373AC /* Build configuration list for PBXNativeTarget "RichPigAction4" */;
 			buildPhases = (
+				26360587BADA0C20437C563F /* [CP] Check Pods Manifest.lock */,
 				1416A61F24B85CD500A373AC /* Sources */,
 				1416A62024B85CD500A373AC /* Frameworks */,
 				1416A62124B85CD500A373AC /* Resources */,
+				03EB4CFAAABF6110758417F8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1416A63324B85CD700A373AC /* LaunchScreen.storyboard in Resources */,
+				1416A65724B8969900A373AC /* GoogleService-Info.plist in Resources */,
 				1416A63024B85CD700A373AC /* Assets.xcassets in Resources */,
 				1416A62E24B85CD500A373AC /* Main.storyboard in Resources */,
 			);
@@ -184,20 +207,57 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		03EB4CFAAABF6110758417F8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		26360587BADA0C20437C563F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RichPigAction4-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1416A61F24B85CD500A373AC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				1416A64E24B85E1800A373AC /* Models.swift in Sources */,
-				1416A63D24B85D3A00A373AC /* LoginViewController.swift in Sources */,
-				1416A64324B85D5A00A373AC /* GalleryViewController.swift in Sources */,
-				1416A63F24B85D4400A373AC /* RegisterViewController.swift in Sources */,
-				1416A65024B85E4200A373AC /* TabBarViewController.swift in Sources */,
 				1416A62B24B85CD500A373AC /* ViewController.swift in Sources */,
-				1416A64B24B85DE900A373AC /* InfoViewController.swift in Sources */,
-				1416A64124B85D4F00A373AC /* LevelViewController.swift in Sources */,
-				1416A64524B85D6400A373AC /* CourseViewController.swift in Sources */,
+				1416A65924B8D3FF00A373AC /* File.swift in Sources */,
+				1416A65324B8606800A373AC /* Extensions.swift in Sources */,
 				1416A62724B85CD500A373AC /* AppDelegate.swift in Sources */,
 				1416A62924B85CD500A373AC /* SceneDelegate.swift in Sources */,
 				1416A64724B85D9300A373AC /* NetworkController.swift in Sources */,
@@ -342,6 +402,7 @@
 		};
 		1416A63824B85CD700A373AC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CCE1D86C36BFEED944B17CA2 /* Pods-RichPigAction4.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -359,6 +420,7 @@
 		};
 		1416A63924B85CD700A373AC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D9E3AAEA2D4A027347215C52 /* Pods-RichPigAction4.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
