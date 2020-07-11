@@ -15,6 +15,8 @@ class CollectionViewController: UIViewController {
     var session: URLSession?
     var piggyArr = [Piggy]()
     var piggyPicArr = [UIImage]()
+    var image = UIImage()//準備傳到細節頁
+    var piggy = Piggy()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +39,7 @@ class CollectionViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         downloadInfo()
-        //        getImageDownload(piggyArr: piggyArr)
+//        getImageDownload(piggyArr: piggyArr)
     }
     
     //下載資料
@@ -57,9 +59,11 @@ class CollectionViewController: UIViewController {
                 for item in 0...arrCount-1 {
                     if let pig = decodedData.message?.avatars![item] {
                         self.piggyArr.append(pig)
+                        
                     }
                 }
             }
+//            self.getImageDownload(piggyArr: piggyArr)
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
@@ -121,7 +125,7 @@ class CollectionViewController: UIViewController {
     func useTokenWithGet(url:String ,completion: @escaping (Data) -> Void){
         var request = URLRequest(url:URL(string:url)!)
         request.httpMethod = "GET"  //"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0MjkyODIzLCJleHAiOjE1OTQzNzkyMjN9.T822HM56DAZhVeacPhI_2EhcnGZIJk6-xQmJWhIAs4rCpBVC9MO3KjpXzk-zypE4-ZYeEYsj-q7OmHT86YWC4Q"
-        request.setValue("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0Mzc5ODQ5LCJleHAiOjE1OTk1NjM4NDl9.7MumTSJOeAl8QvW5uXhaFl6OW4EpkCbges7ZxW_SudAnTXbujt_o5jr461CPxio7OtIf97Ezl0AtcQccC4MfJQ", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0NDc1MzM3LCJleHAiOjE1OTk2NTkzMzd9.Zev2q2Jxz4GoTTd3OO1y1eXgDMs9k8iU_W62b-C39HeHbV_OEHGSpxhjBrWkWJY5fBi10qLGkxSGsyq6Iz6Huw", forHTTPHeaderField: "Authorization")
         //        print(NetworkController.token)
         
         let task = URLSession.shared.dataTask(with: request){ data,response ,error in
@@ -136,15 +140,6 @@ class CollectionViewController: UIViewController {
         task.resume()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "detail" {
-            //            let dvc = segue.destination as? PigDetailVC
-            //
-        }
-    }
-        
-
-
 }// end of class
 
 
@@ -174,8 +169,19 @@ extension CollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         print("You tapeed me")
-        
+        self.piggy = piggyArr[indexPath.row]
+        self.image = piggyPicArr[indexPath.row]
+        performSegue(withIdentifier: "cardDetail", sender: nil)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "cardDetail" {
+            let dvc = segue.destination as? CollectionDetailVC
+            dvc?.piggy = self.piggy
+            dvc?.image = self.image
+        }
+    }
+    
 }
 
 
@@ -191,6 +197,7 @@ extension CollectionViewController: UICollectionViewDataSource {
         cell.imageView.contentMode = .scaleAspectFill
         let link = String(piggyArr[indexPath.row].url ?? "")
         cell.imageView.downloaded(from: link)
+
         return cell
     }
 }

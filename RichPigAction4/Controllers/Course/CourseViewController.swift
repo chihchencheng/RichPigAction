@@ -14,6 +14,9 @@ class CourseViewController: UIViewController {
     var session: URLSession?
     var bookArrTitle = [String]()
     var count = 0
+    var index = 0
+    var courseArr = [Course]()
+    var allCourseArr = [[Course]]()
     
 
     override func viewDidLoad() {
@@ -58,6 +61,7 @@ class CourseViewController: UIViewController {
                     do {
                         let okData = try JSONDecoder().decode(AllData.self, from: loadedData)
                         self.getCourseArr(okData)
+                        self.getAllcourse(okData)
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
                         }
@@ -94,6 +98,23 @@ class CourseViewController: UIViewController {
         }
     }
     
+    //全部課程的陣列
+    func getAllcourse(_ okData: AllData){
+        for item in 0...self.count-1 {
+            if let okCourse = okData.message?[item].courses {
+                self.allCourseArr.append(okCourse)
+            } else {
+                print("無法取得課程陣列的陣列")
+                return
+            }
+        }
+    }
+    
+    //取出特定課程的陣列
+    func getCoursesArrByIndex(index: Int) -> [Course]{
+        return self.allCourseArr[index]
+    }
+    
 
 
     
@@ -110,20 +131,20 @@ class CourseViewController: UIViewController {
 extension CourseViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.count = indexPath.row
-//        performSegue(withIdentifier: "quiz", sender: nil)
+        self.index = indexPath.row
+       
+        performSegue(withIdentifier: "courseDetail", sender: nil)
         
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "quiz" {
-//            let dvc = segue.destination as? GameViewController
-//            dvc?.level = self.level
-//        }
+        if segue.identifier == "courseDetail" {
+            let dvc = segue.destination as? CourseDetailVC
+            dvc?.index = self.index
+            dvc?.allCourseArr = self.allCourseArr
+        }
     }
 }
-
-
 
 extension CourseViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

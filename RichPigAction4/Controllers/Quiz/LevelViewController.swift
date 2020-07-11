@@ -133,7 +133,9 @@ extension LevelViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        if quizArr[indexPath.row].type == 0 || quizArr[indexPath.row].type == 1 {
-            performSegue(withIdentifier: "quiz", sender: nil)
+        self.level = indexPath.row
+        performSegue(withIdentifier: "quiz", sender: nil)
+        
 //        } else if quizArr[level].type == 2 {
 //            performSegue(withIdentifier: "game", sender: nil)
 //        }

@@ -34,6 +34,8 @@
 		1422759224B991FC00E80352 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1422759124B991FC00E80352 /* QuizViewController.swift */; };
 		1422759524B9B34500E80352 /* AnswerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1422759324B9B34500E80352 /* AnswerCollectionViewCell.swift */; };
 		1422759624B9B34500E80352 /* AnswerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1422759424B9B34500E80352 /* AnswerCollectionViewCell.xib */; };
+		1422759B24B9E70F00E80352 /* CourseDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1422759A24B9E70F00E80352 /* CourseDetailVC.swift */; };
+		142275A124B9F95200E80352 /* CollectionDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142275A024B9F95200E80352 /* CollectionDetailVC.swift */; };
 		29FEE1902610063C3A44676D /* Pods_RichPigAction4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83679279B37BBA3285F4E68 /* Pods_RichPigAction4.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +69,8 @@
 		1422759124B991FC00E80352 /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		1422759324B9B34500E80352 /* AnswerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerCollectionViewCell.swift; sourceTree = "<group>"; };
 		1422759424B9B34500E80352 /* AnswerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AnswerCollectionViewCell.xib; sourceTree = "<group>"; };
+		1422759A24B9E70F00E80352 /* CourseDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailVC.swift; sourceTree = "<group>"; };
+		142275A024B9F95200E80352 /* CollectionDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDetailVC.swift; sourceTree = "<group>"; };
 		CCE1D86C36BFEED944B17CA2 /* Pods-RichPigAction4.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichPigAction4.debug.xcconfig"; path = "Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4.debug.xcconfig"; sourceTree = "<group>"; };
 		D83679279B37BBA3285F4E68 /* Pods_RichPigAction4.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RichPigAction4.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E3AAEA2D4A027347215C52 /* Pods-RichPigAction4.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichPigAction4.release.xcconfig"; path = "Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4.release.xcconfig"; sourceTree = "<group>"; };
@@ -118,8 +122,6 @@
 				1416A64C24B85DFA00A373AC /* Models */,
 				1416A63B24B85D1D00A373AC /* Utils */,
 				1416A63A24B85D1600A373AC /* Controllers */,
-				1416A62624B85CD500A373AC /* AppDelegate.swift */,
-				1416A62824B85CD500A373AC /* SceneDelegate.swift */,
 				1416A62A24B85CD500A373AC /* ViewController.swift */,
 				1416A62C24B85CD500A373AC /* Main.storyboard */,
 				1416A62F24B85CD700A373AC /* Assets.xcassets */,
@@ -132,13 +134,10 @@
 		1416A63A24B85D1600A373AC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1416A68624B8FABF00A373AC /* LoginViewViewController.swift */,
-				1416A68824B8FAD700A373AC /* RegisterViewController.swift */,
-				1416A68A24B90A6B00A373AC /* LevelViewController.swift */,
-				1422759124B991FC00E80352 /* QuizViewController.swift */,
-				1416A69024B90BC700A373AC /* GameViewController.swift */,
-				1416A68C24B90A9400A373AC /* CourseViewController.swift */,
-				1416A68E24B90ABD00A373AC /* CollectionViewController.swift */,
+				1422759F24B9F50700E80352 /* Collection */,
+				1422759C24B9EA3B00E80352 /* Login */,
+				1422759D24B9EA4E00E80352 /* Quiz */,
+				1422759E24B9EA5F00E80352 /* Course */,
 				1422758F24B98F2B00E80352 /* InfoViewController.swift */,
 			);
 			path = Controllers;
@@ -173,8 +172,47 @@
 			isa = PBXGroup;
 			children = (
 				1416A65224B8606800A373AC /* Extensions.swift */,
+				1416A62624B85CD500A373AC /* AppDelegate.swift */,
+				1416A62824B85CD500A373AC /* SceneDelegate.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		1422759C24B9EA3B00E80352 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1416A68624B8FABF00A373AC /* LoginViewViewController.swift */,
+				1416A68824B8FAD700A373AC /* RegisterViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		1422759D24B9EA4E00E80352 /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				1416A68A24B90A6B00A373AC /* LevelViewController.swift */,
+				1422759124B991FC00E80352 /* QuizViewController.swift */,
+				1416A69024B90BC700A373AC /* GameViewController.swift */,
+			);
+			path = Quiz;
+			sourceTree = "<group>";
+		};
+		1422759E24B9EA5F00E80352 /* Course */ = {
+			isa = PBXGroup;
+			children = (
+				1416A68C24B90A9400A373AC /* CourseViewController.swift */,
+				1422759A24B9E70F00E80352 /* CourseDetailVC.swift */,
+			);
+			path = Course;
+			sourceTree = "<group>";
+		};
+		1422759F24B9F50700E80352 /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				1416A68E24B90ABD00A373AC /* CollectionViewController.swift */,
+				142275A024B9F95200E80352 /* CollectionDetailVC.swift */,
+			);
+			path = Collection;
 			sourceTree = "<group>";
 		};
 		1DE98DFEB01E6B68D2F4730B /* Pods */ = {
@@ -314,6 +352,7 @@
 				1416A69124B90BC700A373AC /* GameViewController.swift in Sources */,
 				1416A62B24B85CD500A373AC /* ViewController.swift in Sources */,
 				1416A65924B8D3FF00A373AC /* File.swift in Sources */,
+				1422759B24B9E70F00E80352 /* CourseDetailVC.swift in Sources */,
 				1422759024B98F2B00E80352 /* InfoViewController.swift in Sources */,
 				1416A68724B8FABF00A373AC /* LoginViewViewController.swift in Sources */,
 				1416A65324B8606800A373AC /* Extensions.swift in Sources */,
@@ -322,6 +361,7 @@
 				1422758D24B9877000E80352 /* PigCardCollectionViewCell.swift in Sources */,
 				1416A62724B85CD500A373AC /* AppDelegate.swift in Sources */,
 				1416A62924B85CD500A373AC /* SceneDelegate.swift in Sources */,
+				142275A124B9F95200E80352 /* CollectionDetailVC.swift in Sources */,
 				1422759224B991FC00E80352 /* QuizViewController.swift in Sources */,
 				1416A64724B85D9300A373AC /* NetworkController.swift in Sources */,
 				1416A69424B90C7800A373AC /* NoseCollectionViewCell.swift in Sources */,
