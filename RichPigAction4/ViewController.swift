@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     let networkController = NetworkController()
+    static var token = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +19,9 @@ class ViewController: UIViewController {
             do {
                 let okData = try JSONDecoder().decode(AllData.self, from: data)
                 print("解析成功：\(okData)")
+                UserDefaults.standard.set("token", forKey: "Token")
+                UserDefaults.standard.object(forKey: "Token")
+                
             } catch {
                 print(error.localizedDescription)
             }

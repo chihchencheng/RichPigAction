@@ -7,13 +7,13 @@
 //
 
 import Foundation
+import Alamofire
 
 class NetworkController {
     
     let MYURL = "http://104.199.188.255:8080/api"
     let AUTH = "/auth"
     let TUTORIAS = "/tutorials"
-    let TOKEN = "x-access-token"
     
     let defaultSession = URLSession(configuration: .default) //創建一個URLSession,配置用預設->負責發送和接收請求的關鍵物件
     var errorMessage: String = ""
@@ -95,7 +95,7 @@ class NetworkController {
     }
     
     func getPigPicture(){
-        
+//        requestWithBodyWithHeader(url: MYURL + "avatars", headers: ["Authorization": token], body: <#T##String#>, completion: <#T##(Data) -> Void#>)
     }
  
       
