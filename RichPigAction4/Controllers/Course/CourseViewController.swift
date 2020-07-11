@@ -23,6 +23,7 @@ class CourseViewController: UIViewController {
         super.viewDidLoad()
         session = URLSession(configuration: .default)
         
+        
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 120, height: 120)
         
@@ -34,6 +35,7 @@ class CourseViewController: UIViewController {
         downloadInfo()
         
     }// end of view did load
+    
     
     func downloadInfo(){
         if let url = URL(string: MyUrl.tutorials.rawValue){

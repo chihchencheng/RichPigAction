@@ -175,6 +175,7 @@ extension QuizViewController: UICollectionViewDelegate {
                     // end of game
 //                    popAler(withMessage: "恭喜完成挑戰")
 //                    dismiss(animated: true, completion: nil)
+                
                     let vc = storyboard?.instantiateViewController(identifier: "level") as! LevelViewController
 //                    vc.modalPresentationStyle = .fullScreen
                     present(vc, animated: true, completion: nil)

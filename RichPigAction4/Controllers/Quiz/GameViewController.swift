@@ -27,7 +27,6 @@ class GameViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
 
 
 }// end of class

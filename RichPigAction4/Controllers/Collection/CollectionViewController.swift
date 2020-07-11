@@ -17,6 +17,7 @@ class CollectionViewController: UIViewController {
     var piggyPicArr = [UIImage]()
     var image = UIImage()//準備傳到細節頁
     var piggy = Piggy()
+    var index = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +39,7 @@ class CollectionViewController: UIViewController {
     }// end of view did load
     
     override func viewDidAppear(_ animated: Bool) {
-        downloadInfo()
-//        getImageDownload(piggyArr: piggyArr)
+
     }
     
     //下載資料
@@ -59,7 +59,6 @@ class CollectionViewController: UIViewController {
                 for item in 0...arrCount-1 {
                     if let pig = decodedData.message?.avatars![item] {
                         self.piggyArr.append(pig)
-                        
                     }
                 }
             }
@@ -170,7 +169,7 @@ extension CollectionViewController: UICollectionViewDelegate {
         collectionView.deselectItem(at: indexPath, animated: true)
         print("You tapeed me")
         self.piggy = piggyArr[indexPath.row]
-        self.image = piggyPicArr[indexPath.row]
+//        self.image = piggyPicArr[indexPath.row]
         performSegue(withIdentifier: "cardDetail", sender: nil)
     }
     
@@ -178,7 +177,7 @@ extension CollectionViewController: UICollectionViewDelegate {
         if segue.identifier == "cardDetail" {
             let dvc = segue.destination as? CollectionDetailVC
             dvc?.piggy = self.piggy
-            dvc?.image = self.image
+//            dvc?.image = self.image
         }
     }
     

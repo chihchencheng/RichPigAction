@@ -26,6 +26,7 @@
 		1416A69124B90BC700A373AC /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A69024B90BC700A373AC /* GameViewController.swift */; };
 		1416A69424B90C7800A373AC /* NoseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A69224B90C7800A373AC /* NoseCollectionViewCell.swift */; };
 		1416A69524B90C7800A373AC /* NoseCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1416A69324B90C7800A373AC /* NoseCollectionViewCell.xib */; };
+		141FC64B24BA20FD0079BC8D /* books.json in Resources */ = {isa = PBXBuildFile; fileRef = 141FC64A24BA20FD0079BC8D /* books.json */; };
 		1422758924B95CF200E80352 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1422758724B95CF200E80352 /* BookCollectionViewCell.swift */; };
 		1422758A24B95CF200E80352 /* BookCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1422758824B95CF200E80352 /* BookCollectionViewCell.xib */; };
 		1422758D24B9877000E80352 /* PigCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1422758B24B9877000E80352 /* PigCardCollectionViewCell.swift */; };
@@ -61,6 +62,7 @@
 		1416A69024B90BC700A373AC /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		1416A69224B90C7800A373AC /* NoseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoseCollectionViewCell.swift; sourceTree = "<group>"; };
 		1416A69324B90C7800A373AC /* NoseCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoseCollectionViewCell.xib; sourceTree = "<group>"; };
+		141FC64A24BA20FD0079BC8D /* books.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = books.json; sourceTree = "<group>"; };
 		1422758724B95CF200E80352 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
 		1422758824B95CF200E80352 /* BookCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookCollectionViewCell.xib; sourceTree = "<group>"; };
 		1422758B24B9877000E80352 /* PigCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigCardCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		1416A62524B85CD500A373AC /* RichPigAction4 */ = {
 			isa = PBXGroup;
 			children = (
+				141FC64A24BA20FD0079BC8D /* books.json */,
 				1416A65624B8969800A373AC /* GoogleService-Info.plist */,
 				1416A65124B8605600A373AC /* Resources */,
 				1416A64C24B85DFA00A373AC /* Models */,
@@ -287,6 +290,7 @@
 				1416A63324B85CD700A373AC /* LaunchScreen.storyboard in Resources */,
 				1422758E24B9877000E80352 /* PigCardCollectionViewCell.xib in Resources */,
 				1422758A24B95CF200E80352 /* BookCollectionViewCell.xib in Resources */,
+				141FC64B24BA20FD0079BC8D /* books.json in Resources */,
 				1416A65724B8969900A373AC /* GoogleService-Info.plist in Resources */,
 				1422759624B9B34500E80352 /* AnswerCollectionViewCell.xib in Resources */,
 				1416A63024B85CD700A373AC /* Assets.xcassets in Resources */,

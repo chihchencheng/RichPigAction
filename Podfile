@@ -13,7 +13,7 @@ target 'RichPigAction4' do
  pod 'SnapKit', '~> 5.0.0'
  pod 'iCarousel'
  pod 'Firebase/Core'
-
+ pod 'lottie-ios'
 
 
 end
