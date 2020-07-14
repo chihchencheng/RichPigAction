@@ -41,6 +41,7 @@ class CourseDetailVC: UIViewController, iCarouselDataSource {
         self.courseArr = allCourseArr[self.index]
         for item in 0...courseArr.count-1 {
             if let url = URL(string: courseArr[item].url ?? "http://104.199.188.255:8080/files/200706072649+0000ch00.JPG"){
+                
                 let task = session?.downloadTask(with: url, completionHandler: {
                     (url, respons, error) in
                     if error != nil {
@@ -54,6 +55,7 @@ class CourseDetailVC: UIViewController, iCarouselDataSource {
                     }
                     if let loadedURL = url {
                         do {
+                            print(loadedURL)
                             if let loadedImage = UIImage(data: try Data(contentsOf: loadedURL)){
                                 //                                print("loadedImage success")
                                 self.imgArr.append(loadedImage)
@@ -75,12 +77,17 @@ class CourseDetailVC: UIViewController, iCarouselDataSource {
         imgArr.count
     }
     
+    @IBAction func backToCourse(_ sender: UIButton) {
+//        let vc = storyboard?.instantiateViewController(identifier: "course") as! CourseViewController
+        dismiss(animated: true, completion: nil)
+    }
     func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width - 10, height: 450))
+        let view = UIView(frame: CGRect(x: 0, y: 300, width: self.view.frame.size.width - 10, height: 350))
         view.backgroundColor = .white
         let imageView = UIImageView(frame: view.bounds)
         view.addSubview(imageView)
         imageView.contentMode = .scaleAspectFit
+        
         if !imgArr.isEmpty {
             let img = imgArr[index]
             imageView.image = img

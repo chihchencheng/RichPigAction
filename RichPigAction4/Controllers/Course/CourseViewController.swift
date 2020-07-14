@@ -7,16 +7,20 @@
 //
 
 import UIKit
+import Lottie
 
 class CourseViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var courseHeartLabel: UILabel!
+    @IBOutlet weak var courseStarLabel: UILabel!
     var session: URLSession?
     var bookArrTitle = [String]()
     var count = 0
     var index = 0
     var courseArr = [Course]()
     var allCourseArr = [[Course]]()
+    private var animationView: AnimationView?
     
 
     override func viewDidLoad() {
@@ -25,60 +29,60 @@ class CourseViewController: UIViewController {
         
         
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 120, height: 120)
+        layout.itemSize = CGSize(width: 120,
+                                 height: 120)
         
         collectionView.collectionViewLayout = layout
         collectionView.register(BookCollectionViewCell.nib(), forCellWithReuseIdentifier: BookCollectionViewCell.identifier)
         
+//        animationView = .init(name: "books")
+//        animationView?.contentMode = .scaleAspectFit
+//        animationView?.loopMode = .loop
+//        animationView?.animationSpeed = 0.5
+//        view.addSubview(animationView!)
+//        animationView!.play()
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         downloadInfo()
-        
+        setupHeartAndStar()
     }// end of view did load
     
-    
-    func downloadInfo(){
-        if let url = URL(string: MyUrl.tutorials.rawValue){
-            let task = session?.dataTask(with: url, completionHandler: {
-                (data, response, error) in
-                
-                if error != nil {
-                    let errorCode = (error! as NSError).code
-                    if errorCode == -1009 {
-                        DispatchQueue.main.async {
-                            self.popAler(withMessage: "No internet connection")
-                        }
-                        print("No internet connection")
-                    } else {
-                        DispatchQueue.main.async {
-                            self.popAler(withMessage: String(errorCode))
-                        }
-                        print("Something is wrong")
-                    }
-                    return
-                } // end of error
-                
-                
-                if let loadedData = data {
-                    do {
-                        let okData = try JSONDecoder().decode(AllData.self, from: loadedData)
-                        self.getCourseArr(okData)
-                        self.getAllcourse(okData)
-                        DispatchQueue.main.async {
-                            self.collectionView.reloadData()
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            self.popAler(withMessage: "Sorry")
-                        }
-                    }
-                }// end of data operation
-                
-            })
-            task?.resume()
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        setupHeartAndStar()
+        animationView?.forceDisplayUpdate()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    func setupHeartAndStar(){
+        courseHeartLabel.text = String(DataManager.instance.getHeart())
+        courseStarLabel.text = String(DataManager.instance.getStar())
+    }
+    
+    func downloadInfo(){
+        let url = MyUrl.tutorials.rawValue
+        NetworkController.getService.useTokenToGet(url: url) { (data) in
+            do {
+                let okData = try JSONDecoder().decode(AllData.self, from: data)
+                self.getCourseArr(okData)
+                self.getAllcourse(okData)
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.popAler(withMessage: "Sorry")
+                }
+            }
+        }
+    }// end of download info
+
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
     
     //課程總數
     func getAllCourseAmount(_ okData: AllData) {
@@ -150,15 +154,12 @@ extension CourseViewController: UICollectionViewDelegate {
 
 extension CourseViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return  bookArrTitle.count//level.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookCollectionViewCell.identifier, for: indexPath) as! BookCollectionViewCell
-        let image = UIImage(systemName: "book.circle")
-        image?.withTintColor(.green)
-        cell.configure(with: image!, course: bookArrTitle[indexPath.row])// level[indexPath.row]
+        cell.setTitle(course: bookArrTitle[indexPath.row])
         return cell
     }
 }

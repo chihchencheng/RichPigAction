@@ -9,8 +9,8 @@
 import UIKit
 
 class LoginViewViewController: UIViewController {
+    let alertService = AlertService()
     
-    let networkController = NetworkController()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -123,23 +123,44 @@ class LoginViewViewController: UIViewController {
                 return
         }
         //連網判斷帳密是否正確
-        networkController.login(username: userName, password: password) {[weak self] (data) in
+        NetworkController.getService.login(username: userName, password: password) {[weak self] (data) in
             guard let strongSelf = self else {
                 return
             }
+            
+            
             do {
+//                let alertVC = (self?.alertService.loginAlert())! as LoginAlertViewController
+//                DispatchQueue.main.async {
+//                    self!.present(alertVC, animated: true)
+//                }
                 let okData = try JSONDecoder().decode(LoginInfo.self, from: data)
                 print("解析成功：\(okData)")
                 
                 if okData.status == 200 {
+                    
                     print("登入成功")
                     let message = okData.message
-                    let token = message?.accessToken
+                    let token = "\(message?.tokenType ?? "Bearer") \(message?.accessToken ?? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0NjkwMzMxLCJleHAiOjE1OTk4NzQzMzF9.iu9EfBoFtMv_M64vlOeL4pIHg_0SAZ_X9NHw9WS9xtL0LD8OzUGYrqGZtbB0Z15G3fSm4yuawS6gq0ajH7r7FQ")"
+                    let heart = message?.loveTime
+                    let star = message?.star
                     UserDefaults.standard.set(token, forKey: "Token")
                     UserDefaults.standard.set(true, forKey: "Logged_in")
+                    DataManager.instance.setToken(token: token)
+                    DataManager.instance.setHear(heart: heart!)
+                    DataManager.instance.setStar(star: star!)
                     DispatchQueue.main.async {
-                        strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                        strongSelf.navigationController?.dismiss(animated: true)
+                        //===== 重新登入回到預設畫面
+//                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//                        let mainTabBarController = storyboard.instantiateViewController(identifier: "TabBarController")
+//
+//                        // This is to get the SceneDelegate object from your view controller
+//                        // then call the change root view controller function to change to main tab bar
+//                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController, animated: true)
+                        //=====
                     }
+                    
                     
                 }
             } catch {

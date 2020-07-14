@@ -18,7 +18,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        // add these lines:https://fluffy.es/how-to-transition-from-login-screen-to-tab-bar-controller/
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // if user is logged in before
+        if UserDefaults.standard.bool(forKey: "Logged_in") {
+            // instantiate the main tab bar controller and set it as root view controller
+            // using the storyboard identifier we set earlier
+            let mainTabBarController = storyboard.instantiateViewController(identifier: "TabBarController")
+            window?.rootViewController = mainTabBarController
+        } 
     }
+    //這段是用來當重新登入時，回到預設第一頁
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        guard let window = self.window else {
+            return
+        }
+        
+        // change the root view controller to your specific view controller
+        window.rootViewController = vc
+    }//=====================================================================
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

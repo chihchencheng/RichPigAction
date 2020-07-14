@@ -13,15 +13,19 @@ class LevelViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var lbHeartAmount: UILabel!
     @IBOutlet weak var lbStarAmount: UILabel!
+    @IBOutlet weak var headImageView: UIImageView!
+    let alertService = AlertService()
     
     var level = 0
     var session: URLSession?
     var noseArr = [String]()
+    var singleArr = [SingleData]()
     var quizArr = [Quiz]()
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         super.viewDidLoad()
         session = URLSession(configuration: .default)
         
@@ -33,9 +37,24 @@ class LevelViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+
+        
+            NetworkController.getService.getUserInfoWithToken(token: DataManager.instance.getToken(),callback: { json in
+                DataManager.instance.setStar(star: json["star"] as? Int ?? -1)
+                
+                DispatchQueue.main.async {
+                    self.setupInfo()
+                }
+            })
         downloadInfo()
         
     }// end of view did load
+    
+    
+    private func setupInfo(){
+        self.lbStarAmount.text = String(DataManager.instance.getStar())
+        self.lbHeartAmount.text = String(DataManager.instance.getHeart())
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -43,50 +62,89 @@ class LevelViewController: UIViewController {
         if defaults.bool(forKey: "logged_in"){
             downloadInfo()
         }
-        
+        setupInfo()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        downloadInfo()
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     func downloadInfo(){
-        //        session = URLSession(configuration: .default)
-        if let url = URL(string: MyUrl.tutorials.rawValue){
-            let task = session?.dataTask(with: url, completionHandler: {
-                (data, response, error) in
+        let url = MyUrl.tutorials.rawValue
+        NetworkController.getService.useTokenToGet(url: url) { (data) in
+            do {
+                let okData = try JSONDecoder().decode(AllData.self, from: data)
+                self.noseArr = self.updateLevelLabel(okData)
+                self.getAllQuizArray(okData)
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
                 
-                if error != nil {
-                    let errorCode = (error! as NSError).code
-                    if errorCode == -1009 {
-                        DispatchQueue.main.async {
-                            self.popAler(withMessage: "No internet connection")
-                        }
-                        print("No internet connection")
-                    } else {
-                        DispatchQueue.main.async {
-                            self.popAler(withMessage: String(errorCode))
-                        }
-                        print("Something is wrong")
-                    }
-                    return
-                } // end of error
-                
-                
-                if let loadedData = data {
-                    do {
-                        let okData = try JSONDecoder().decode(AllData.self, from: loadedData)
-                        self.noseArr = self.updateLevelLabel(okData)
-                        
-                        DispatchQueue.main.async {
-                            self.collectionView.reloadData()
-                        }
-                        
-                    } catch {
-                        DispatchQueue.main.async {
-                            self.popAler(withMessage: "Sorry")
-                        }
-                    }
-                }// end of data operation
-                
-            })
-            task?.resume()
+            } catch {
+                DispatchQueue.main.async {
+                    self.popAler(withMessage: "Sorry")
+                }
+            }
+        }
+    }// end of download info
+
+    
+//    func downloadInfo(){
+//        //        session = URLSession(configuration: .default)
+//        if let url = URL(string: MyUrl.tutorials.rawValue){
+//            let task = session?.dataTask(with: url, completionHandler: {
+//                (data, response, error) in
+//
+//                if error != nil {
+//                    let errorCode = (error! as NSError).code
+//                    if errorCode == -1009 {
+//                        DispatchQueue.main.async {
+//                            self.popAler(withMessage: "No internet connection")
+//                        }
+//                        print("No internet connection")
+//                    } else {
+//                        DispatchQueue.main.async {
+//                            self.popAler(withMessage: String(errorCode))
+//                        }
+//                        print("Something is wrong")
+//                    }
+//                    return
+//                } // end of error
+//
+//
+//                if let loadedData = data {
+//                    do {
+//                        let okData = try JSONDecoder().decode(AllData.self, from: loadedData)
+//                        self.noseArr = self.updateLevelLabel(okData)
+//                        self.getAllQuizArray(okData)
+//                        DispatchQueue.main.async {
+//                            self.collectionView.reloadData()
+//                        }
+//
+//                    } catch {
+//                        DispatchQueue.main.async {
+//                            self.popAler(withMessage: "Sorry")
+//                        }
+//                    }
+//                }// end of data operation
+//
+//            })
+//            task?.resume()
+//        }
+//    }
+    
+    //取得quize的陣列
+    func getAllQuizArray(_ okData: AllData){
+        if let okSingle = okData.message {
+            self.singleArr = okSingle
+//            print("testing singleArr\(singleArr)")
         }
     }
     
@@ -100,7 +158,7 @@ class LevelViewController: UIViewController {
             }
         }
     }
-
+    
     
     
     // 更新關卡的標籤
@@ -112,11 +170,7 @@ class LevelViewController: UIViewController {
             let id = okData.message?[item].id
             noseArr.append("\(id ?? 0)")
         }
-        //        print(noseArr)
-        //        noseArr.sort()
         return noseArr
-        
-        //        print(noseArr)
     }
     
     
@@ -126,21 +180,27 @@ class LevelViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
+    
 }// end of class
 
 extension LevelViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if quizArr[indexPath.row].type == 0 || quizArr[indexPath.row].type == 1 {
-        self.level = indexPath.row
-        performSegue(withIdentifier: "quiz", sender: nil)
+        //        if self.singleArr[indexPath.row].type == 0 || self.singleArr[indexPath.row].type == 1 {
+        let title = "Level: \(self.singleArr[indexPath.row].id ?? 0)"
+        let body = self.singleArr[indexPath.row].title ?? "Data Error"
+        let alertVC = alertService.alert(title: title , body: body, buttonTitle: "開始") {
+            let vc = (self.storyboard?.instantiateViewController(identifier: "QuizViewController"))! as QuizViewController
+            DispatchQueue.main.async {
+                let heart = DataManager.instance.getHeart()-1
+                DataManager.instance.setHear(heart: heart)
+                self.lbHeartAmount.text = (String)(heart)
+            }
+            UserDefaults.standard.set(indexPath.row, forKey: "level")
+            self.present(vc, animated: true)
+        }
         
-//        } else if quizArr[level].type == 2 {
-//            performSegue(withIdentifier: "game", sender: nil)
-//        }
-        
-        
+            self.present(alertVC, animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -148,11 +208,6 @@ extension LevelViewController: UICollectionViewDelegate {
             let dvc = segue.destination as? QuizViewController
             dvc?.level = self.level
         }
-        if segue.identifier == "game" {
-            let dvc = segue.destination as? GameViewController
-            dvc?.level = self.level
-        }
-        
     }
 }
 

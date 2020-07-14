@@ -22,8 +22,16 @@ struct UserInfo: Decodable {
     var loveTime: Int?
     var accessToken: String?
     var tokenType: String?
-    var userName: String?
+    var username: String?
 }
+
+class UpdateLevelInfo {
+    var level: Int?
+    var star: Int?
+    var dateTime: Int64?
+    var loveTime: Int?
+} 
+
 
 // for register message
 struct RegisterMsg: Decodable {
@@ -48,8 +56,6 @@ struct SingleSetData: Decodable {
 }
 
 struct SingleData: Decodable {
-    var accessToken: String?
-    var tokenType: String?
     var id: Int?
     var level: Int?
     var title: String?

@@ -9,7 +9,6 @@
 import UIKit
 
 class RegisterViewController: UIViewController {
-    let networkController = NetworkController()
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
@@ -222,7 +221,7 @@ class RegisterViewController: UIViewController {
         }
         
         // 判斷是否註冊成功
-        networkController.register(username: userAccount , email: email , password: password , name: userName){ [weak self]
+        NetworkController.getService.register(username: userAccount , email: email , password: password , name: userName){ [weak self]
             (data) in
             guard let strongSelf = self else {
                 return
@@ -263,7 +262,8 @@ class RegisterViewController: UIViewController {
     @objc private func didTapRegister(){
         let vc = RegisterViewController()
         vc.title = "註冊帳號"
-        navigationController?.pushViewController(vc, animated: true)
+        dismiss(animated: true, completion: nil)
+//        navigationController?.pushViewController(vc, animated: true)
     }
 
 

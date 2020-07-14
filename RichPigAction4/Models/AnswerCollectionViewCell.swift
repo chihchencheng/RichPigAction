@@ -10,6 +10,7 @@ import UIKit
 
 class AnswerCollectionViewCell: UICollectionViewCell {
     static let identifier = "AnswerCollectionViewCell"
+    var imageName = ""
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var answerLabel: UILabel!
@@ -36,6 +37,21 @@ class AnswerCollectionViewCell: UICollectionViewCell {
     
     static func nib() -> UINib {
         return UINib(nibName: AnswerCollectionViewCell.identifier, bundle: nil)
+    }
+    
+    func setWrongAnswerImage(){
+        imageView.image = answerView3
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            if self.isSelected {
+                self.imageView.image = answerView3
+            } else {
+                self.imageView.image = answerView1
+            }
+
+        }
     }
 
 }

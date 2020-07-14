@@ -13,4 +13,7 @@ enum MyUrl: String {
     case register = "http://104.199.188.255:8080/api/auth/signup"
     case tutorials = "http://104.199.188.255:8080/api/tutorials"
     case pigCard = "http://104.199.188.255:8080/api/avatars"
+    case userInfo = "http://104.199.188.255:8080/api/auth/userInfo"
+    case favorite = "http://104.199.188.255:8080/api/auth/favorite"
+    case update = "http://104.199.188.255:8080/api/auth/update"
 }

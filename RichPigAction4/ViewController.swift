@@ -9,12 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
-    let networkController = NetworkController()
+
     static var token = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        networkController.requestWithUrl(url: MyUrl.tutorials.rawValue ) { (data) in
+        NetworkController.getService.requestWithUrl(url: MyUrl.tutorials.rawValue ) { (data) in
             
             do {
                 let okData = try JSONDecoder().decode(AllData.self, from: data)
