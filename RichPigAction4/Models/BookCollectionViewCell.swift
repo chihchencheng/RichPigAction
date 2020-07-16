@@ -22,7 +22,9 @@ class BookCollectionViewCell: UICollectionViewCell {
         animationView!.contentMode = .scaleAspectFit
         animationView!.loopMode = .loop
 //        animationView!.animationSpeed = 0.5
-         animationView!.play()
+        
+        animationView!.play()
+        
         
         
     }

@@ -69,6 +69,7 @@ class NetworkController {
             request.addValue(value, forHTTPHeaderField: key)
         }
         request.httpBody = body.data(using: String.Encoding.utf8)
+        
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         fetchDataByDataTask(from: request, completion: completion)
@@ -126,11 +127,34 @@ class NetworkController {
         let level = "level=\(level)"
         let star = "&star=\(star)"
         let dateTime = "&dateTime=\(dateTime)"
-        let loveTime = "&loveTime\(loveTime)"
+        let loveTime = "&loveTime=\(loveTime)"
         let body: String = level+star+dateTime+loveTime
-        requestWithBodyWithHeader(url: MyUrl.update.rawValue, headers: ["Authorization":DataManager.instance.getToken()], body: body ) { (data) in
-            print("更新使用者資料測試:\(data)")
+        print(body)
+        print("updateInfo")
+        useTokenWithPost(url: MyUrl.update.rawValue, body: body) { (json) in
+            print()
+            print(json)
         }
+//        requestWithBodyWithHeader(url: MyUrl.update.rawValue, headers: ["Authorization":DataManager.instance.getToken()], body: body ) { (data) in
+//            print("更新使用者資料測試:\(data)")
+//        }
+    }
+    
+    private  func useTokenWithPost(url:String,body:String,completion: @escaping ([String:Any])->Void){
+        var request = URLRequest(url:URL(string:url)!)
+        request.httpMethod = "POST"
+        request.setValue(UserDefaults.standard.object(forKey: "Token") as! String, forHTTPHeaderField: "Authorization")
+        
+        request.httpBody = body.data(using: String.Encoding.utf8)
+        let task = URLSession.shared.dataTask(with: request){ data,response ,error in
+            guard let data = data , error == nil else{
+                print("發送失敗！",error?.localizedDescription ?? "data不存在")
+                return
+            }
+            let  json = try? (JSONSerialization.jsonObject(with: data, options: []) as! [String : Any])
+            completion(json!)
+        }
+        task.resume()
     }
     
     func getUserInfoWithToken(token: String,callback : @escaping ([String:Any])-> Void ){
@@ -148,37 +172,45 @@ class NetworkController {
     }
     private func useTokenWithGet(url: String,completion: @escaping ([String:Any])->Void){
         var request = URLRequest(url:URL(string:url)!)
-        let token = UserDefaults.standard.object(forKey: "Token") as? String
-        request.httpMethod = "GET"
-        request.setValue(token, forHTTPHeaderField: "Authorization")
-        
-        let task = URLSession.shared.dataTask(with: request){ data,response ,error in
-            guard let data = data , error == nil else{
-                print("發送失敗！",error?.localizedDescription ?? "data不存在")
-                return
+        if let token = UserDefaults.standard.object(forKey: "Token") {
+            request.httpMethod = "GET"
+            request.setValue((token as! String), forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request){ data,response ,error in
+                guard let data = data , error == nil else{
+                    print("發送失敗！",error?.localizedDescription ?? "data不存在")
+                    return
+                }
+                let  json = try? (JSONSerialization.jsonObject(with: data, options: []) as! [String : Any])
+                completion(json!)
             }
-            let  json = try? (JSONSerialization.jsonObject(with: data, options: []) as! [String : Any])
-            completion(json!)
+            task.resume()
+        } else {
+            return 
         }
-        task.resume()
+        
     }
     
     func useTokenToGet(url:String ,completion: @escaping (Data) -> Void){
         var request = URLRequest(url:URL(string:url)!)
-        let token = UserDefaults.standard.object(forKey: "Token") as! String//DataManager.instance.getToken()
-        request.httpMethod = "GET"
-        request.setValue(token, forHTTPHeaderField: "Authorization")
-        
-        let task = URLSession.shared.dataTask(with: request){ data,response ,error in
-            guard let data = data , error == nil else{
-                print("發送失敗！",error?.localizedDescription ?? "data不存在")
-                return
+        if let token = (UserDefaults.standard.object(forKey: "Token")) {
+            request.httpMethod = "GET"
+            request.setValue((token as! String), forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request){ data,response ,error in
+                guard let data = data , error == nil else{
+                    print("發送失敗！",error?.localizedDescription ?? "data不存在")
+                    return
+                }
+                let str  = "發送成功" //+ String(data: data,encoding: .utf8)!
+                print(str)
+                completion(data)
             }
-            let str  = "發送成功" //+ String(data: data,encoding: .utf8)!
-            print(str)
-            completion(data)
+            task.resume()
+        } else {
+            return
         }
-        task.resume()
+        
     }
     
     

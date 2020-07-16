@@ -80,5 +80,10 @@ class CollectionDetailVC: UIViewController {
             
         }
     }
+    
+     @IBAction func backToCollection(_ sender: UIButton) {
+    //        let vc = storyboard?.instantiateViewController(identifier: "course") as! CourseViewController
+            dismiss(animated: true, completion: nil)
+        }
 
 }// end of class

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FavoriteTableViewCell" rowHeight="98" id="KGk-i7-Jjw" customClass="FavoriteTableViewCell" customModule="RichPigAction4" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="326" height="98"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="326" height="98"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cA5-fM-YwE">
+                        <rect key="frame" x="9" y="11" width="78" height="76"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="78" id="TJv-zI-Dm2"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cA5-fM-YwE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="9" id="6bD-dc-9jt"/>
+                    <constraint firstItem="cA5-fM-YwE" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="RGX-CK-QZe"/>
+                    <constraint firstItem="cA5-fM-YwE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="kAs-NG-8rJ"/>
+                    <constraint firstItem="cA5-fM-YwE" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="height" multiplier="39:49" id="o8b-IA-czg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="myImageView" destination="cA5-fM-YwE" id="2Mg-fw-T3H"/>
+            </connections>
+            <point key="canvasLocation" x="136.23188405797103" y="108.48214285714285"/>
+        </tableViewCell>
+    </objects>
+</document>

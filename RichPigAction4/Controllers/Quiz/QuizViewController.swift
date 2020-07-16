@@ -128,6 +128,7 @@ class QuizViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupInfo()
 //        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
@@ -245,7 +246,7 @@ extension QuizViewController: UICollectionViewDelegate {
                         secondsPassed = 0
                         timer.invalidate()
                         guard let currentTime = Date().toMillis() else { return }
-                        NetworkController.getService.updateInfo(level: 10, star: 50, dateTime: currentTime, loveTime: 2)
+                        NetworkController.getService.updateInfo(level: 3, star: 9, dateTime: currentTime, loveTime: 4)
 //                        NetworkController.getService.updateInfo(level: DataManager.instance.level ?? 5, star: DataManager.instance.getStar(), dateTime: currentTime, loveTime: DataManager.instance.getHeart())
                         let alert = UIAlertController(title: "Message",
                                                       message: "恭喜完成挑戰",

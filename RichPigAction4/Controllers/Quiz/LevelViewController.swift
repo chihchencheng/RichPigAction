@@ -38,7 +38,17 @@ class LevelViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
 
-        
+        if UserDefaults.standard.object(forKey: "Token") == nil {
+            
+            let vc = LoginViewViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: false)
+            
+            UserDefaults.standard.set(false, forKey: "logged_in")
+
+        }else {
+            
             NetworkController.getService.getUserInfoWithToken(token: DataManager.instance.getToken(),callback: { json in
                 DataManager.instance.setStar(star: json["star"] as? Int ?? -1)
                 
@@ -46,7 +56,8 @@ class LevelViewController: UIViewController {
                     self.setupInfo()
                 }
             })
-        downloadInfo()
+        }
+
         
     }// end of view did load
     
@@ -89,7 +100,12 @@ class LevelViewController: UIViewController {
                 
             } catch {
                 DispatchQueue.main.async {
-                    self.popAler(withMessage: "Sorry")
+                    let vc = LoginViewViewController()
+                    let nav = UINavigationController(rootViewController: vc)
+                    nav.modalPresentationStyle = .fullScreen
+                    self.present(nav, animated: false)
+                    UserDefaults.standard.set(false, forKey: "logged_in")
+//                    self.popAler(withMessage: "Sorry")
                 }
             }
         }
@@ -187,9 +203,9 @@ extension LevelViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //        if self.singleArr[indexPath.row].type == 0 || self.singleArr[indexPath.row].type == 1 {
-        let title = "Level: \(self.singleArr[indexPath.row].id ?? 0)"
+//        let title = "Level: \(self.singleArr[indexPath.row].id ?? 0)"
         let body = self.singleArr[indexPath.row].title ?? "Data Error"
-        let alertVC = alertService.alert(title: title , body: body, buttonTitle: "開始") {
+        let alertVC = alertService.alert(title: "富豬行動" , body: body, buttonTitle: "開始") {
             let vc = (self.storyboard?.instantiateViewController(identifier: "QuizViewController"))! as QuizViewController
             DispatchQueue.main.async {
                 let heart = DataManager.instance.getHeart()-1

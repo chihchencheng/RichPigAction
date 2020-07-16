@@ -7,63 +7,79 @@
 //
 
 import UIKit
+import Lottie
 
 class InfoViewController: UIViewController {
     
-    private let scrollView: UIScrollView = {
-           let scrollView = UIScrollView()
-           scrollView.backgroundColor = #colorLiteral(red: 0.9983767867, green: 0.8579687476, blue: 0.8342047334, alpha: 1)
-           scrollView.clipsToBounds = true
-           return scrollView
-       }()
-       
-       private let pbtnLogout: UIButton = {
-           let button = UIButton()
-           button.setTitle("登出", for: .normal)
-           button.backgroundColor = #colorLiteral(red: 0.9251550436, green: 0.6507889628, blue: 0.9241239429, alpha: 1)
-           button.setTitleColor(.red, for: .normal)
-           button.layer.cornerRadius = 12
-           button.layer.masksToBounds = true
-           button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-           return button
-       }()
+    @IBOutlet weak var starLabel: UILabel!
+    @IBOutlet weak var heartLabel: UILabel!
+    @IBOutlet weak var headImage: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var levelLabel: UILabel!
+    @IBOutlet weak var accountLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var logoutBtn: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    
+    var favoriteCourse = ["Love"]//[String]()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        pbtnLogout.addTarget(self,
-                             action: #selector(logoutButtonTapped),
-                             for: .touchUpInside)
-        view.addSubview(scrollView)
-        scrollView.addSubview(pbtnLogout)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-           super.viewDidAppear(animated)
-       }
-       
-       override func viewDidLayoutSubviews() {
-           super.viewDidLayoutSubviews()
-           scrollView.frame = view.bounds
-           pbtnLogout.frame = CGRect(x: 30,
-                                     y: 100,
-                                     width: scrollView.width - 60,
-                                     height: 52 )
-       }
-       
-      
-       
-       @IBAction func logoutButtonTapped(_ sender: UIButton) {
-           let defaults = UserDefaults.standard
-           let vc = LoginViewViewController()
-           let nav = UINavigationController(rootViewController: vc)
-           nav.navigationBar.barTintColor = #colorLiteral(red: 0.9983767867, green: 0.8579687476, blue: 0.8342047334, alpha: 1)
-           nav.modalPresentationStyle = .fullScreen
-           present(nav, animated: false)
-           defaults.set(false, forKey: "logged_in")
-           
-       }
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+    }
+    
+    
+    
+    @IBAction func logoutButtonTapped(_ sender: UIButton) {
+        
+//        let login = LoginViewViewController()
+//
+//        self.present(login, animated: true) {
+//            UserDefaults.standard.set(false, forKey: "Logged_in")
+//            self.dismiss(animated: true, completion: nil)
+//        }
+             
+    }
+    
+    @IBAction func didTapModify(_ sender: UIButton) {
+        
+    }
+    
+}// end of class
 
+extension InfoViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return favoriteCourse.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  
+        let cell = tableView.dequeueReusableCell(withIdentifier: InfoTableViewCell.identifier, for: indexPath)
+        cell.textLabel?.text = favoriteCourse[indexPath.row]
+        return cell
+    }
+    
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+//        return 50
+//    }
 
+}
+
+extension InfoViewController: UITableViewDelegate {
+    
 }

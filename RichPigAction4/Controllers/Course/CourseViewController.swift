@@ -35,13 +35,6 @@ class CourseViewController: UIViewController {
         collectionView.collectionViewLayout = layout
         collectionView.register(BookCollectionViewCell.nib(), forCellWithReuseIdentifier: BookCollectionViewCell.identifier)
         
-//        animationView = .init(name: "books")
-//        animationView?.contentMode = .scaleAspectFit
-//        animationView?.loopMode = .loop
-//        animationView?.animationSpeed = 0.5
-//        view.addSubview(animationView!)
-//        animationView!.play()
-        
         collectionView.delegate = self
         collectionView.dataSource = self
         downloadInfo()
@@ -50,12 +43,17 @@ class CourseViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         setupHeartAndStar()
-        animationView?.forceDisplayUpdate()
+        
+//        animationView?.forceDisplayUpdate()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        collectionView.reloadData()
     }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    
     func setupHeartAndStar(){
         courseHeartLabel.text = String(DataManager.instance.getHeart())
         courseStarLabel.text = String(DataManager.instance.getStar())
@@ -79,11 +77,6 @@ class CourseViewController: UIViewController {
         }
     }// end of download info
 
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-    
     //課程總數
     func getAllCourseAmount(_ okData: AllData) {
         if let countOk = okData.message?.count {
@@ -114,6 +107,7 @@ class CourseViewController: UIViewController {
                 return
             }
         }
+        
     }
     
     //取出特定課程的陣列
@@ -121,16 +115,11 @@ class CourseViewController: UIViewController {
         return self.allCourseArr[index]
     }
     
-
-
-    
     func popAler(withMessage message: String){
         let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
-    
 
 }// end of class
 
@@ -138,11 +127,9 @@ extension CourseViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.index = indexPath.row
-       
         performSegue(withIdentifier: "courseDetail", sender: nil)
         
     }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "courseDetail" {
             let dvc = segue.destination as? CourseDetailVC
