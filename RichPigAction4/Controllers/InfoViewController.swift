@@ -41,14 +41,11 @@ class InfoViewController: UIViewController {
     
     
     @IBAction func logoutButtonTapped(_ sender: UIButton) {
+        let vc = LoginViewViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true)
         
-//        let login = LoginViewViewController()
-//
-//        self.present(login, animated: true) {
-//            UserDefaults.standard.set(false, forKey: "Logged_in")
-//            self.dismiss(animated: true, completion: nil)
-//        }
-             
     }
     
     @IBAction func didTapModify(_ sender: UIButton) {

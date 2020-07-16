@@ -45,6 +45,7 @@
 		14330FD124BF46E700C8D28D /* CodedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14330FD024BF46E700C8D28D /* CodedTableViewCell.swift */; };
 		14330FF324BF6BDA00C8D28D /* favorites2.json in Resources */ = {isa = PBXBuildFile; fileRef = 14330FF224BF6BD900C8D28D /* favorites2.json */; };
 		14330FF524BF6BE000C8D28D /* favorites.json in Resources */ = {isa = PBXBuildFile; fileRef = 14330FF424BF6BE000C8D28D /* favorites.json */; };
+		1453FA4324C02B540083686D /* MyTapBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1453FA4224C02B540083686D /* MyTapBarViewController.swift */; };
 		1489A45A24BB71620032AB17 /* pig.json in Resources */ = {isa = PBXBuildFile; fileRef = 1489A45924BB71620032AB17 /* pig.json */; };
 		1489A46024BB755E0032AB17 /* QuestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1489A45E24BB755E0032AB17 /* QuestionTableViewCell.swift */; };
 		1489A46124BB755E0032AB17 /* QuestionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1489A45F24BB755E0032AB17 /* QuestionTableViewCell.xib */; };
@@ -103,6 +104,7 @@
 		14330FD024BF46E700C8D28D /* CodedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodedTableViewCell.swift; sourceTree = "<group>"; };
 		14330FF224BF6BD900C8D28D /* favorites2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = favorites2.json; sourceTree = "<group>"; };
 		14330FF424BF6BE000C8D28D /* favorites.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = favorites.json; sourceTree = "<group>"; };
+		1453FA4224C02B540083686D /* MyTapBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTapBarViewController.swift; sourceTree = "<group>"; };
 		1489A45924BB71620032AB17 /* pig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pig.json; sourceTree = "<group>"; };
 		1489A45E24BB755E0032AB17 /* QuestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionTableViewCell.swift; sourceTree = "<group>"; };
 		1489A45F24BB755E0032AB17 /* QuestionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuestionTableViewCell.xib; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 			children = (
 				1416A68624B8FABF00A373AC /* LoginViewViewController.swift */,
 				1416A68824B8FAD700A373AC /* RegisterViewController.swift */,
+				1453FA4224C02B540083686D /* MyTapBarViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 				1416A65324B8606800A373AC /* Extensions.swift in Sources */,
 				1489A46B24BB7E500032AB17 /* GameView.swift in Sources */,
 				1422759524B9B34500E80352 /* AnswerCollectionViewCell.swift in Sources */,
+				1453FA4324C02B540083686D /* MyTapBarViewController.swift in Sources */,
 				14330FD124BF46E700C8D28D /* CodedTableViewCell.swift in Sources */,
 				1416A68D24B90A9400A373AC /* CourseViewController.swift in Sources */,
 				14330FCB24BF42FB00C8D28D /* InfoTableViewCell.swift in Sources */,

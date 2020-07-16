@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class DataManager {
   static var dataManager: DataManager?
@@ -17,6 +18,12 @@ class DataManager {
     var dateTime: Int64?
     var loveTime: Int?
     var user: UserInfo?
+    var image: UIImage?
+    var username: String?
+    var email: String?
+    var name: String?
+    
+    
     
     fileprivate init(){}
     
@@ -46,14 +53,52 @@ class DataManager {
         return DataManager.instance.star ?? -1
     }
     
-    func setHear(heart: Int){
+    func setHeart(heart: Int){
         DataManager.instance.loveTime = heart
     }
     
+    
     func getHeart() -> Int {
-        print("================")
-        print(DataManager.instance.loveTime)
+//        print("================")
+//        print(DataManager.instance.loveTime)
         return DataManager.instance.loveTime ?? -1
     }
+    
+    func setLevel(level: Int) {
+        
+    }
+    
+    func getUserLevel() -> Int {
+        return self.level ?? 0
+    }
+    
+    func updateUserInfo(callBack: () -> Void){
+        NetworkController.getService.getUserInfoWithToken(token: DataManager.instance.getToken(),callback: { json in
+            DataManager.dataManager?.star = json["star"] as? Int ?? -1
+            DataManager.dataManager?.loveTime = json["loveTime"] as? Int ?? -1
+            DataManager.dataManager?.level = json["level"] as? Int ?? -1
+            DataManager.dataManager?.username = json["username"] as? String ?? "Pig"
+            DataManager.dataManager?.email = json["email"] as? String ?? "Email"
+            DataManager.dataManager?.name = json["name"] as? String ?? "Name"
+            DataManager.dataManager?.dateTime = json["dateTime"] as? Int64 ?? 99
+            
+        })
+        
+    }
+    
+    func getUserImage(completion: @escaping (UIImage) -> Void){
+        NetworkController.getService.getHeadImagebyLevel { (data) in
+            do{
+                if let okData = try? (JSONSerialization.jsonObject(with: data, options: []) as! [String:Any])
+                {
+                    let msg = okData["message"]  as? [String:Any] ?? ["":""]
+                    let url =  msg["url"] as? String
+                    NetworkController.getService.dowloadImage(url: url!, completion: completion)
+                }
+            }
+        }
+//        
+    }
 }
+
 

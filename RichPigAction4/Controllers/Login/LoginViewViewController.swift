@@ -147,9 +147,13 @@ class LoginViewViewController: UIViewController {
                     UserDefaults.standard.set(token, forKey: "Token")
                     UserDefaults.standard.set(true, forKey: "Logged_in")
                     DataManager.instance.setToken(token: token)
-                    DataManager.instance.setHear(heart: heart!)
+                    DataManager.instance.setHeart(heart: heart!)
                     DataManager.instance.setStar(star: star!)
                     DispatchQueue.main.async {
+//                        let vc = LevelViewController()
+//                        let tab = UITabBarController()
+//                        tab.modalPresentationStyle = .fullScreen
+//                        strongSelf.present(vc, animated: true)
                         strongSelf.navigationController?.dismiss(animated: true)
                         //===== 重新登入回到預設畫面
 //                        let storyboard = UIStoryboard(name: "Main", bundle: nil)

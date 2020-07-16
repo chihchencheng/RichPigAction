@@ -20,6 +20,7 @@ class NetworkController {
     let defaultSession = URLSession(configuration: .default) //創建一個URLSession,配置用預設->負責發送和接收請求的關鍵物件
     var errorMessage: String = ""
     var dataTask: URLSessionDataTask? //用於發出get請求,取得伺服器資料到本地
+//    var session: URLSession?
     
     
     fileprivate init(){}
@@ -140,6 +141,49 @@ class NetworkController {
 //        }
     }
     
+    func getCourseImageDownload(courseArr: [[Course]]){
+        
+    }
+    
+    func dowloadImage(url: String, completion: @escaping (UIImage) -> Void){
+        
+        if let url = URL(string: url){
+            let task = defaultSession.downloadTask(with: url, completionHandler: {
+                (data, respons, error) in
+                // error
+                if error != nil {
+                    let errorCode = (error! as NSError).code
+                    if errorCode == -1009 {
+                        print("no internet connection")
+                    }else {
+                        print(error!.localizedDescription)
+                    }
+                    return
+                }
+                // success
+                if let okData = data {
+                    do {
+                        
+                        if let loadedImage = UIImage(data: try Data(contentsOf: okData)){
+                           completion(loadedImage)
+                        }
+                        
+                    } catch{
+                        print(error.localizedDescription)
+                    }
+                }
+            })
+            task.resume()
+        }
+        
+    }//
+    
+    func getHeadImagebyLevel(completion: @escaping (Data) -> Void ){
+        let url = MyUrl.pigCard.rawValue + "/\(DataManager.instance.getUserLevel())"
+        requestWithHeader(url: url, headers: ["Authorization" : DataManager.instance.getToken()], completion: completion)
+    
+    }
+    
     private  func useTokenWithPost(url:String,body:String,completion: @escaping ([String:Any])->Void){
         var request = URLRequest(url:URL(string:url)!)
         request.httpMethod = "POST"
@@ -165,7 +209,8 @@ class NetworkController {
             }
             
             let okData = json["message"] as? [String:Any]
-            DataManager.instance.setHear(heart: okData?["loveTime"] as? Int ?? -1)
+//            DataManager.instance.setHeart(heart: okData?["loveTime"] as? Int ?? -1)
+//            DataManager.instance.setLevel(level:  okData?["level"] as? Int ?? -1)
             callback(okData ?? ["":""])
         }
     
@@ -212,6 +257,8 @@ class NetworkController {
         }
         
     }
+    
+    
     
     
 } // end of class
