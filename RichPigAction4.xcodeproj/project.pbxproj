@@ -18,7 +18,7 @@
 		1416A65324B8606800A373AC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A65224B8606800A373AC /* Extensions.swift */; };
 		1416A65724B8969900A373AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1416A65624B8969800A373AC /* GoogleService-Info.plist */; };
 		1416A65924B8D3FF00A373AC /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A65824B8D3FF00A373AC /* File.swift */; };
-		1416A68724B8FABF00A373AC /* LoginViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A68624B8FABF00A373AC /* LoginViewViewController.swift */; };
+		1416A68724B8FABF00A373AC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A68624B8FABF00A373AC /* LoginViewController.swift */; };
 		1416A68924B8FAD700A373AC /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A68824B8FAD700A373AC /* RegisterViewController.swift */; };
 		1416A68B24B90A6B00A373AC /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A68A24B90A6B00A373AC /* LevelViewController.swift */; };
 		1416A68D24B90A9400A373AC /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1416A68C24B90A9400A373AC /* CourseViewController.swift */; };
@@ -79,7 +79,7 @@
 		1416A65224B8606800A373AC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1416A65624B8969800A373AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1416A65824B8D3FF00A373AC /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		1416A68624B8FABF00A373AC /* LoginViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewViewController.swift; sourceTree = "<group>"; };
+		1416A68624B8FABF00A373AC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		1416A68824B8FAD700A373AC /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		1416A68A24B90A6B00A373AC /* LevelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
 		1416A68C24B90A9400A373AC /* CourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
@@ -192,10 +192,10 @@
 		1416A63A24B85D1600A373AC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1422759F24B9F50700E80352 /* Collection */,
 				1422759C24B9EA3B00E80352 /* Login */,
 				1422759D24B9EA4E00E80352 /* Quiz */,
 				1422759E24B9EA5F00E80352 /* Course */,
+				1422759F24B9F50700E80352 /* Collection */,
 				1422758F24B98F2B00E80352 /* InfoViewController.swift */,
 			);
 			path = Controllers;
@@ -250,7 +250,7 @@
 		1422759C24B9EA3B00E80352 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				1416A68624B8FABF00A373AC /* LoginViewViewController.swift */,
+				1416A68624B8FABF00A373AC /* LoginViewController.swift */,
 				1416A68824B8FAD700A373AC /* RegisterViewController.swift */,
 				1453FA4224C02B540083686D /* MyTapBarViewController.swift */,
 			);
@@ -462,7 +462,7 @@
 				1422759024B98F2B00E80352 /* InfoViewController.swift in Sources */,
 				14EFCA8424BC46DE00B83AA7 /* DataManager.swift in Sources */,
 				14330FCE24BF43F700C8D28D /* FavoriteTableViewCell.swift in Sources */,
-				1416A68724B8FABF00A373AC /* LoginViewViewController.swift in Sources */,
+				1416A68724B8FABF00A373AC /* LoginViewController.swift in Sources */,
 				1489A46024BB755E0032AB17 /* QuestionTableViewCell.swift in Sources */,
 				14BAB7D524BDD647000194B5 /* AlertViewController.swift in Sources */,
 				1416A65324B8606800A373AC /* Extensions.swift in Sources */,

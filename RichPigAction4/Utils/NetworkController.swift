@@ -179,7 +179,7 @@ class NetworkController {
     }//
     
     func getHeadImagebyLevel(completion: @escaping (Data) -> Void ){
-        let url = MyUrl.pigCard.rawValue + "/\(DataManager.instance.getUserLevel())"
+        let url = MyUrl.pigCard.rawValue + "/\(DataManager.instance.getLevel())"
         requestWithHeader(url: url, headers: ["Authorization" : DataManager.instance.getToken()], completion: completion)
     
     }
@@ -187,7 +187,7 @@ class NetworkController {
     private  func useTokenWithPost(url:String,body:String,completion: @escaping ([String:Any])->Void){
         var request = URLRequest(url:URL(string:url)!)
         request.httpMethod = "POST"
-        request.setValue(UserDefaults.standard.object(forKey: "Token") as! String, forHTTPHeaderField: "Authorization")
+        request.setValue((UserDefaults.standard.object(forKey: "Token") as! String), forHTTPHeaderField: "Authorization")
         
         request.httpBody = body.data(using: String.Encoding.utf8)
         let task = URLSession.shared.dataTask(with: request){ data,response ,error in
@@ -209,9 +209,10 @@ class NetworkController {
             }
             
             let okData = json["message"] as? [String:Any]
-//            DataManager.instance.setHeart(heart: okData?["loveTime"] as? Int ?? -1)
-//            DataManager.instance.setLevel(level:  okData?["level"] as? Int ?? -1)
+            DataManager.instance.setHeart(heart: okData?["loveTime"] as? Int ?? -1)
+            DataManager.instance.setLevel(level:  okData?["level"] as? Int ?? -1)
             callback(okData ?? ["":""])
+            callback(json)
         }
     
     }

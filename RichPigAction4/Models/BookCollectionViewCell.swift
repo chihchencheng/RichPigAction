@@ -37,6 +37,11 @@ class BookCollectionViewCell: UICollectionViewCell {
        
        }
        
+    func rePlay(){
+        animationView!.loopMode = .loop
+         animationView!.play()
+    }
+    
        public func setTitle(course: String){
            courseTitleLabel.text = course
        }

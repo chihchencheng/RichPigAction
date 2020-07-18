@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewViewController: UIViewController {
+class LoginViewController: UIViewController {
     let alertService = AlertService()
     
     
@@ -144,20 +144,37 @@ class LoginViewViewController: UIViewController {
                     let token = "\(message?.tokenType ?? "Bearer") \(message?.accessToken ?? "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0NjkwMzMxLCJleHAiOjE1OTk4NzQzMzF9.iu9EfBoFtMv_M64vlOeL4pIHg_0SAZ_X9NHw9WS9xtL0LD8OzUGYrqGZtbB0Z15G3fSm4yuawS6gq0ajH7r7FQ")"
                     let heart = message?.loveTime
                     let star = message?.star
+                    let level = message?.level
                     UserDefaults.standard.set(token, forKey: "Token")
                     UserDefaults.standard.set(true, forKey: "Logged_in")
                     DataManager.instance.setToken(token: token)
                     DataManager.instance.setHeart(heart: heart!)
                     DataManager.instance.setStar(star: star!)
+                    DataManager.instance.setLevel(level: level!)
+                    let group = DispatchGroup()
+                    group.enter()
                     DispatchQueue.main.async {
 //                        let vc = LevelViewController()
 //                        let tab = UITabBarController()
-//                        tab.modalPresentationStyle = .fullScreen
+//                        vc.modalPresentationStyle = .fullScreen
 //                        strongSelf.present(vc, animated: true)
-                        strongSelf.navigationController?.dismiss(animated: true)
+//                        strongSelf.navigationController?.dismiss(animated: true)
                         //===== 重新登入回到預設畫面
-//                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//                        let mainTabBarController = storyboard.instantiateViewController(identifier: "TabBarController")
+                        
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let mainTabBarController = storyboard.instantiateViewController(identifier: "TabBarController")
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController, animated: true)
+                        mainTabBarController.modalPresentationStyle = .fullScreen
+                        group.leave()
+                    }
+                    group.notify(queue: .main){
+                        
+                        self?.navigationController?.dismiss(animated: false){
+                            
+//                            tab.selectedIndex == 1
+                        }
+//                        self!.present(mainTabBarController, animated: true)
+                        
 //
 //                        // This is to get the SceneDelegate object from your view controller
 //                        // then call the change root view controller function to change to main tab bar
@@ -193,7 +210,7 @@ class LoginViewViewController: UIViewController {
 }// end of class
 
 
-extension LoginViewViewController: UITextFieldDelegate {
+extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == tfAccount {
             tfPassword.becomeFirstResponder()

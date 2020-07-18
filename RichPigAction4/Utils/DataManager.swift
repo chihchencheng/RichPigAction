@@ -50,7 +50,7 @@ class DataManager {
     }
     
     func getStar() -> Int{
-        return DataManager.instance.star ?? -1
+        return DataManager.instance.star ?? 0
     }
     
     func setHeart(heart: Int){
@@ -61,28 +61,37 @@ class DataManager {
     func getHeart() -> Int {
 //        print("================")
 //        print(DataManager.instance.loveTime)
-        return DataManager.instance.loveTime ?? -1
+        return DataManager.instance.loveTime ?? 0
     }
     
     func setLevel(level: Int) {
-        
+        DataManager.instance.level = level
     }
     
-    func getUserLevel() -> Int {
-        return self.level ?? 0
+    func getLevel() -> Int {
+        return DataManager.instance.level ?? 0
     }
     
-    func updateUserInfo(callBack: () -> Void){
-        NetworkController.getService.getUserInfoWithToken(token: DataManager.instance.getToken(),callback: { json in
-            DataManager.dataManager?.star = json["star"] as? Int ?? -1
-            DataManager.dataManager?.loveTime = json["loveTime"] as? Int ?? -1
-            DataManager.dataManager?.level = json["level"] as? Int ?? -1
-            DataManager.dataManager?.username = json["username"] as? String ?? "Pig"
-            DataManager.dataManager?.email = json["email"] as? String ?? "Email"
-            DataManager.dataManager?.name = json["name"] as? String ?? "Name"
-            DataManager.dataManager?.dateTime = json["dateTime"] as? Int64 ?? 99
-            
-        })
+    func updateUserInfo(callBack: @escaping () -> Void){
+        NetworkController.getService.getUserInfoWithToken(token: DataManager.instance.getToken(),callback: { Rjson in
+            if Rjson["status"] as? Int ?? -1 == 200 {
+                let json = Rjson["message"] as? [String:Any] ?? ["":""]
+
+                DataManager.dataManager?.star = json["star"] as? Int ?? 0
+                    DataManager.dataManager?.loveTime = json["loveTime"] as? Int ?? 0
+                    DataManager.dataManager?.level = json["level"] as? Int ?? 0
+                    DataManager.dataManager?.username = json["username"] as? String ?? "Pig"
+                    DataManager.dataManager?.email = json["email"] as? String ?? "Email"
+                    DataManager.dataManager?.name = json["name"] as? String ?? "Name"
+                    DataManager.dataManager?.dateTime = json["dateTime"] as? Int64 ?? 99
+                    DispatchQueue.main.async {
+                         callBack()
+                    }
+                   
+                  }
+            })
+         
+
         
     }
     

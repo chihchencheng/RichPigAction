@@ -10,12 +10,88 @@ import UIKit
 import iCarousel
 
 class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegate {
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.clipsToBounds = true
+        return scrollView
+    }()
+    
+    private var backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "appBackground")
+        imageView.contentMode = .scaleToFill
+        imageView.alpha = 0.5
+        return imageView
+    }()
+    
+    private var barImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = #colorLiteral(red: 0.9983372092, green: 0.8580152392, blue: 0.8298599124, alpha: 1)
+        return imageView
+    }()
+    
+    private var heartImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "heart")
+        return imageView
+    }()
+    
+    private var heartLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+        
+    private var headImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        //        imageView.image = UIImage(named: "head")
+        return imageView
+    }()
+    
+    private var starImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "star")
+        return imageView
+    }()
+    
+    private var starLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+    private var closeButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("退出", for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 12
+        button.backgroundColor = #colorLiteral(red: 0.3156232238, green: 0.4780945182, blue: 0.7871525288, alpha: 1)
+        return button
+    }()
 
+//    @IBOutlet weak var heartLabel: UILabel!
+//    @IBOutlet weak var starLabel: UILabel!
+    @IBOutlet weak var headImage: UIImageView!
     var session: URLSession?
     var courseArr = [Course]()
     var allCourseArr = [[Course]]()
     var imgArr = [UIImage]()
     var index = 0
+    var level = 0
     
     var myScrollView: UIScrollView!
     var pageControl: UIPageControl!
@@ -90,17 +166,95 @@ class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegat
 //            myLabel.text = "\(i + 1)"
 //            myScrollView.addSubview(myLabel)
 //        }
-        view.addSubview(myCarousel)
+        view.addSubview(scrollView)
+        scrollView.addSubview(backgroundImageView)
+        scrollView.addSubview(barImageView)
+        
+        barImageView.addSubview(heartImageView)
+        barImageView.addSubview(heartLabel)
+        barImageView.addSubview(headImageView)
+        barImageView.addSubview(starImageView)
+        barImageView.addSubview(starLabel)
+        
+        scrollView.addSubview(myCarousel)
         myCarousel.dataSource = self
         //        myCarousel.autoscroll = -0.3
-        myCarousel.frame = CGRect(x: 0,
-                                  y: 100,
-                                  width: view.frame.size.width,
-                                  height: 400)
+        
         session = URLSession(configuration: .default)
         getImageDownload()
-        
+        setupInfo()
+        scrollView.addSubview(closeButton)
+        closeButton.addTarget(self,
+                              action: #selector(didTapClose),
+                              for: .touchUpInside)
     }// end of view did load
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.frame = view.bounds
+        let size = scrollView.frame.size.width
+        let height = view.frame.height
+        backgroundImageView.frame = CGRect(x: 0,
+                                           y: 0,
+                                           width: size,
+                                           height: height)
+        barImageView.frame = CGRect(x: 0,
+                                    y: 0,
+                                    width: size,
+                                    height: 100)
+        
+        heartImageView.frame = CGRect(x: 15,
+                                      y: 25,
+                                      width: 70,
+                                      height: 70)
+        
+        heartLabel.frame = CGRect(x: 90,
+                                  y: 15,
+                                  width: 70,
+                                  height: 70)
+        
+        headImageView.frame = CGRect(x: 150,
+                                     y: 25,
+                                     width: 70,
+                                     height: 70)
+        
+        starImageView.frame = CGRect(x: 230,
+                                     y: 20,
+                                     width: 70,
+                                     height: 70)
+        starLabel.frame = CGRect(x: 305,
+                                 y: 15,
+                                 width: 70,
+                                 height: 70)
+        myCarousel.frame = CGRect(x: 0,
+                                  y: 120,
+                                  width: view.frame.size.width,
+                                  height: 400)
+        
+        closeButton.frame = CGRect(x: scrollView.frame.minX + 10,
+                                   y: scrollView.frame.maxY - 80,
+                                   width: scrollView.frame.width - 32,
+                                   height: 52)
+    }
+    
+    private func getHeadImage(){
+           DataManager.instance.getUserImage { (image) in
+               DispatchQueue.main.async {
+                   self.headImageView.image = image
+               }
+           }
+       }
+       
+       private func setupInfo(){
+        self.starLabel.text = String(DataManager.instance.getStar())
+        self.heartLabel.text = String(DataManager.instance.getHeart())
+        self.level = DataManager.instance.getLevel()
+        DataManager.instance.getUserImage { (image) in
+            DispatchQueue.main.async {
+                self.headImageView.image = image
+            }
+        }
+       }
     
     // 滑動結束時
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -167,7 +321,7 @@ class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegat
         imgArr.count
     }
     
-    @IBAction func backToCourse(_ sender: UIButton) {
+    @objc func didTapClose(_ sender: UIButton) {
 //        let vc = storyboard?.instantiateViewController(identifier: "course") as! CourseViewController
         dismiss(animated: true, completion: nil)
     }

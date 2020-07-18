@@ -9,15 +9,80 @@
 import UIKit
 
 class LevelViewController: UIViewController {
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.clipsToBounds = true
+        return scrollView
+    }()
+    
+    private var backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "appBackground")
+        imageView.contentMode = .scaleToFill
+        imageView.alpha = 0.5
+        return imageView
+    }()
+    
+    private var barImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = #colorLiteral(red: 0.9983372092, green: 0.8580152392, blue: 0.8298599124, alpha: 1)
+        return imageView
+    }()
+    
+    private var heartImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "heart")
+        return imageView
+    }()
+    
+    private var heartLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+    
+    private var headImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        //        imageView.image = UIImage(named: "head")
+        return imageView
+    }()
+    
+    private var starImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "star")
+        return imageView
+    }()
+    
+    private var starLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+    
     
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var lbHeartAmount: UILabel!
-    @IBOutlet weak var lbStarAmount: UILabel!
-    @IBOutlet weak var headImageView: UIImageView!
+//    @IBOutlet weak var lbHeartAmount: UILabel!
+//    @IBOutlet weak var lbStarAmount: UILabel!
+//    @IBOutlet weak var headImageView: UIImageView!
     let alertService = AlertService()
     
-    var level = 0
-    var session: URLSession?
+    var star = DataManager.instance.getStar()
+    var heart = DataManager.instance.getHeart()
+    var level = DataManager.instance.getLevel()
+//    var session: URLSession?
     var noseArr = [String]()
     var singleArr = [SingleData]()
     var quizArr = [Quiz]()
@@ -25,7 +90,7 @@ class LevelViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        session = URLSession(configuration: .default)
+//        session = URLSession(configuration: .default)
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 120, height: 120)
@@ -36,24 +101,73 @@ class LevelViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
 
+        //判斷手機內是否有有效的token
         if UserDefaults.standard.object(forKey: "Token") == nil {
-            
-            let vc = LoginViewViewController()
+            let vc = LoginViewController()
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: false)
-            
             UserDefaults.standard.set(false, forKey: "logged_in")
 
-        }else {
+        }else {// 有token，向server請求資料
             DataManager.instance.updateUserInfo {
-                setupInfo()
+                self.setupInfo()
+                self.getHeadImage()
             }
+            downloadCourseInfo()
             
         }
-        getHeadImage()
+        view.addSubview(scrollView)
+        scrollView.addSubview(backgroundImageView)
+        scrollView.addSubview(barImageView)
+        
+        barImageView.addSubview(heartImageView)
+        barImageView.addSubview(heartLabel)
+        barImageView.addSubview(headImageView)
+        barImageView.addSubview(starImageView)
+        barImageView.addSubview(starLabel)
+        view.bringSubviewToFront(collectionView)
         
     }// end of view did load
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.frame = view.bounds
+        let size = scrollView.frame.size.width
+        let height = view.frame.height
+        backgroundImageView.frame = CGRect(x: 0,
+                                           y: 0,
+                                           width: size,
+                                           height: height)
+        barImageView.frame = CGRect(x: 0,
+                                    y: 0,
+                                    width: size,
+                                    height: 100)
+        
+        heartImageView.frame = CGRect(x: 15,
+                                      y: 25,
+                                      width: 70,
+                                      height: 70)
+        
+        heartLabel.frame = CGRect(x: 90,
+                                  y: 15,
+                                  width: 70,
+                                  height: 70)
+        
+        headImageView.frame = CGRect(x: 150,
+                                     y: 25,
+                                     width: 70,
+                                     height: 70)
+        
+        starImageView.frame = CGRect(x: 230,
+                                     y: 20,
+                                     width: 70,
+                                     height: 70)
+        starLabel.frame = CGRect(x: 305,
+                                 y: 15,
+                                 width: 70,
+                                 height: 70)
+    }
     
     
     private func getHeadImage(){
@@ -66,9 +180,13 @@ class LevelViewController: UIViewController {
     
     
     private func setupInfo(){
-        self.lbStarAmount.text = String(DataManager.instance.getStar())
-        self.lbHeartAmount.text = String(DataManager.instance.getHeart())
-        self.level = DataManager.instance.getUserLevel()
+        DispatchQueue.main.async {
+            self.star = DataManager.instance.getStar()
+            self.heart = DataManager.instance.getHeart()
+            self.level = DataManager.instance.getLevel()
+            self.starLabel.text = String(self.star)
+            self.heartLabel.text = String(self.heart)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,8 +196,7 @@ class LevelViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        downloadInfo()
-        
+        downloadCourseInfo()
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
@@ -88,7 +205,7 @@ class LevelViewController: UIViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    func downloadInfo(){
+    func downloadCourseInfo(){
         let url = MyUrl.tutorials.rawValue
         NetworkController.getService.useTokenToGet(url: url) { (data) in
             do {
@@ -101,7 +218,7 @@ class LevelViewController: UIViewController {
                 
             } catch {
                 DispatchQueue.main.async {
-                    let vc = LoginViewViewController()
+                    let vc = LoginViewController()
                     let nav = UINavigationController(rootViewController: vc)
                     nav.modalPresentationStyle = .fullScreen
                     self.present(nav, animated: false)
@@ -117,7 +234,6 @@ class LevelViewController: UIViewController {
     func getAllQuizArray(_ okData: AllData){
         if let okSingle = okData.message {
             self.singleArr = okSingle
-//            print("testing singleArr\(singleArr)")
         }
     }
     
@@ -140,8 +256,9 @@ class LevelViewController: UIViewController {
         guard let count = okData.message?.count else {return ["0"]}
         
         for item in 0...count-1 {
-            let id = okData.message?[item].id
-            noseArr.append("\(id ?? 0)")
+            if let id = okData.message?[item].id {
+                noseArr.append("\(id+1)")
+            }
         }
         return noseArr
     }
@@ -165,14 +282,18 @@ extension LevelViewController: UICollectionViewDelegate {
         if indexPath.row > self.level {
             return
         }
+        if DataManager.instance.getHeart() <= 0 {
+            popAler(withMessage: "愛心數不足！")
+            return
+        }
         let alertVC = alertService.alert(title: "富豬行動" , body: body, buttonTitle: "開始") {
             let vc = (self.storyboard?.instantiateViewController(identifier: "QuizViewController"))! as QuizViewController
             DispatchQueue.main.async {
                 let heart = DataManager.instance.getHeart()-1
                 DataManager.instance.setHeart(heart: heart)
-                self.lbHeartAmount.text = (String)(heart)
+                self.heartLabel.text = (String)(heart)
             }
-            UserDefaults.standard.set(indexPath.row, forKey: "level")
+            UserDefaults.standard.set(indexPath.row, forKey: "gameLevel")
             self.present(vc, animated: true)
         }
         

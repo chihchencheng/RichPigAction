@@ -10,12 +10,79 @@ import UIKit
 
 class CollectionViewController: UIViewController {
     
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.clipsToBounds = true
+        return scrollView
+    }()
+    
+    private var backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "appBackground")
+        imageView.contentMode = .scaleToFill
+        imageView.alpha = 0.5
+        return imageView
+    }()
+    
+    private var barImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = #colorLiteral(red: 0.9983372092, green: 0.8580152392, blue: 0.8298599124, alpha: 1)
+        return imageView
+    }()
+    
+    private var heartImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "heart")
+        return imageView
+    }()
+    
+    private var heartLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+    
+    private var headImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        //        imageView.image = UIImage(named: "head")
+        return imageView
+    }()
+    
+    private var starImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "star")
+        return imageView
+    }()
+    
+    private var starLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+    
     @IBOutlet var collectionView: UICollectionView!
+//    @IBOutlet weak var headImageView: UIImageView!
+//    @IBOutlet weak var heartLabel: UILabel!
+//    @IBOutlet weak var starLabel: UILabel!
     
     var session: URLSession?
     var piggyArr = [Piggy]()
     var piggyPicArr = [UIImage]()
     var image = UIImage()//準備傳到細節頁
+    var level = 0
     var piggy = Piggy()
     var index = 0
 
@@ -35,8 +102,73 @@ class CollectionViewController: UIViewController {
         collectionView.register(PigCardCollectionViewCell.nib(), forCellWithReuseIdentifier: PigCardCollectionViewCell.identifier)
         session = URLSession(configuration: .default)
         downloadInfo()
-
+        DataManager.instance.updateUserInfo {self.setupInfo()}
+        getHeadImage()
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(backgroundImageView)
+        scrollView.addSubview(barImageView)
+        
+        barImageView.addSubview(heartImageView)
+        barImageView.addSubview(heartLabel)
+        barImageView.addSubview(headImageView)
+        barImageView.addSubview(starImageView)
+        barImageView.addSubview(starLabel)
+        view.bringSubviewToFront(collectionView)
     }// end of view did load
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.frame = view.bounds
+        let size = scrollView.frame.size.width
+        let height = view.frame.height
+        backgroundImageView.frame = CGRect(x: 0,
+                                           y: 0,
+                                           width: size,
+                                           height: height)
+        barImageView.frame = CGRect(x: 0,
+                                    y: 0,
+                                    width: size,
+                                    height: 100)
+        
+        heartImageView.frame = CGRect(x: 15,
+                                      y: 25,
+                                      width: 70,
+                                      height: 70)
+        
+        heartLabel.frame = CGRect(x: 90,
+                                  y: 15,
+                                  width: 70,
+                                  height: 70)
+        
+        headImageView.frame = CGRect(x: 150,
+                                     y: 25,
+                                     width: 70,
+                                     height: 70)
+        
+        starImageView.frame = CGRect(x: 230,
+                                     y: 20,
+                                     width: 70,
+                                     height: 70)
+        starLabel.frame = CGRect(x: 305,
+                                 y: 15,
+                                 width: 70,
+                                 height: 70)
+    }
+    
+    private func getHeadImage(){
+           DataManager.instance.getUserImage { (image) in
+               DispatchQueue.main.async {
+                   self.headImageView.image = image
+               }
+           }
+       }
+    
+    private func setupInfo(){
+           self.starLabel.text = String(DataManager.instance.getStar())
+           self.heartLabel.text = String(DataManager.instance.getHeart())
+           self.level = DataManager.instance.getLevel()
+       }
     
     override func viewDidAppear(_ animated: Bool) {
 
@@ -56,7 +188,8 @@ class CollectionViewController: UIViewController {
         do {
             let decodedData = try decoder.decode(PigData.self, from: pigData)
             if let arrCount = decodedData.message?.avatars?.count {
-                for item in 0...arrCount-1 {
+                let level = DataManager.instance.level ?? 1
+                for item in 0...level { //arrCount-1
                     if let pig = decodedData.message?.avatars![item] {
                         self.piggyArr.append(pig)
                     }
@@ -74,7 +207,8 @@ class CollectionViewController: UIViewController {
     
     //圖片下載
     private func getImageDownload(piggyArr: [Piggy]){
-        for item in 0...piggyArr.count-1 {
+        let count = DataManager.instance.level ?? 1
+        for item in 0...count {  //piggyArr.count-1
             if let urlStr = piggyArr[item].url {
                 if let url = URL(string: urlStr){
                     let task = session?.downloadTask(with: url, completionHandler: {

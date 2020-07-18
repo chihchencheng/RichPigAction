@@ -10,9 +10,75 @@ import UIKit
 import Lottie
 
 class QuizViewController: UIViewController {
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.clipsToBounds = true
+        return scrollView
+    }()
+    
+    private var backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "appBackground")
+        imageView.contentMode = .scaleToFill
+        imageView.alpha = 0.5
+        return imageView
+    }()
+    
+    private var barImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = #colorLiteral(red: 0.9983372092, green: 0.8580152392, blue: 0.8298599124, alpha: 1)
+        return imageView
+    }()
+    
+    private var heartImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "heart")
+        return imageView
+    }()
+    
+    private var heartLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+    
+    private var headImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        //        imageView.image = UIImage(named: "head")
+        return imageView
+    }()
+    
+    private var starImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clear
+        imageView.image = UIImage(named: "star")
+        return imageView
+    }()
+    
+    private var starLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+        label.textColor = .systemGreen
+        label.text = "5"
+        return label
+    }()
+    
     var totalTime = 20
-    var secondsPassed = 0
+    var secondsLeft = 20
+    var selectTimes = 0
     var timer = Timer()
+    private var star = DataManager.instance.getStar()
+    private var loveTime = DataManager.instance.getHeart()
 
     @IBOutlet weak var quizStartLabel: UILabel!
     @IBOutlet weak var quizHeartLabel: UILabel!
@@ -21,11 +87,13 @@ class QuizViewController: UIViewController {
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var animationView: AnimationView?
     @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var headImage: UIImageView!
     
+    @IBOutlet weak var btnBack: UIButton!
     var options = [String]()
     var session: URLSession?
     var quizArr = [QuestionSet]()
-    var level = 0
+    var level = DataManager.instance.getLevel()
     var quizes: [Quiz]?
     var currentQuestion: QuestionSet?
     var courseArr = [Course]()
@@ -48,68 +116,75 @@ class QuizViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
+        // 下載課程、使用者資訊、等級小豬圖片
         downloadInfo()
-        print("quiz level:\(level)")
+        setupInfo()
         
         progressBar.progress = 0.0
-        secondsPassed = 0
+        secondsLeft = 20
         
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-        setupInfo()
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(backgroundImageView)
+        scrollView.addSubview(barImageView)
+        
+        barImageView.addSubview(heartImageView)
+        barImageView.addSubview(heartLabel)
+        barImageView.addSubview(headImageView)
+        barImageView.addSubview(starImageView)
+        barImageView.addSubview(starLabel)
+        view.bringSubviewToFront(collectionView)
+        view.bringSubviewToFront(btnBack)
+        view.bringSubviewToFront(progressBar)
+        view.bringSubviewToFront(animationView!)
+        
+        
     }// end of view did load
-    
-    func setupAnimation(){
-        //        animationView = .init(name: "heartclock")
-        animationView?.contentMode = .scaleAspectFit
-        animationView?.loopMode = .loop
-        animationView?.animationSpeed = 0.5
-        view.addSubview(animationView!)
-        animationView!.play()
-    }
-    
-    @objc func updateTimer2(){
-        if secondsPassed < totalTime {
-            secondsPassed += 1
-//            if secondsPassed % 7 == 0 {
-//                self.showToast(message: "加油喔")
-//            }
-            progressBar.progress =  (Float(secondsPassed) / Float(totalTime))
-            print(progressBar.progress)
-            
-            
-        } else {
-            timer.invalidate()
-//            showToast(message: "時間到，不給分")
-            
-//            popAler(withMessage: "時間到")
-        }
-    }
-    
-        @objc func updateTimer(){
-            
-            if totalTime >= 0 {
-                totalTime -= 1
-//                if totalTime % 7 == 0 {
-//                    self.showToast(message: "加油喔")
-//                }
-                progressBar.progress =  (Float(totalTime) / Float(20))
-                print(progressBar.progress)
-                
-                
-            } else {
-                timer.invalidate()
-//                showToast(message: "時間到，不給分")
-                
-    //            popAler(withMessage: "時間到")
-            }
-        }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        getHeadImage()
         animationView?.frame = CGRect(x: 20,
                                       y: 110,
                                       width: 60,
                                       height: 60 )
+        scrollView.frame = view.bounds
+        let size = scrollView.frame.size.width
+        let height = view.frame.height
+        backgroundImageView.frame = CGRect(x: 0,
+                                           y: 0,
+                                           width: size,
+                                           height: height)
+        barImageView.frame = CGRect(x: 0,
+                                    y: 0,
+                                    width: size,
+                                    height: 100)
+        
+        heartImageView.frame = CGRect(x: 15,
+                                      y: 25,
+                                      width: 70,
+                                      height: 70)
+        
+        heartLabel.frame = CGRect(x: 90,
+                                  y: 15,
+                                  width: 70,
+                                  height: 70)
+        
+        headImageView.frame = CGRect(x: 150,
+                                     y: 25,
+                                     width: 70,
+                                     height: 70)
+        
+        starImageView.frame = CGRect(x: 230,
+                                     y: 20,
+                                     width: 70,
+                                     height: 70)
+        starLabel.frame = CGRect(x: 305,
+                                 y: 15,
+                                 width: 70,
+                                 height: 70)
     }
     
     
@@ -136,10 +211,42 @@ class QuizViewController: UIViewController {
         super.viewWillDisappear(animated)
 //        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+    func setupAnimation(){
+        //        animationView = .init(name: "heartclock")
+        animationView?.contentMode = .scaleAspectFit
+        animationView?.loopMode = .loop
+        animationView?.animationSpeed = 0.5
+        view.addSubview(animationView!)
+        animationView!.play()
+    }
+    
+    @objc func updateTimer(){
+        if secondsLeft >= 0 {
+            secondsLeft -= 1
+            progressBar.progress =  (Float(secondsLeft) / Float(totalTime))
+            //            print(progressBar.progress)
+        } else {
+            timer.invalidate()
+        }
+    }
     
     private func setupInfo(){
-        self.quizStartLabel.text = String(DataManager.instance.getStar())
-        self.quizHeartLabel.text = String(DataManager.instance.getHeart())
+        DataManager.instance.updateUserInfo {
+            self.star = DataManager.instance.getStar()
+            self.loveTime = DataManager.instance.getHeart()
+            self.level = DataManager.instance.getLevel()
+            self.starLabel.text = String(self.star)
+            self.heartLabel.text = String(self.loveTime)
+        }
+    }
+
+    
+    private func getHeadImage(){
+        DataManager.instance.getUserImage { (image) in
+            DispatchQueue.main.async {
+                self.headImageView.image = image
+            }
+        }
     }
     
     
@@ -147,18 +254,20 @@ class QuizViewController: UIViewController {
         titleLabel.text = questionSet.category
         currentQuestion = questionSet
         contentLabel.text = questionSet.question
+        starLabel.text = String(DataManager.instance.getStar())
+        heartLabel.text = String(DataManager.instance.getHeart())
         collectionView.reloadData()
         progressBar.setProgress(0, animated: false)
         
-        secondsPassed = 0
+        secondsLeft = 20
         updateTimer()
-//        progressBar.reloadInputViews()
+
 
     }
     
     //下載資料
     private func downloadInfo(){
-        let url = MyUrl.tutorials.rawValue + "/\(UserDefaults.standard.integer(forKey: "level"))"
+        let url = MyUrl.tutorials.rawValue + "/\(UserDefaults.standard.integer(forKey: "gameLevel"))"
         NetworkController.getService.useTokenToGet(url: url) { (data) in
             do {
                 let okData = try JSONDecoder().decode(SingleSetData.self, from: data)
@@ -219,7 +328,25 @@ class QuizViewController: UIViewController {
            present(alert, animated: true, completion: nil)
        }
     
-   
+    //quize判斷
+    private func addingStars(selectTimes: Int){
+        if secondsLeft > 0 || selectTimes < 4 {
+            switch selectTimes {
+            case 1:
+                self.star += 10
+                break
+            case 2:
+                self.star += 8
+                 break
+            case 3:
+                self.star += 4
+                 break
+            default:
+                self.star += 0
+                 break
+            }
+        }
+    }
 
 
 }// end of class
@@ -233,21 +360,31 @@ extension QuizViewController: UICollectionViewDelegate {
         }
         if let cell = collectionView.cellForItem(at: indexPath) as? AnswerCollectionViewCell {
             if  checkAnswer(questionSet: question, selectItem: indexPath.row){
+                
                 // next question
                 if let index = quizArr.firstIndex(where: {$0.question == question.question}){
                     if index < (quizArr.count-1){
                         // next game
                         let nextQuestion = quizArr[index + 1]
-                        //                    print("next Question:\(nextQuestion)")
                         currentQuestion = nil
                         self.configureUI(questionSet: nextQuestion)
                     }else{
                         // end of game
-                        secondsPassed = 0
+//                        secondsLeft = 20
                         timer.invalidate()
+                        self.level += 1
+                        print("testing level updating \(self.level)")
+                        UserDefaults.standard.set(self.level, forKey: "level")
+                        DataManager.instance.setLevel(level: self.level)
+                        DataManager.instance.setStar(star: self.star)
                         guard let currentTime = Date().toMillis() else { return }
-                        NetworkController.getService.updateInfo(level: 3, star: 9, dateTime: currentTime, loveTime: 4)
-//                        NetworkController.getService.updateInfo(level: DataManager.instance.level ?? 5, star: DataManager.instance.getStar(), dateTime: currentTime, loveTime: DataManager.instance.getHeart())
+                        
+                        
+                        NetworkController.getService.updateInfo(level: DataManager.instance.getLevel(),
+                                                                star: DataManager.instance.getStar(),
+                                                                dateTime: currentTime,
+                                                                loveTime: self.loveTime )
+
                         let alert = UIAlertController(title: "Message",
                                                       message: "恭喜完成挑戰",
                                                       preferredStyle: UIAlertController.Style.alert)
@@ -265,7 +402,7 @@ extension QuizViewController: UICollectionViewDelegate {
             } else {
                 // wrong
                 cell.setWrongAnswerImage()
-                
+                self.selectTimes += 1
                 //popAler(withMessage: "Wrong answer")
             }
             
@@ -336,4 +473,4 @@ extension Date {
 //    }
 //
 //}
-
+//
