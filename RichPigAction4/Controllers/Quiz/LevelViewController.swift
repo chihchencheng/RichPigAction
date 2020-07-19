@@ -127,7 +127,8 @@ class LevelViewController: UIViewController {
         barImageView.addSubview(starImageView)
         barImageView.addSubview(starLabel)
         view.bringSubviewToFront(collectionView)
-        
+        guard let currentTime = Date().toMillis() else { return }
+        DataManager.instance.setupLoginTime(time: currentTime)
     }// end of view did load
     
     override func viewDidLayoutSubviews() {
@@ -174,9 +175,12 @@ class LevelViewController: UIViewController {
         DataManager.instance.getUserImage { (image) in
             DispatchQueue.main.async {
                 self.headImageView.image = image
+                DataManager.instance.setHeadImage(image: image)
             }
+            
         }
     }
+
     
     
     private func setupInfo(){
@@ -184,6 +188,7 @@ class LevelViewController: UIViewController {
             self.star = DataManager.instance.getStar()
             self.heart = DataManager.instance.getHeart()
             self.level = DataManager.instance.getLevel()
+            print(self.level)
             self.starLabel.text = String(self.star)
             self.heartLabel.text = String(self.heart)
         }
@@ -196,14 +201,19 @@ class LevelViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupInfo()
         downloadCourseInfo()
+        getHeadImage()
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        DataManager.instance.gainHeart()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+    
+
     
     func downloadCourseInfo(){
         let url = MyUrl.tutorials.rawValue
@@ -289,9 +299,10 @@ extension LevelViewController: UICollectionViewDelegate {
         let alertVC = alertService.alert(title: "富豬行動" , body: body, buttonTitle: "開始") {
             let vc = (self.storyboard?.instantiateViewController(identifier: "QuizViewController"))! as QuizViewController
             DispatchQueue.main.async {
-                let heart = DataManager.instance.getHeart()-1
-                DataManager.instance.setHeart(heart: heart)
-                self.heartLabel.text = (String)(heart)
+                self.heart -= 1
+                DataManager.instance.setHeart(heart: self.heart)
+                print("選擇關卡，進入下一個畫面之前的\(DataManager.instance.getHeart())")
+                self.heartLabel.text = (String)(self.heart)
             }
             UserDefaults.standard.set(indexPath.row, forKey: "gameLevel")
             self.present(vc, animated: true)
@@ -300,12 +311,12 @@ extension LevelViewController: UICollectionViewDelegate {
             self.present(alertVC, animated: true)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "quiz" {
-            let dvc = segue.destination as? QuizViewController
-            dvc?.level = self.level
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "quiz" {
+//            let dvc = segue.destination as? QuizViewController
+//            dvc?.level = self.level
+//        }
+//    }
 }
 
 
@@ -333,3 +344,4 @@ extension LevelViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 100, height: 100)
     }
 }
+

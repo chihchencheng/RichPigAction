@@ -8,6 +8,7 @@
 
 import UIKit
 import Lottie
+import Toast_Swift
 
 class QuizViewController: UIViewController {
     private let scrollView: UIScrollView = {
@@ -44,7 +45,7 @@ class QuizViewController: UIViewController {
         label.numberOfLines = 0
         label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
         label.textColor = .systemGreen
-        label.text = "5"
+        label.text = String(DataManager.instance.getHeart())
         return label
     }()
     
@@ -73,15 +74,7 @@ class QuizViewController: UIViewController {
         return label
     }()
     
-    var totalTime = 20
-    var secondsLeft = 20
-    var selectTimes = 0
-    var timer = Timer()
-    private var star = DataManager.instance.getStar()
-    private var loveTime = DataManager.instance.getHeart()
 
-    @IBOutlet weak var quizStartLabel: UILabel!
-    @IBOutlet weak var quizHeartLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet var collectionView: UICollectionView!
@@ -90,16 +83,26 @@ class QuizViewController: UIViewController {
     @IBOutlet weak var headImage: UIImageView!
     
     @IBOutlet weak var btnBack: UIButton!
-    var options = [String]()
+    
+    var totalTime = 20
+    var secondsLeft = 20
+    var selectTimes = 0
+    var timer = Timer()
+    
+    private var star = DataManager.instance.getStar()
+    private var heart = DataManager.instance.getHeart()
+    private var level = DataManager.instance.getLevel()
+    
+    
     var session: URLSession?
+    
     var quizArr = [QuestionSet]()
-    var level = DataManager.instance.getLevel()
     var quizes: [Quiz]?
     var currentQuestion: QuestionSet?
+    var options = [String]()
     var courseArr = [Course]()
-    
-     
-    
+    var isSelected = [Bool]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -119,12 +122,15 @@ class QuizViewController: UIViewController {
         
         // 下載課程、使用者資訊、等級小豬圖片
         downloadInfo()
-        setupInfo()
         
         progressBar.progress = 0.0
         secondsLeft = 20
         
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0,
+                                     target: self,
+                                     selector: #selector(updateTimer),
+                                     userInfo: nil,
+                                     repeats: true)
         
         view.addSubview(scrollView)
         scrollView.addSubview(backgroundImageView)
@@ -140,16 +146,17 @@ class QuizViewController: UIViewController {
         view.bringSubviewToFront(progressBar)
         view.bringSubviewToFront(animationView!)
         
-        
+       
+        self.headImageView.image = DataManager.instance.getHeadImage()
     }// end of view did load
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        getHeadImage()
         animationView?.frame = CGRect(x: 20,
                                       y: 110,
                                       width: 60,
                                       height: 60 )
+//        self.progressBar.transform = progressBar.transform.scaledBy(x: 1, y: 2)
         scrollView.frame = view.bounds
         let size = scrollView.frame.size.width
         let height = view.frame.height
@@ -185,26 +192,35 @@ class QuizViewController: UIViewController {
                                  y: 15,
                                  width: 70,
                                  height: 70)
+        progressBar.layer.cornerRadius = 12
+        progressBar.layer.borderWidth = 5
+        progressBar.layer.borderColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+        progressBar.layer.sublayers![1].cornerRadius = 12
+        progressBar.subviews[1].clipsToBounds = true
     }
     
     
     @IBAction func didTapCrossButton(){
         let vc = storyboard?.instantiateViewController(identifier: "level") as! LevelViewController
-        
         vc.modalPresentationStyle = .fullScreen
         dismiss(animated: true, completion: nil)
-//        present(vc, animated: true, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         downloadInfo()
-        setupInfo()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupInfo()
-//        navigationController?.setNavigationBarHidden(true, animated: animated)
+        self.heartLabel.text = String(DataManager.instance.getHeart())
+        self.starLabel.text = String(DataManager.instance.getStar())
+        DataManager.instance.getUserImage { (image) in
+            DispatchQueue.main.sync {
+                self.headImageView.image = image
+            }
+            
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -224,45 +240,26 @@ class QuizViewController: UIViewController {
         if secondsLeft >= 0 {
             secondsLeft -= 1
             progressBar.progress =  (Float(secondsLeft) / Float(totalTime))
-            //            print(progressBar.progress)
+            if secondsLeft == 10 {
+                self.view.makeToast("加油喔！", duration: 1.0, position: .bottom)
+            }
+            if secondsLeft == 0 {
+                self.view.makeToast("時間到，不給分！", duration: 1.0, position: .center)
+            }
         } else {
             timer.invalidate()
         }
     }
-    
-    private func setupInfo(){
-        DataManager.instance.updateUserInfo {
-            self.star = DataManager.instance.getStar()
-            self.loveTime = DataManager.instance.getHeart()
-            self.level = DataManager.instance.getLevel()
-            self.starLabel.text = String(self.star)
-            self.heartLabel.text = String(self.loveTime)
-        }
-    }
 
-    
-    private func getHeadImage(){
-        DataManager.instance.getUserImage { (image) in
-            DispatchQueue.main.async {
-                self.headImageView.image = image
-            }
-        }
-    }
-    
-    
+
     private func configureUI(questionSet: QuestionSet){
         titleLabel.text = questionSet.category
         currentQuestion = questionSet
         contentLabel.text = questionSet.question
-        starLabel.text = String(DataManager.instance.getStar())
-        heartLabel.text = String(DataManager.instance.getHeart())
         collectionView.reloadData()
         progressBar.setProgress(0, animated: false)
-        
         secondsLeft = 20
         updateTimer()
-
-
     }
     
     //下載資料
@@ -359,6 +356,7 @@ extension QuizViewController: UICollectionViewDelegate {
             return
         }
         if let cell = collectionView.cellForItem(at: indexPath) as? AnswerCollectionViewCell {
+            self.selectTimes += 1
             if  checkAnswer(questionSet: question, selectItem: indexPath.row){
                 
                 // next question
@@ -367,26 +365,32 @@ extension QuizViewController: UICollectionViewDelegate {
                         // next game
                         let nextQuestion = quizArr[index + 1]
                         currentQuestion = nil
+                        addingStars(selectTimes: self.selectTimes)
                         self.configureUI(questionSet: nextQuestion)
+                        selectTimes = 0
                     }else{
                         // end of game
 //                        secondsLeft = 20
                         timer.invalidate()
-                        self.level += 1
-                        print("testing level updating \(self.level)")
+                        if UserDefaults.standard.integer(forKey: "gameLevel") == DataManager.instance.getLevel(){
+                            self.level += 1
+                            print("testing level updating \(self.level)")
+                        }
+                        let totalGainStars = self.star - DataManager.instance.getStar()
                         UserDefaults.standard.set(self.level, forKey: "level")
                         DataManager.instance.setLevel(level: self.level)
                         DataManager.instance.setStar(star: self.star)
                         guard let currentTime = Date().toMillis() else { return }
+                        print("currentTime\(currentTime)")
                         
-                        
+                        //答題結束回傳給後端更新的資料
                         NetworkController.getService.updateInfo(level: DataManager.instance.getLevel(),
                                                                 star: DataManager.instance.getStar(),
                                                                 dateTime: currentTime,
-                                                                loveTime: self.loveTime )
-
+                                                                loveTime: DataManager.instance.getHeart() )
+                        
                         let alert = UIAlertController(title: "Message",
-                                                      message: "恭喜完成挑戰",
+                                                      message: "恭喜完成挑戰，總共獲得\(totalGainStars)顆星星",
                                                       preferredStyle: UIAlertController.Style.alert)
                         let action = UIAlertAction(title: "OK", style: .default , handler: { // Also action dismisses AlertController when pressed.
                             action in
@@ -401,8 +405,10 @@ extension QuizViewController: UICollectionViewDelegate {
                 }
             } else {
                 // wrong
+                
                 cell.setWrongAnswerImage()
                 self.selectTimes += 1
+                
                 //popAler(withMessage: "Wrong answer")
             }
             
@@ -413,8 +419,9 @@ extension QuizViewController: UICollectionViewDelegate {
 
 extension QuizViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
-        return currentQuestion?.options?.count ?? 0//level.count
+        let count = currentQuestion?.options?.count ?? 0
+        self.isSelected = [Bool](repeating: false, count: count)
+        return count//level.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -474,3 +481,5 @@ extension Date {
 //
 //}
 //
+
+

@@ -25,5 +25,20 @@ class AlertService {
         let alertVC = storyboard.instantiateViewController(withIdentifier: "LoginAlert") as! LoginAlertViewController
         return alertVC
     }
+    
+    func modifyAlert(complection: @escaping () -> Void) -> ModifyInfoAlertView {
+        let storyboard = UIStoryboard(name: "ModifyInfoAlertView", bundle: .main)
+        let alertVC = storyboard.instantiateViewController(withIdentifier: "modify") as! ModifyInfoAlertView
+        
+        
+        alertVC.buttionAction = complection
+        return alertVC
+    }
+    
+    func modifyAlert2() -> Modify {
+        let storyboard = UIStoryboard(name: "Modify", bundle: .main)
+        let alertVC = storyboard.instantiateViewController(identifier: "modify") as! Modify
+        return alertVC
+    }
 }
 

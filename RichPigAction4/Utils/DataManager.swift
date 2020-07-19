@@ -13,16 +13,20 @@ class DataManager {
   static var dataManager: DataManager?
     var token = ""
 //    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0NDc1MzM3LCJleHAiOjE1OTk2NTkzMzd9.Zev2q2Jxz4GoTTd3OO1y1eXgDMs9k8iU_W62b-C39HeHbV_OEHGSpxhjBrWkWJY5fBi10qLGkxSGsyq6Iz6Huw"
-    var level: Int?
+    var level = 0
     var star: Int?
     var dateTime: Int64?
     var loveTime: Int?
     var user: UserInfo?
     var image: UIImage?
-    var username: String?
-    var email: String?
-    var name: String?
-    
+    var username = ""
+    var email = ""
+    var name = ""
+    var account = ""
+    var favoriteCourse = [Course]()
+    var userImage = UIImage()
+    var loginTime: Int64 = 0
+    var collection = [UIImage]()
     
     
     fileprivate init(){}
@@ -69,7 +73,15 @@ class DataManager {
     }
     
     func getLevel() -> Int {
-        return DataManager.instance.level ?? 0
+        return DataManager.instance.level
+    }
+    
+    func setHeadImage(image: UIImage){
+        self.userImage = image
+    }
+    
+    func getHeadImage() -> UIImage {
+        return self.userImage
     }
     
     func updateUserInfo(callBack: @escaping () -> Void){
@@ -106,8 +118,61 @@ class DataManager {
                 }
             }
         }
-//        
     }
+    
+    func addFavoriteCourse(course: Course){
+        self.favoriteCourse.append(course)
+    }
+    
+    func getFavoriteCourses() -> [Course]{
+        return self.favoriteCourse
+    }
+    
+    func setupLoginTime(time: Int64){
+        DataManager.instance.loginTime = time
+    }
+    func getLoginTime() -> Int64 {
+        return DataManager.instance.loginTime
+    }
+    
+    func gainHeart(){
+        guard let currentTime = Date().toMillis() else { return }
+        if currentTime - DataManager.instance.getLoginTime() == 10000 {//300000
+            DataManager.instance.setHeart(heart: DataManager.instance.getHeart()+1)
+            DataManager.instance.setupLoginTime(time: Date().toMillis())
+        }
+    }
+    
+    func setCollection(collection: [UIImage]){
+        DataManager.instance.collection = collection
+    }
+    
+    func getUserInfo() -> String {
+        return DataManager.instance.username
+    }
+    func setUserName(username: String) {
+        DataManager.instance.username = username
+    }
+    
+    func getUserName() -> String {
+        return DataManager.instance.username
+    }
+    
+    func getName() -> String{
+        return DataManager.instance.name
+    }
+    
+    func setName(name: String) {
+        DataManager.instance.name = name
+    }
+    
+    func getEmail() -> String {
+        return DataManager.instance.email
+    }
+    func setEmail(email: String){
+        DataManager.instance.email = email
+    }
+    
 }
 
 

@@ -133,17 +133,24 @@ class NetworkController {
         print(body)
         print("updateInfo")
         useTokenWithPost(url: MyUrl.update.rawValue, body: body) { (json) in
-            print()
             print(json)
         }
-//        requestWithBodyWithHeader(url: MyUrl.update.rawValue, headers: ["Authorization":DataManager.instance.getToken()], body: body ) { (data) in
-//            print("更新使用者資料測試:\(data)")
-//        }
     }
     
-    func getCourseImageDownload(courseArr: [[Course]]){
+    func updateUserInfo(name: String, email: String, completion: @escaping ([String: Any])->Void){ //
+        let name = "name=\(name)"
+        let email = "&email=\(email)"
+        let body: String = name+email
+        print(body)
+        print("updateUserInfo")
         
+        useTokenWithPost(url:MyUrl.updateInfo.rawValue,body:body){ json in
+            print(json)
+            completion(json)
+        }
+       
     }
+
     
     func dowloadImage(url: String, completion: @escaping (UIImage) -> Void){
         

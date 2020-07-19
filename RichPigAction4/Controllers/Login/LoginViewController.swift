@@ -69,6 +69,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         title = "登入"
         view.backgroundColor = #colorLiteral(red: 0.9983767867, green: 0.8579687476, blue: 0.8342047334, alpha: 1)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.9983767867, green: 0.8579687476, blue: 0.8342047334, alpha: 1)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "註冊",
                                                             style: .done,
                                                             target: self,
@@ -151,6 +152,7 @@ class LoginViewController: UIViewController {
                     DataManager.instance.setHeart(heart: heart!)
                     DataManager.instance.setStar(star: star!)
                     DataManager.instance.setLevel(level: level!)
+                    DataManager.instance.setUserName(username: userName)
                     let group = DispatchGroup()
                     group.enter()
                     DispatchQueue.main.async {

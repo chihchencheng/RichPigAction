@@ -45,6 +45,8 @@
 		14330FD124BF46E700C8D28D /* CodedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14330FD024BF46E700C8D28D /* CodedTableViewCell.swift */; };
 		14330FF324BF6BDA00C8D28D /* favorites2.json in Resources */ = {isa = PBXBuildFile; fileRef = 14330FF224BF6BD900C8D28D /* favorites2.json */; };
 		14330FF524BF6BE000C8D28D /* favorites.json in Resources */ = {isa = PBXBuildFile; fileRef = 14330FF424BF6BE000C8D28D /* favorites.json */; };
+		144DB78E24C3577600AFE110 /* ModifyInfoAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144DB78C24C3577600AFE110 /* ModifyInfoAlertView.swift */; };
+		144DB79124C357AD00AFE110 /* ModifyInfoAlertView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 144DB79024C357AD00AFE110 /* ModifyInfoAlertView.storyboard */; };
 		1453FA4324C02B540083686D /* MyTapBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1453FA4224C02B540083686D /* MyTapBarViewController.swift */; };
 		1489A45A24BB71620032AB17 /* pig.json in Resources */ = {isa = PBXBuildFile; fileRef = 1489A45924BB71620032AB17 /* pig.json */; };
 		1489A46024BB755E0032AB17 /* QuestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1489A45E24BB755E0032AB17 /* QuestionTableViewCell.swift */; };
@@ -62,6 +64,9 @@
 		14EFCAF824BD131200B83AA7 /* heartclock.json in Resources */ = {isa = PBXBuildFile; fileRef = 14EFCAF724BD131200B83AA7 /* heartclock.json */; };
 		14EFCAFC24BD822600B83AA7 /* AlertStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EFCAFB24BD822600B83AA7 /* AlertStoryboard.storyboard */; };
 		14EFCB0224BDA60A00B83AA7 /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EFCB0124BDA60A00B83AA7 /* AlertService.swift */; };
+		14F5912524C469AC00DAFE30 /* Modify.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14F5912424C469AC00DAFE30 /* Modify.storyboard */; };
+		14F5912724C469E200DAFE30 /* Modify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5912624C469E200DAFE30 /* Modify.swift */; };
+		14F5912924C47D6500DAFE30 /* ModifyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F5912824C47D6500DAFE30 /* ModifyVC.swift */; };
 		29FEE1902610063C3A44676D /* Pods_RichPigAction4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D83679279B37BBA3285F4E68 /* Pods_RichPigAction4.framework */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +109,8 @@
 		14330FD024BF46E700C8D28D /* CodedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodedTableViewCell.swift; sourceTree = "<group>"; };
 		14330FF224BF6BD900C8D28D /* favorites2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = favorites2.json; sourceTree = "<group>"; };
 		14330FF424BF6BE000C8D28D /* favorites.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = favorites.json; sourceTree = "<group>"; };
+		144DB78C24C3577600AFE110 /* ModifyInfoAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyInfoAlertView.swift; sourceTree = "<group>"; };
+		144DB79024C357AD00AFE110 /* ModifyInfoAlertView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ModifyInfoAlertView.storyboard; sourceTree = "<group>"; };
 		1453FA4224C02B540083686D /* MyTapBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTapBarViewController.swift; sourceTree = "<group>"; };
 		1489A45924BB71620032AB17 /* pig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pig.json; sourceTree = "<group>"; };
 		1489A45E24BB755E0032AB17 /* QuestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionTableViewCell.swift; sourceTree = "<group>"; };
@@ -121,6 +128,9 @@
 		14EFCAF724BD131200B83AA7 /* heartclock.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = heartclock.json; sourceTree = "<group>"; };
 		14EFCAFB24BD822600B83AA7 /* AlertStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AlertStoryboard.storyboard; sourceTree = "<group>"; };
 		14EFCB0124BDA60A00B83AA7 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
+		14F5912424C469AC00DAFE30 /* Modify.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Modify.storyboard; sourceTree = "<group>"; };
+		14F5912624C469E200DAFE30 /* Modify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modify.swift; sourceTree = "<group>"; };
+		14F5912824C47D6500DAFE30 /* ModifyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyVC.swift; sourceTree = "<group>"; };
 		CCE1D86C36BFEED944B17CA2 /* Pods-RichPigAction4.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichPigAction4.debug.xcconfig"; path = "Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4.debug.xcconfig"; sourceTree = "<group>"; };
 		D83679279B37BBA3285F4E68 /* Pods_RichPigAction4.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RichPigAction4.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9E3AAEA2D4A027347215C52 /* Pods-RichPigAction4.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichPigAction4.release.xcconfig"; path = "Target Support Files/Pods-RichPigAction4/Pods-RichPigAction4.release.xcconfig"; sourceTree = "<group>"; };
@@ -197,6 +207,7 @@
 				1422759E24B9EA5F00E80352 /* Course */,
 				1422759F24B9F50700E80352 /* Collection */,
 				1422758F24B98F2B00E80352 /* InfoViewController.swift */,
+				14F5912824C47D6500DAFE30 /* ModifyVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -295,6 +306,10 @@
 				14BAB7D824BDF1B3000194B5 /* LoginAlertViewController.swift */,
 				14EFCAFB24BD822600B83AA7 /* AlertStoryboard.storyboard */,
 				14BAB7D624BDEED8000194B5 /* LoginAlert.storyboard */,
+				144DB78C24C3577600AFE110 /* ModifyInfoAlertView.swift */,
+				144DB79024C357AD00AFE110 /* ModifyInfoAlertView.storyboard */,
+				14F5912424C469AC00DAFE30 /* Modify.storyboard */,
+				14F5912624C469E200DAFE30 /* Modify.swift */,
 			);
 			path = storyboards;
 			sourceTree = "<group>";
@@ -375,10 +390,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14F5912524C469AC00DAFE30 /* Modify.storyboard in Resources */,
 				14EFCAFC24BD822600B83AA7 /* AlertStoryboard.storyboard in Resources */,
 				14EFCAF624BCD6CC00B83AA7 /* clock.json in Resources */,
 				1416A63324B85CD700A373AC /* LaunchScreen.storyboard in Resources */,
 				1489A46924BB75A90032AB17 /* AllAnswersCollectionViewCell.xib in Resources */,
+				144DB79124C357AD00AFE110 /* ModifyInfoAlertView.storyboard in Resources */,
 				1422758E24B9877000E80352 /* PigCardCollectionViewCell.xib in Resources */,
 				14330FCF24BF43F700C8D28D /* FavoriteTableViewCell.xib in Resources */,
 				1422758A24B95CF200E80352 /* BookCollectionViewCell.xib in Resources */,
@@ -459,7 +476,10 @@
 				14BAB7D924BDF1B3000194B5 /* LoginAlertViewController.swift in Sources */,
 				1416A65924B8D3FF00A373AC /* File.swift in Sources */,
 				1422759B24B9E70F00E80352 /* CourseDetailVC.swift in Sources */,
+				14F5912724C469E200DAFE30 /* Modify.swift in Sources */,
 				1422759024B98F2B00E80352 /* InfoViewController.swift in Sources */,
+				14F5912924C47D6500DAFE30 /* ModifyVC.swift in Sources */,
+				144DB78E24C3577600AFE110 /* ModifyInfoAlertView.swift in Sources */,
 				14EFCA8424BC46DE00B83AA7 /* DataManager.swift in Sources */,
 				14330FCE24BF43F700C8D28D /* FavoriteTableViewCell.swift in Sources */,
 				1416A68724B8FABF00A373AC /* LoginViewController.swift in Sources */,

@@ -173,9 +173,9 @@ class CourseViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-       setupInfo()
-        
-//        animationView?.forceDisplayUpdate()
+        setupInfo()
+        getHeadImage()
+        //        animationView?.forceDisplayUpdate()
     }
     
     override func viewDidAppear(_ animated: Bool) {

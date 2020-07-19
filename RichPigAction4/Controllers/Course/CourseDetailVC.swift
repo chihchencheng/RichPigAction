@@ -9,7 +9,7 @@
 import UIKit
 import iCarousel
 
-class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegate {
+class CourseDetailVC: UIViewController {
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -82,25 +82,45 @@ class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegat
         button.backgroundColor = #colorLiteral(red: 0.3156232238, green: 0.4780945182, blue: 0.7871525288, alpha: 1)
         return button
     }()
-
-//    @IBOutlet weak var heartLabel: UILabel!
-//    @IBOutlet weak var starLabel: UILabel!
-    @IBOutlet weak var headImage: UIImageView!
-    var session: URLSession?
-    var courseArr = [Course]()
-    var allCourseArr = [[Course]]()
-    var imgArr = [UIImage]()
-    var index = 0
-    var level = 0
     
-    var myScrollView: UIScrollView!
-    var pageControl: UIPageControl!
+    private var shareButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("分享", for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 12
+        button.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        return button
+    }()
+    private var addFavoriteButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("❤️我的最愛", for: .normal)
+        button.contentHorizontalAlignment = .center
+        button.setTitleColor(.white, for: .normal)
+        button.sizeToFit()
+        button.layer.cornerRadius = 12
+        button.backgroundColor = #colorLiteral(red: 0.9251550436, green: 0.6507889628, blue: 0.9241239429, alpha: 1)
+        return button
+    }()
     
     let myCarousel: iCarousel = {
         let view = iCarousel()
         view.type = .rotary
         return view
     }()
+
+    var session: URLSession?
+    var courseArr = [Course]()
+    var allCourseArr = [[Course]]()
+    var imgArr = [UIImage]()
+    var index = 0
+    var level = 0
+    var favoriteCourse = [Course]()
+    
+    var myScrollView: UIScrollView!
+    var pageControl: UIPageControl!
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -177,13 +197,18 @@ class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegat
         barImageView.addSubview(starLabel)
         
         scrollView.addSubview(myCarousel)
+        
+        scrollView.addSubview(closeButton)
+        scrollView.addSubview(shareButton)
+        scrollView.addSubview(addFavoriteButton)
+        
         myCarousel.dataSource = self
         //        myCarousel.autoscroll = -0.3
         
         session = URLSession(configuration: .default)
         getImageDownload()
         setupInfo()
-        scrollView.addSubview(closeButton)
+        
         closeButton.addTarget(self,
                               action: #selector(didTapClose),
                               for: .touchUpInside)
@@ -235,6 +260,14 @@ class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegat
                                    y: scrollView.frame.maxY - 80,
                                    width: scrollView.frame.width - 32,
                                    height: 52)
+        shareButton.frame = CGRect(x: (scrollView.frame.size.width/2) - 90,
+                                   y: scrollView.frame.maxY - 150,
+                                   width: 62,
+                                   height: 52)
+        addFavoriteButton.frame = CGRect(x: (scrollView.frame.size.width/2) + 10,
+                                         y: scrollView.frame.maxY - 150,
+                                         width: 112,
+                                         height: 52)
     }
     
     private func getHeadImage(){
@@ -316,36 +349,52 @@ class CourseDetailVC: UIViewController, iCarouselDataSource, UIScrollViewDelegat
     
 
  
-    
-    func numberOfItems(in carousel: iCarousel) -> Int {
-        imgArr.count
-    }
+  
     
     @objc func didTapClose(_ sender: UIButton) {
 //        let vc = storyboard?.instantiateViewController(identifier: "course") as! CourseViewController
         dismiss(animated: true, completion: nil)
     }
     
-    //設定圖表大小以及位置
-    func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
-        let view = UIView(frame: CGRect(x: 0, y: 300, width: self.view.frame.size.width - 10, height: 380))
-        view.backgroundColor = .white
-        let imageView = UIImageView(frame: CGRect(x: 5, y: 0, width: view.width - 10, height: 350))//frame: view.bounds
-        view.addSubview(imageView)
-        imageView.contentMode = .scaleAspectFit
-        
-        if !imgArr.isEmpty {
-            let img = imgArr[index]
-            imageView.image = img
-            view.addSubview(imageView)
-        }
-        return view
-    }
-
+    
     func popAler(withMessage message: String){
         let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
 
+    @objc func didTapShare(_ sender: UIButton){
+        let activityController = UIActivityViewController(activityItems: [self.imgArr[0], self.courseArr[0].desc as Any],applicationActivities: nil)
+        present(activityController, animated: true, completion: nil)
+    }
+    
 }// end of class
+
+extension CourseDetailVC: iCarouselDataSource {
+    func numberOfItems(in carousel: iCarousel) -> Int {
+        imgArr.count
+    }
+    //設定圖表大小以及位置
+    func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
+        let view = UIView(frame: CGRect(x: 0, y: 300, width: self.view.frame.size.width - 10, height: 380))
+        view.backgroundColor = .white
+                let imageView = UIImageView(frame: CGRect(x: 5, y: 0, width: view.width - 10, height: 350))//frame: view.bounds
+                view.addSubview(imageView)
+                imageView.contentMode = .scaleAspectFit
+        
+                if !imgArr.isEmpty {
+                    let img = imgArr[index]
+                    imageView.image = img
+                    view.addSubview(imageView)
+                }
+                return view
+    }
+    func carouselCurrentItemIndexDidChange(_ carousel: iCarousel) {
+        print(carousel.currentItemIndex)
+    }
+    
+}
+
+extension CourseDetailVC: iCarouselDelegate {
+    
+}

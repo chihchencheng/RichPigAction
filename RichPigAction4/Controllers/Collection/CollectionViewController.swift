@@ -169,6 +169,9 @@ class CollectionViewController: UIViewController {
            self.heartLabel.text = String(DataManager.instance.getHeart())
            self.level = DataManager.instance.getLevel()
        }
+    override func viewWillAppear(_ animated: Bool) {
+        getHeadImage()
+    }
     
     override func viewDidAppear(_ animated: Bool) {
 
@@ -200,6 +203,7 @@ class CollectionViewController: UIViewController {
                 self.collectionView.reloadData()
             }
             print(piggyArr.count)
+            
         } catch {
             print(error)
         }
