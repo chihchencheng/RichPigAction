@@ -380,6 +380,10 @@ extension QuizViewController: UICollectionViewDelegate {
                         UserDefaults.standard.set(self.level, forKey: "level")
                         DataManager.instance.setLevel(level: self.level)
                         DataManager.instance.setStar(star: self.star)
+                        NetworkController.getService.dowloadImage(url: MyUrl.pigCard.rawValue+"/\(String(self.level))") { (image) in
+                            DataManager.instance.setHeadImage(image: image)
+                        }
+                        
                         guard let currentTime = Date().toMillis() else { return }
                         print("currentTime\(currentTime)")
                         
@@ -387,7 +391,8 @@ extension QuizViewController: UICollectionViewDelegate {
                         NetworkController.getService.updateInfo(level: DataManager.instance.getLevel(),
                                                                 star: DataManager.instance.getStar(),
                                                                 dateTime: currentTime,
-                                                                loveTime: DataManager.instance.getHeart() )
+                                                                loveTime: DataManager.instance.getHeart())
+                        
                         
                         let alert = UIAlertController(title: "Message",
                                                       message: "恭喜完成挑戰，總共獲得\(totalGainStars)顆星星",

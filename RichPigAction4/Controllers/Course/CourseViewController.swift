@@ -52,7 +52,6 @@ class CourseViewController: UIViewController {
     private var headImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .clear
-        //        imageView.image = UIImage(named: "head")
         return imageView
     }()
     
@@ -75,9 +74,6 @@ class CourseViewController: UIViewController {
     }()
     
     @IBOutlet weak var collectionView: UICollectionView!
-//    @IBOutlet weak var courseHeartLabel: UILabel!
-//    @IBOutlet weak var courseStarLabel: UILabel!
-//    @IBOutlet weak var headImageView: UIImageView!
     
     var session: URLSession?
     var bookArrTitle = [String]()
@@ -159,11 +155,11 @@ class CourseViewController: UIViewController {
     }
     
     private func getHeadImage(){
-        DataManager.instance.getUserImage { (image) in
-            DispatchQueue.main.async {
-                self.headImageView.image = image
-            }
-        }
+//        DataManager.instance.getUserImage { (image) in
+//            DispatchQueue.main.async {
+        self.headImageView.image = DataManager.instance.getHeadImage()
+//            }
+//        }
     }
     
     private func setupInfo(){
@@ -175,6 +171,7 @@ class CourseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         setupInfo()
         getHeadImage()
+        collectionView.reloadData()
         //        animationView?.forceDisplayUpdate()
     }
     

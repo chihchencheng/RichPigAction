@@ -108,3 +108,18 @@ struct Piggy: Decodable {
     var trait: String?
     var expect: String?
 }
+
+struct AllFavorite: Decodable {
+    var message: Favorite?
+}
+
+struct Favorite: Decodable {
+    var favorite: [[Course]]?
+}
+
+struct RemoveFavorite: Decodable {
+    var status: String?
+    var message: String?
+    var error: String?
+}
+

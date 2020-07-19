@@ -88,8 +88,6 @@ class CollectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        super.viewDidLoad()
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 150, height: 150)
         layout.minimumLineSpacing = 6
@@ -99,8 +97,10 @@ class CollectionViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
         collectionView.register(PigCardCollectionViewCell.nib(), forCellWithReuseIdentifier: PigCardCollectionViewCell.identifier)
         session = URLSession(configuration: .default)
+        
         downloadInfo()
         DataManager.instance.updateUserInfo {self.setupInfo()}
         getHeadImage()
@@ -157,11 +157,12 @@ class CollectionViewController: UIViewController {
     }
     
     private func getHeadImage(){
-           DataManager.instance.getUserImage { (image) in
-               DispatchQueue.main.async {
-                   self.headImageView.image = image
-               }
-           }
+//           DataManager.instance.getUserImage { (image) in
+//               DispatchQueue.main.async {
+//                   self.headImageView.image = image
+//               }
+//           }
+        self.headImageView.image = DataManager.instance.getHeadImage()
        }
     
     private func setupInfo(){
@@ -170,11 +171,14 @@ class CollectionViewController: UIViewController {
            self.level = DataManager.instance.getLevel()
        }
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         getHeadImage()
+        collectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-
+        super.viewWillAppear(true)
+        
     }
     
     //下載資料

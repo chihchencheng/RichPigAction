@@ -82,15 +82,10 @@ class NetworkController {
             if error != nil{
                 let errorCode = (error! as NSError).code
                 if errorCode == -1009 {
-                    DispatchQueue.main.async {
-//                        self.popAler(withMessage: "No internet connection")
-                    }
                     print("No internet connection")
                 } else {
-                    DispatchQueue.main.async {
-//                        self.popAler(withMessage: String(errorCode))
-                    }
                     print("Something is wrong")
+                    print("這裡這裡～～")
                 }
                 return
             }// end of error
@@ -148,9 +143,33 @@ class NetworkController {
             print(json)
             completion(json)
         }
-       
     }
 
+    func addFavorite(courseIndex: Int, completion: @escaping ([String:Any]) -> Void){
+        let url = MyUrl.addFavorite.rawValue
+        let body = "courseLevel="+String(courseIndex)
+        useTokenWithPost(url: url, body: body) { json in
+            print("測試加入我的最愛json: \(json)")
+            completion(json)
+        }
+    }
+    
+    func getFavorite(completion: @escaping (Data) -> Void){
+        let url = MyUrl.getFavorite.rawValue
+        useTokenToGet(url: url) { (data) in
+            completion(data)
+        }
+
+    }
+    
+    func removeFavorite(index: String, completion: @escaping ([String:Any]) -> Void){
+        let url = MyUrl.removeFavorite.rawValue
+        let body = "courseLevel="+index
+        useTokenWithPost(url: url, body: body) { (json) in
+            print(json)
+            completion(json)
+        }
+    }
     
     func dowloadImage(url: String, completion: @escaping (UIImage) -> Void){
         

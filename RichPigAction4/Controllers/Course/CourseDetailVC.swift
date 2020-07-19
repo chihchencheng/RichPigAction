@@ -8,6 +8,7 @@
 
 import UIKit
 import iCarousel
+import Toast_Swift
 
 class CourseDetailVC: UIViewController {
     
@@ -83,36 +84,31 @@ class CourseDetailVC: UIViewController {
         return button
     }()
     
-    private var shareButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitle("分享", for: .normal)
-        button.contentHorizontalAlignment = .center
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
-        button.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
-        return button
-    }()
-    private var addFavoriteButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitle("❤️我的最愛", for: .normal)
-        button.contentHorizontalAlignment = .center
-        button.setTitleColor(.white, for: .normal)
-        button.sizeToFit()
-        button.layer.cornerRadius = 12
-        button.backgroundColor = #colorLiteral(red: 0.9251550436, green: 0.6507889628, blue: 0.9241239429, alpha: 1)
-        return button
-    }()
+    private var shareButton = UIButton()
+    private var addFavoriteButton = UIButton()
     
     let myCarousel: iCarousel = {
         let view = iCarousel()
         view.type = .rotary
         return view
     }()
+    
+    private var indexLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .white
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 20)
+        label.textColor = .blue
+        label.text = "-1"
+        return label
+    }()
 
     var session: URLSession?
     var courseArr = [Course]()
     var allCourseArr = [[Course]]()
     var imgArr = [UIImage]()
+    var titleArr = [String]()
     var index = 0
     var level = 0
     var favoriteCourse = [Course]()
@@ -124,68 +120,7 @@ class CourseDetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        myScrollView = UIScrollView()
-//        myScrollView.frame = CGRect(x: 0, y: 20,
-//                                    width: view.frame.size.width ,
-//                                    height:view.frame.size.height - 20)
-//        myScrollView.contentSize = CGSize(width: view.frame.size.width * 5,
-//                                          height: view.frame.size.height - 20)
-//
-//        myScrollView.showsHorizontalScrollIndicator = false
-//        myScrollView.showsVerticalScrollIndicator = false
-        // 滑動超過範圍時是否使用彈回效果
-//        myScrollView.bounces = true
-
-        // 設置委任對象
-//        myScrollView.delegate = self
-
-        // 以一頁為單位滑動
-//        myScrollView.isPagingEnabled = true
-
-        // 加入到畫面中
-//        self.view.addSubview(myScrollView)
-        // 建立 UIPageControl 設置位置及尺寸
-//        pageControl = UIPageControl(frame: CGRect(x: 0, y: 0,
-//                                                  width: myScrollView.frame.width * 0.85,
-//                                                  height: 50))
-//        pageControl.center = CGPoint(x: myScrollView.frame.width * 0.5,
-//                                     y: myScrollView.frame.height * 0.85)
-
-        // 有幾頁 就是有幾個點點
-//        pageControl.numberOfPages = imgArr.count//5
-
-        // 起始預設的頁數
-//        pageControl.currentPage = 0
-
-        // 目前所在頁數的點點顏色
-//        pageControl.currentPageIndicatorTintColor =
-//          UIColor.black
-
-        // 其餘頁數的點點顏色
-//        pageControl.pageIndicatorTintColor = UIColor.lightGray
-
-        // 增加一個值改變時的事件
-//        pageControl.addTarget(
-//          self,
-//          action: #selector(CourseDetailVC.pageChanged),
-//          for: .valueChanged)
-
-        // 加入到基底的視圖中 (不是加到 UIScrollView 裡)
-        // 因為比較後面加入 所以會蓋在 UIScrollView 上面
-//        self.view.addSubview(pageControl)
-        // 建立 5 個 UILabel 來顯示每個頁面內容
-//        var myLabel = UILabel()
-//        for i in 0...4 {
-//            myLabel = UILabel(frame: CGRect(x: 0, y: 0,
-//                                            width: view.frame.width,
-//                                            height: 40))
-//            myLabel.center = CGPoint(x: view.frame.width * (0.5 + CGFloat(i)),
-//                                     y: view.frame.height * 0.2)
-//            myLabel.font = UIFont(name: "Helvetica-Light", size: 48.0)
-//            myLabel.textAlignment = .center
-//            myLabel.text = "\(i + 1)"
-//            myScrollView.addSubview(myLabel)
-//        }
+        
         view.addSubview(scrollView)
         scrollView.addSubview(backgroundImageView)
         scrollView.addSubview(barImageView)
@@ -197,11 +132,7 @@ class CourseDetailVC: UIViewController {
         barImageView.addSubview(starLabel)
         
         scrollView.addSubview(myCarousel)
-        
         scrollView.addSubview(closeButton)
-        scrollView.addSubview(shareButton)
-        scrollView.addSubview(addFavoriteButton)
-        
         myCarousel.dataSource = self
         //        myCarousel.autoscroll = -0.3
         
@@ -212,7 +143,17 @@ class CourseDetailVC: UIViewController {
         closeButton.addTarget(self,
                               action: #selector(didTapClose),
                               for: .touchUpInside)
+        shareButton.addTarget(self,
+                              action: #selector(didTapShare),
+                              for: .touchUpInside)
+ 
     }// end of view did load
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        myCarousel.reloadData()
+        
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -256,18 +197,16 @@ class CourseDetailVC: UIViewController {
                                   width: view.frame.size.width,
                                   height: 400)
         
+        indexLabel.frame = CGRect(x: 0,
+                                  y: 0,
+                                  width: 100,
+                                  height: 52)
+        
         closeButton.frame = CGRect(x: scrollView.frame.minX + 10,
                                    y: scrollView.frame.maxY - 80,
                                    width: scrollView.frame.width - 32,
                                    height: 52)
-        shareButton.frame = CGRect(x: (scrollView.frame.size.width/2) - 90,
-                                   y: scrollView.frame.maxY - 150,
-                                   width: 62,
-                                   height: 52)
-        addFavoriteButton.frame = CGRect(x: (scrollView.frame.size.width/2) + 10,
-                                         y: scrollView.frame.maxY - 150,
-                                         width: 112,
-                                         height: 52)
+        
     }
     
     private func getHeadImage(){
@@ -289,33 +228,9 @@ class CourseDetailVC: UIViewController {
         }
        }
     
-    // 滑動結束時
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        // 左右滑動到新頁時 更新 UIPageControl 顯示的頁數
-        let page = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
-        pageControl.currentPage = page
-    }
-    
-    // 點擊點點換頁
-    @objc func pageChanged(_ sender: UIPageControl) {
-        // 依照目前圓點在的頁數算出位置
-        var frame = myScrollView.frame
-        frame.origin.x =
-            frame.size.width * CGFloat(sender.currentPage)
-        frame.origin.y = 0
-        
-        // 再將 UIScrollView 滑動到該點
-        myScrollView.scrollRectToVisible(frame, animated:true)
-    }
-    
-    func setupPageController(){
-        
-    }
-
-    
     private func getImageDownload(){
         self.courseArr = allCourseArr[self.index]
-        for item in 0...courseArr.count-1 {
+        for item in 0...courseArr.count-1  { //stride(from:courseArr.count-1, to: 0, by:-1)
             if let url = URL(string: courseArr[item].url ?? "http://104.199.188.255:8080/files/200706072649+0000ch00.JPG"){
 
                 let task = session?.downloadTask(with: url, completionHandler: {
@@ -331,8 +246,10 @@ class CourseDetailVC: UIViewController {
                     }
                     if let loadedURL = url {
                         do {
+                            self.titleArr.append(self.courseArr[item].desc ?? "沒有值")
                             if let loadedImage = UIImage(data: try Data(contentsOf: loadedURL)){
                                 self.imgArr.append(loadedImage)
+//
                             }
                             DispatchQueue.main.async {
                                 self.myCarousel.reloadData()
@@ -352,10 +269,47 @@ class CourseDetailVC: UIViewController {
   
     
     @objc func didTapClose(_ sender: UIButton) {
-//        let vc = storyboard?.instantiateViewController(identifier: "course") as! CourseViewController
         dismiss(animated: true, completion: nil)
     }
     
+    @objc func didTapShare(_ sender: UIButton){
+        let activityController = UIActivityViewController(activityItems: [self.imgArr[0], self.courseArr[0].desc as Any],applicationActivities: nil)
+        present(activityController, animated: true, completion: nil)
+    }
+    
+    @objc func didTapAdd(_ sender: UIButton) {
+        if DataManager.instance.getFavoriteCourses().count != 0 {
+            for item in 0...DataManager.instance.getFavoriteCourses().count - 1{
+                
+                if self.index == DataManager.instance.getFavoriteCourses()[item]{
+                    self.view.makeToast("已經加過我的最愛囉", duration: 1.0, position: .bottom)
+                    return
+                }
+            }
+        }
+        
+        NetworkController.getService.addFavorite(courseIndex: self.index){ data in
+            let status = data["status"] as? Int ?? -1
+            if status == 200 {
+                DispatchQueue.main.async {
+                    self.view.makeToast("加入我的最愛成功❣️", duration: 2.0, position: .center)
+                }
+                
+                DataManager.instance.addFavoriteCourse(courseIndex: self.index)
+            } else if status == 400 {
+                DispatchQueue.main.async {
+                    self.view.makeToast("已經加過囉💕", duration: 1.0, position: .center)
+                }
+                return
+            } else {
+                DispatchQueue.main.async {
+                    self.view.makeToast("不知名的錯誤💔", duration: 1.0, position: .center)
+                }
+                return
+            }
+           
+        }
+    }
     
     func popAler(withMessage message: String){
         let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
@@ -363,11 +317,6 @@ class CourseDetailVC: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    @objc func didTapShare(_ sender: UIButton){
-        let activityController = UIActivityViewController(activityItems: [self.imgArr[0], self.courseArr[0].desc as Any],applicationActivities: nil)
-        present(activityController, animated: true, completion: nil)
-    }
-    
 }// end of class
 
 extension CourseDetailVC: iCarouselDataSource {
@@ -378,19 +327,39 @@ extension CourseDetailVC: iCarouselDataSource {
     func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
         let view = UIView(frame: CGRect(x: 0, y: 300, width: self.view.frame.size.width - 10, height: 380))
         view.backgroundColor = .white
-                let imageView = UIImageView(frame: CGRect(x: 5, y: 0, width: view.width - 10, height: 350))//frame: view.bounds
-                view.addSubview(imageView)
-                imageView.contentMode = .scaleAspectFit
+        let imageView = UIImageView(frame: CGRect(x: 5, y: 0, width: view.width - 10, height: 350))//frame: view.bounds
+        view.addSubview(imageView)
+        indexLabel = UILabel(frame: CGRect(x: 10, y: view.height-50, width: 200, height: 50))
+        shareButton = UIButton(frame: CGRect(x: 200, y: view.height-42, width: 50, height: 40))
+        shareButton.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        shareButton.setTitleColor(.white, for: .normal)
+        shareButton.setTitle("分享", for: .normal)
+        shareButton.layer.cornerRadius = 12
+        addFavoriteButton = UIButton(frame: CGRect(x: 260, y: view.height-42, width: 100, height: 40))
+        addFavoriteButton.backgroundColor = #colorLiteral(red: 1, green: 0.6316934228, blue: 0.8795467019, alpha: 1)
+        addFavoriteButton.setTitleColor(.white, for: .normal)
+        addFavoriteButton.setTitle("❤️我的最愛", for: .normal)
+        addFavoriteButton.layer.cornerRadius = 12
+        addFavoriteButton.addTarget(self,
+                                    action: #selector(didTapAdd),
+                                    for: .touchUpInside)
+        shareButton.addTarget(self,
+                              action: #selector(didTapShare),
+                              for: .touchUpInside)
+        imageView.contentMode = .scaleAspectFit
         
-                if !imgArr.isEmpty {
-                    let img = imgArr[index]
-                    imageView.image = img
-                    view.addSubview(imageView)
-                }
-                return view
-    }
-    func carouselCurrentItemIndexDidChange(_ carousel: iCarousel) {
-        print(carousel.currentItemIndex)
+        if !imgArr.isEmpty {
+            let img = imgArr[index]
+            let text = "\(titleArr[index])-\(index)"
+            indexLabel.text = text
+            imageView.image = img
+            view.addSubview(imageView)
+            view.addSubview(indexLabel)
+            view.addSubview(shareButton)
+            view.addSubview(addFavoriteButton)
+            view.bringSubviewToFront(addFavoriteButton)
+        }
+        return view
     }
     
 }

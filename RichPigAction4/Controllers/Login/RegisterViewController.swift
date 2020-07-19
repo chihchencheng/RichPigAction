@@ -64,7 +64,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "密碼"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.isSecureTextEntry = true
+//        field.isSecureTextEntry = true
         return field
     }()
     private let rtfPasswordConfirm: UITextField = {
@@ -78,7 +78,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "密碼確認"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.isSecureTextEntry = true
+//        field.isSecureTextEntry = true
         return field
     }()
     private let rtfName: UITextField = {

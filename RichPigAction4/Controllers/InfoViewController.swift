@@ -11,6 +11,7 @@ import Lottie
 
 class InfoViewController: UIViewController {
     let alertService = AlertService()
+    var courseArr = [String]()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -198,8 +199,20 @@ class InfoViewController: UIViewController {
     private var tableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .clear
-        
+        tableView.separatorStyle = .none
         return tableView
+    }()
+    
+    private var tableViewLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Georgia-BoldItalic", size: 30)
+        label.textColor = .darkGray
+        label.text = "我的最愛"
+        label.textAlignment = .center
+        return label
     }()
     
     var favoriteCourse = ["Love"]//[String]()
@@ -208,6 +221,7 @@ class InfoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         getHeadImage()
         view.addSubview(scrollView)
         scrollView.addSubview(backgroundImageView)
@@ -236,9 +250,10 @@ class InfoViewController: UIViewController {
         scrollView.addSubview(infoView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         scrollView.addSubview(tableView)
-        
+        scrollView.addSubview(tableViewLabel)
         scrollView.bringSubviewToFront(logoutButton)
         scrollView.bringSubviewToFront(modifyButton)
+        
         
         logoutButton.addTarget(self,
                               action: #selector(didTapLogout),
@@ -254,9 +269,17 @@ class InfoViewController: UIViewController {
         
         
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         setupInfo()
+        nameLabel2.text = DataManager.instance.getName()
+        emailLabel2.text = DataManager.instance.getEmail()
+        levelLabel2.text = String(DataManager.instance.getLevel())
+        accountLabel2.text = DataManager.instance.getUserName()
         getHeadImage()
+        
+        getFavorite()
+       
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -349,6 +372,11 @@ class InfoViewController: UIViewController {
                                     width: 100,
                                     height: 52)
         
+        tableViewLabel.frame = CGRect(x: view.frame.width/2-50,
+                                      y:360,
+                                      width: 100,
+                                      height: 52)
+        
         
         
         infoView.frame = CGRect(x: 0,
@@ -356,18 +384,14 @@ class InfoViewController: UIViewController {
                                 width: view.frame.size.width,
                                 height: (view.frame.size.height - barImageView.frame.height)/2)
         tableView.frame = CGRect(x: 0,
-                                 y: infoView.frame.maxY + 5,
+                                 y: infoView.frame.maxY + 15,
                                  width: view.frame.size.width,
                                  height: (view.frame.size.height - barImageView.frame.height)/2)
            
     }
     
     private func getHeadImage(){
-        DataManager.instance.getUserImage { (image) in
-            DispatchQueue.main.async {
-                self.headImageView.image = image
-            }
-        }
+        self.headImageView.image = DataManager.instance.getHeadImage()
     }
     
     private func setupInfo(){
@@ -376,6 +400,27 @@ class InfoViewController: UIViewController {
         self.level = DataManager.instance.getLevel()
     }
 
+    private func getFavorite(){ //會有重複列表的問題
+        NetworkController.getService.getFavorite { (data) in
+            do {
+                let decodedData = try JSONDecoder().decode(AllFavorite.self, from: data)
+                if let allFavorite = decodedData.message {
+                    self.courseArr.removeAll()
+                    for item in 0...allFavorite.favorite!.count-1{
+                        
+                        self.courseArr.append("\(allFavorite.favorite![item][0].level ?? -1):" + allFavorite.favorite![item][0].desc!)
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }catch {
+                print(error.localizedDescription)
+                return
+            }
+        }
+    }
+    
     @objc func didTapLogout(_ sender: UIButton) {
         let vc = LoginViewController()
         let nav = UINavigationController(rootViewController: vc)
@@ -393,38 +438,27 @@ class InfoViewController: UIViewController {
 
 extension InfoViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let myLabel = UILabel()
-        myLabel.frame = CGRect(x: 20, y: 8, width: 320, height: 52)
-        myLabel.font = UIFont.boldSystemFont(ofSize: 30)
-        myLabel.text = "我的最愛課程"
-        myLabel.textAlignment = .center
-        myLabel.textColor = .brown
-        
-        let headerView = UIView()
-        headerView.addSubview(myLabel)
-        
-        return headerView
-    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return favoriteCourse.count
+        return courseArr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let label = UILabel()
         label.frame = CGRect(x: 20, y: 8, width: 320, height: 52)
-        label.font = UIFont.systemFont(ofSize: 20)
-        cell.textLabel?.text = favoriteCourse[indexPath.row]
-        cell.backgroundColor = .clear
+        label.font = UIFont.systemFont(ofSize: 28)
+        cell.textLabel?.text = "❤️\(courseArr[indexPath.row])"
+        cell.backgroundColor = #colorLiteral(red: 0.552705586, green: 0.8715922236, blue: 1, alpha: 0.8470588235)
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
+        cell.layer.cornerRadius = 12
+        cell.layer.borderWidth = 2
+        cell.layer.borderColor = #colorLiteral(red: 1, green: 0.7390170097, blue: 0.7540183663, alpha: 1)
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -434,5 +468,37 @@ extension InfoViewController: UITableViewDataSource {
 }
 
 extension InfoViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let optionMenu = UIAlertController(title: "Message", message: "從我的最愛移除？", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        optionMenu.addAction(cancelAction)
+        
+        let removeHandler = UIAlertAction(title: "刪除", style: .default) { (handler) in
+            let index = self.courseArr[indexPath.row].split(separator: ":")[0]
+            self.courseArr.remove(at: indexPath.row)
+           DispatchQueue.main.async {
+               tableView.reloadData()
+           }
+           NetworkController.getService.removeFavorite(index: String(index)) { (data) in
+               
+           }
+           
+        }
+        optionMenu.addAction(removeHandler)
+        present(optionMenu, animated: true)
+        
+    }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let index = courseArr[indexPath.row].split(separator: ":")[0]
+            courseArr.remove(at: indexPath.row)
+            DispatchQueue.main.async {
+                tableView.reloadData()
+            }
+            NetworkController.getService.removeFavorite(index: String(index)) { (data) in
+                
+            }
+        }
+    }
 }

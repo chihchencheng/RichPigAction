@@ -12,7 +12,6 @@ import UIKit
 class DataManager {
   static var dataManager: DataManager?
     var token = ""
-//    "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0NDc1MzM3LCJleHAiOjE1OTk2NTkzMzd9.Zev2q2Jxz4GoTTd3OO1y1eXgDMs9k8iU_W62b-C39HeHbV_OEHGSpxhjBrWkWJY5fBi10qLGkxSGsyq6Iz6Huw"
     var level = 0
     var star: Int?
     var dateTime: Int64?
@@ -23,14 +22,13 @@ class DataManager {
     var email = ""
     var name = ""
     var account = ""
-    var favoriteCourse = [Course]()
+    var favoriteCourse = [Int]()
     var userImage = UIImage()
     var loginTime: Int64 = 0
     var collection = [UIImage]()
     
     
     fileprivate init(){}
-    
     
     static var instance: DataManager {
         get{
@@ -61,10 +59,7 @@ class DataManager {
         DataManager.instance.loveTime = heart
     }
     
-    
     func getHeart() -> Int {
-//        print("================")
-//        print(DataManager.instance.loveTime)
         return DataManager.instance.loveTime ?? 0
     }
     
@@ -88,20 +83,19 @@ class DataManager {
         NetworkController.getService.getUserInfoWithToken(token: DataManager.instance.getToken(),callback: { Rjson in
             if Rjson["status"] as? Int ?? -1 == 200 {
                 let json = Rjson["message"] as? [String:Any] ?? ["":""]
-
+                
                 DataManager.dataManager?.star = json["star"] as? Int ?? 0
-                    DataManager.dataManager?.loveTime = json["loveTime"] as? Int ?? 0
-                    DataManager.dataManager?.level = json["level"] as? Int ?? 0
-                    DataManager.dataManager?.username = json["username"] as? String ?? "Pig"
-                    DataManager.dataManager?.email = json["email"] as? String ?? "Email"
-                    DataManager.dataManager?.name = json["name"] as? String ?? "Name"
-                    DataManager.dataManager?.dateTime = json["dateTime"] as? Int64 ?? 99
-                    DispatchQueue.main.async {
-                         callBack()
-                    }
-                   
-                  }
-            })
+                DataManager.dataManager?.loveTime = json["loveTime"] as? Int ?? 0
+                DataManager.dataManager?.level = json["level"] as? Int ?? 0
+                DataManager.dataManager?.username = json["username"] as? String ?? "Pig"
+                DataManager.dataManager?.email = json["email"] as? String ?? "Email"
+                DataManager.dataManager?.name = json["name"] as? String ?? "Name"
+                DataManager.dataManager?.dateTime = json["dateTime"] as? Int64 ?? 99
+                DispatchQueue.main.async {
+                    callBack()
+                }
+            }
+        })
          
 
         
@@ -120,11 +114,11 @@ class DataManager {
         }
     }
     
-    func addFavoriteCourse(course: Course){
-        self.favoriteCourse.append(course)
+    func addFavoriteCourse(courseIndex: Int){
+        self.favoriteCourse.append(courseIndex)
     }
     
-    func getFavoriteCourses() -> [Course]{
+    func getFavoriteCourses() -> [Int]{
         return self.favoriteCourse
     }
     
@@ -137,7 +131,7 @@ class DataManager {
     
     func gainHeart(){
         guard let currentTime = Date().toMillis() else { return }
-        if currentTime - DataManager.instance.getLoginTime() == 10000 {//300000
+        if currentTime - DataManager.instance.getLoginTime() == 300000 {//300000
             DataManager.instance.setHeart(heart: DataManager.instance.getHeart()+1)
             DataManager.instance.setupLoginTime(time: Date().toMillis())
         }
