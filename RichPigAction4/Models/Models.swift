@@ -41,8 +41,8 @@ struct RegisterMsg: Decodable {
 
 struct RegInfo: Decodable {
     var username: String?
-    var level: String?
-    var star: String?
+    var level: Int?
+    var star: Int?
     var dateTime: Int?
     var loveTime: Int?
 }

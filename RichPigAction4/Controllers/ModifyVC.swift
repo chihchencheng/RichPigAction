@@ -24,8 +24,18 @@ class ModifyVC: UIViewController {
         accountLabel.text = account
         nameField.text = name
         emailFied.text = email
-       
+        
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        self.view.addGestureRecognizer(tap)
+        
+        
     }
+    
+    @objc func dismissKeyBoard(){
+        self.view.endEditing(true)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         accountLabel.text = account
         nameField.text = name

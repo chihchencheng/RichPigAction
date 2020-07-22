@@ -94,6 +94,7 @@ class NetworkController {
                 guard let data = data else{return}
                 do{
                     let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:Any]
+                    print(json)
                     let status = json["status"] as? Int
                     print("狀態:\(status!)")
                     if status != 200 {
@@ -103,7 +104,6 @@ class NetworkController {
                 }catch{
                     print("JSON解析失敗：\(error.localizedDescription)")
                 }
-                
             }
         }
         dataTask?.resume()
@@ -168,6 +168,25 @@ class NetworkController {
         useTokenWithPost(url: url, body: body) { (json) in
             print(json)
             completion(json)
+        }
+    }
+    
+    func forgotPassword(email: String, completion: @escaping (Data) -> Void){
+        let url = MyUrl.sendEmail.rawValue+email
+        requestWithUrl(url: url) { data in
+            completion(data)
+        }
+    }
+    
+    func resetPassword(email: String,tempt: String, password: String, rePassword: String,  completion: @escaping (Data) -> Void){
+        let url = MyUrl.resetPassword.rawValue
+        let email = "email=\(email)"
+        let tempt = "&tempt=\(tempt)"
+        let password = "&password=\(password)"
+        let rePassword = "&rePassword=\(rePassword)"
+        let body: String = email+tempt+password+rePassword
+        requestWithBody(url: url, body: body) { (data) in
+            completion(data)
         }
     }
     

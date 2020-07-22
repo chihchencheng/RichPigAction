@@ -200,6 +200,7 @@ class InfoViewController: UIViewController {
         let tableView = UITableView()
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
+        
         return tableView
     }()
     
@@ -249,6 +250,8 @@ class InfoViewController: UIViewController {
         
         scrollView.addSubview(infoView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.backgroundColor = .none
+        tableView.separatorStyle = .none
         scrollView.addSubview(tableView)
         scrollView.addSubview(tableViewLabel)
         scrollView.bringSubviewToFront(logoutButton)
@@ -267,7 +270,13 @@ class InfoViewController: UIViewController {
         levelLabel2.text = String(DataManager.instance.getLevel())
         accountLabel2.text = DataManager.instance.getUserName()
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        self.view.addGestureRecognizer(tap)
         
+    }
+    
+    @objc func dismissKeyBoard(){
+        self.view.endEditing(true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -315,11 +324,11 @@ class InfoViewController: UIViewController {
                                      width: 70,
                                      height: 70)
         
-        starImageView.frame = CGRect(x: 230,
+        starImageView.frame = CGRect(x: 220,
                                      y: 20,
                                      width: 70,
                                      height: 70)
-        starLabel.frame = CGRect(x: 305,
+        starLabel.frame = CGRect(x: 295,
                                  y: 15,
                                  width: 70,
                                  height: 70)
@@ -425,6 +434,8 @@ class InfoViewController: UIViewController {
         let vc = LoginViewController()
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
+        UserDefaults.standard.set(false, forKey: "Logged_in")
+        UserDefaults.standard.set(nil, forKey: "Token")
         self.present(nav, animated: true)
         
     }

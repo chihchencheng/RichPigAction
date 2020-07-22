@@ -48,6 +48,8 @@
 		144DB78E24C3577600AFE110 /* ModifyInfoAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144DB78C24C3577600AFE110 /* ModifyInfoAlertView.swift */; };
 		144DB79124C357AD00AFE110 /* ModifyInfoAlertView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 144DB79024C357AD00AFE110 /* ModifyInfoAlertView.storyboard */; };
 		1453FA4324C02B540083686D /* MyTapBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1453FA4224C02B540083686D /* MyTapBarViewController.swift */; };
+		146A404924C72E5000C83DDE /* ResetPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146A404824C72E5000C83DDE /* ResetPasswordVC.swift */; };
+		146A404B24C76E5700C83DDE /* ResetNewPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146A404A24C76E5700C83DDE /* ResetNewPasswordVC.swift */; };
 		1489A45A24BB71620032AB17 /* pig.json in Resources */ = {isa = PBXBuildFile; fileRef = 1489A45924BB71620032AB17 /* pig.json */; };
 		1489A46024BB755E0032AB17 /* QuestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1489A45E24BB755E0032AB17 /* QuestionTableViewCell.swift */; };
 		1489A46124BB755E0032AB17 /* QuestionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1489A45F24BB755E0032AB17 /* QuestionTableViewCell.xib */; };
@@ -112,6 +114,8 @@
 		144DB78C24C3577600AFE110 /* ModifyInfoAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyInfoAlertView.swift; sourceTree = "<group>"; };
 		144DB79024C357AD00AFE110 /* ModifyInfoAlertView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ModifyInfoAlertView.storyboard; sourceTree = "<group>"; };
 		1453FA4224C02B540083686D /* MyTapBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTapBarViewController.swift; sourceTree = "<group>"; };
+		146A404824C72E5000C83DDE /* ResetPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordVC.swift; sourceTree = "<group>"; };
+		146A404A24C76E5700C83DDE /* ResetNewPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetNewPasswordVC.swift; sourceTree = "<group>"; };
 		1489A45924BB71620032AB17 /* pig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pig.json; sourceTree = "<group>"; };
 		1489A45E24BB755E0032AB17 /* QuestionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionTableViewCell.swift; sourceTree = "<group>"; };
 		1489A45F24BB755E0032AB17 /* QuestionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuestionTableViewCell.xib; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 			children = (
 				1416A68624B8FABF00A373AC /* LoginViewController.swift */,
 				1416A68824B8FAD700A373AC /* RegisterViewController.swift */,
+				146A404824C72E5000C83DDE /* ResetPasswordVC.swift */,
+				146A404A24C76E5700C83DDE /* ResetNewPasswordVC.swift */,
 				1453FA4224C02B540083686D /* MyTapBarViewController.swift */,
 			);
 			path = Login;
@@ -480,7 +486,9 @@
 				1422759024B98F2B00E80352 /* InfoViewController.swift in Sources */,
 				14F5912924C47D6500DAFE30 /* ModifyVC.swift in Sources */,
 				144DB78E24C3577600AFE110 /* ModifyInfoAlertView.swift in Sources */,
+				146A404B24C76E5700C83DDE /* ResetNewPasswordVC.swift in Sources */,
 				14EFCA8424BC46DE00B83AA7 /* DataManager.swift in Sources */,
+				146A404924C72E5000C83DDE /* ResetPasswordVC.swift in Sources */,
 				14330FCE24BF43F700C8D28D /* FavoriteTableViewCell.swift in Sources */,
 				1416A68724B8FABF00A373AC /* LoginViewController.swift in Sources */,
 				1489A46024BB755E0032AB17 /* QuestionTableViewCell.swift in Sources */,
@@ -644,7 +652,9 @@
 			baseConfigurationReference = CCE1D86C36BFEED944B17CA2 /* Pods-RichPigAction4.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KL5CQ7DQYA;
 				INFOPLIST_FILE = RichPigAction4/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -652,8 +662,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = CMoney.RichPigAction4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -662,7 +673,9 @@
 			baseConfigurationReference = D9E3AAEA2D4A027347215C52 /* Pods-RichPigAction4.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KL5CQ7DQYA;
 				INFOPLIST_FILE = RichPigAction4/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -670,8 +683,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = CMoney.RichPigAction4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

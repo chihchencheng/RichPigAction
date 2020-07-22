@@ -26,6 +26,8 @@ class DataManager {
     var userImage = UIImage()
     var loginTime: Int64 = 0
     var collection = [UIImage]()
+    var courseIndex = 0
+    var allCourseArr = [[Course]]()
     
     
     fileprivate init(){}
@@ -165,6 +167,20 @@ class DataManager {
     }
     func setEmail(email: String){
         DataManager.instance.email = email
+    }
+    
+    func getCourseIndex() -> Int{
+        return DataManager.instance.courseIndex
+    }
+    
+    func setCourseIndex(index: Int) {
+        DataManager.instance.courseIndex = index
+    }
+    func setAllCourseArr(allCourseArr: [[Course]]){
+        DataManager.instance.allCourseArr = allCourseArr
+    }
+    func getAllCourseArr() -> [[Course]]{
+        DataManager.instance.getAllCourseArr()
     }
     
 }

@@ -28,15 +28,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // using the storyboard identifier we set earlier
             let mainTabBarController = storyboard.instantiateViewController(identifier: "TabBarController")
             window?.rootViewController = mainTabBarController
-        } 
+        } else {
+            let vc = LoginViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            changeRootViewController(nav)
+            
+//            nav.present(vc, animated: true)
+        }
     }
     //這段是用來當重新登入時，回到預設第一頁
     func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
         guard let window = self.window else {
             return
         }
-        
+//        let vc = LoginViewController()
         // change the root view controller to your specific view controller
+        print(window.rootViewController!)
         window.rootViewController = vc
     }//=====================================================================
 

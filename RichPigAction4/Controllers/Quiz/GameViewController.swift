@@ -11,6 +11,69 @@ import Lottie
 import MobileCoreServices
 
 class GameViewController: UIViewController, UIDropInteractionDelegate {
+    
+    private let scrollView: UIScrollView = {
+           let scrollView = UIScrollView()
+           scrollView.clipsToBounds = true
+           return scrollView
+       }()
+       
+       private var backgroundImageView: UIImageView = {
+           let imageView = UIImageView()
+           imageView.image = UIImage(named: "pepepig")
+           imageView.contentMode = .scaleToFill
+           imageView.alpha = 1
+           return imageView
+       }()
+       
+       private var barImageView: UIImageView = {
+           let imageView = UIImageView()
+           imageView.backgroundColor = #colorLiteral(red: 0.9983372092, green: 0.8580152392, blue: 0.8298599124, alpha: 1)
+           return imageView
+       }()
+       
+       private var heartImageView: UIImageView = {
+           let imageView = UIImageView()
+           imageView.backgroundColor = .clear
+           imageView.image = UIImage(named: "heart")
+           return imageView
+       }()
+       
+       private var heartLabel: UILabel = {
+           let label = UILabel()
+           label.backgroundColor = .clear
+           label.adjustsFontSizeToFitWidth = true
+           label.numberOfLines = 0
+           label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+           label.textColor = .systemGreen
+           label.text = "5"
+           return label
+       }()
+       
+       private var headImageView: UIImageView = {
+           let imageView = UIImageView()
+           imageView.backgroundColor = .clear
+           imageView.image = UIImage(named: "head")
+           return imageView
+       }()
+       
+       private var starImageView: UIImageView = {
+           let imageView = UIImageView()
+           imageView.backgroundColor = .clear
+           imageView.image = UIImage(named: "star")
+           return imageView
+       }()
+       
+       private var starLabel: UILabel = {
+           let label = UILabel()
+           label.backgroundColor = .clear
+           label.adjustsFontSizeToFitWidth = true
+           label.numberOfLines = 0
+           label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
+           label.textColor = .systemGreen
+           label.text = "5"
+           return label
+       }()
     var questions = ["用來衡量自己所能承受的風險等級及適合的投資風格",
                      "ETF 最主要的配息來源",
                      "「不要把所有的雞蛋放在同一個籃子」的涵義",
@@ -18,49 +81,79 @@ class GameViewController: UIViewController, UIDropInteractionDelegate {
     var level = 0
     var quizArr = [Quiz]()
     private var animationView: AnimationView?
-    @IBOutlet weak var questionTableView1: UITableView!
     
-    @IBOutlet weak var dropZone: UIView! {
-        didSet {
-            dropZone.addInteraction(UIDropInteraction(delegate: self))
-        }
-    }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        questionTableView1.delegate = self
-        questionTableView1.dataSource = self
-        
+        view.addSubview(backgroundImageView)
+        view.sendSubviewToBack(backgroundImageView)
         animationView = .init(name: "pig")
         animationView?.contentMode = .scaleAspectFit
         animationView?.loopMode = .loop
         animationView?.animationSpeed = 0.5
         view.addSubview(animationView!)
         animationView!.play()
+        
+        view.addSubview(barImageView)
+        
+        barImageView.addSubview(heartImageView)
+        barImageView.addSubview(heartLabel)
+        barImageView.addSubview(headImageView)
+        barImageView.addSubview(starImageView)
+        barImageView.addSubview(starLabel)
+        
 
-        registerNibs()
+//        registerNibs()
         
     }// end of view did load
     
-    private func registerNibs(){
-        let qnib = UINib(nibName: QuestionTableViewCell.identifier, bundle: nil)
-        questionTableView1.register(qnib, forCellReuseIdentifier: QuestionTableViewCell.identifier)
-        
-//        let asnib = UINib(nibName: AnswerTableViewCell.identifier, bundle: nil)
-//        answerTableView1.register(asnib, forCellReuseIdentifier: AnswerTableViewCell.identifier)
-//
-//        let anib = UINib(nibName: AnswerCollectionViewCell.identifier, bundle: nil)
-//        totalAnswerCollectionView.register(anib, forCellWithReuseIdentifier: AnswerCollectionViewCell.identifier)
-    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        animationView?.frame = CGRect(x: 230,
-                                      y: 620,
-                                      width: 150,
-                                      height: 150 )
+        
+        backgroundImageView.frame = CGRect(x: 0,
+                                           y: 100,
+                                           width: view.frame.width,
+                                           height: view.frame.height - 100)
+        animationView?.frame = CGRect(x: view.frame.width - 130,
+                                      y: view.frame.height - 110,
+                                      width: 100,
+                                      height: 100 )
+        let size = view.frame.size.width
+        let height = view.frame.height
+        backgroundImageView.frame = CGRect(x: 0,
+                                           y: 100,
+                                           width: size,
+                                           height: height - 100)
+        barImageView.frame = CGRect(x: 0,
+                                    y: 0,
+                                    width: size,
+                                    height: 100)
+        
+        heartImageView.frame = CGRect(x: 15,
+                                      y: 25,
+                                      width: 70,
+                                      height: 70)
+        
+        heartLabel.frame = CGRect(x: 90,
+                                  y: 15,
+                                  width: 70,
+                                  height: 70)
+        
+        headImageView.frame = CGRect(x: 150,
+                                     y: 25,
+                                     width: 70,
+                                     height: 70)
+        
+        starImageView.frame = CGRect(x: 220,
+                                     y: 20,
+                                     width: 70,
+                                     height: 70)
+        starLabel.frame = CGRect(x: 295,
+                                 y: 15,
+                                 width: 70,
+                                 height: 70)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,22 +174,22 @@ class GameViewController: UIViewController, UIDropInteractionDelegate {
 }// end of class
 
 
-extension GameViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //        if tableView == questionTableView1 {
-        let cell = questionTableView1.dequeueReusableCell(withIdentifier: QuestionTableViewCell.identifier, for: indexPath) as! QuestionTableViewCell
-        cell.textLabel?.text = questions[indexPath.row]
-        return cell
-    }
-    
-}
-extension GameViewController: UITableViewDelegate {
-    
-}
+//extension GameViewController: UITableViewDataSource {
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 1
+//    }
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        //        if tableView == questionTableView1 {
+//        let cell = questionTableView1.dequeueReusableCell(withIdentifier: QuestionTableViewCell.identifier, for: indexPath) as! QuestionTableViewCell
+//        cell.textLabel?.text = questions[indexPath.row]
+//        return cell
+//    }
+//
+//}
+//extension GameViewController: UITableViewDelegate {
+//
+//}
 
 //extension GameViewController: UICollectionViewDataSource {
 //    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -110,24 +203,24 @@ extension GameViewController: UITableViewDelegate {
 //    }
 //}
 
-extension GameViewController: UICollectionViewDelegate {
-    
-}
-
-extension GameViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collecitonViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = collectionView.bounds
-        return CGSize(width: size.width/2, height: 70)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-}// end of collection delegate flow layout
+//extension GameViewController: UICollectionViewDelegate {
+//
+//}
+//
+//extension GameViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collecitonViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let size = collectionView.bounds
+//        return CGSize(width: size.width/2, height: 70)
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
+//}// end of collection delegate flow layout
 
 
 // -MARK: Dragable Setting

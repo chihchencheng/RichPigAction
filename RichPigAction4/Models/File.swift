@@ -20,4 +20,6 @@ enum MyUrl: String {
     case addFavorite = "http://104.199.188.255:8080/api/auth/addToFavorite"
     case removeFavorite = "http://104.199.188.255:8080/api/auth/removeFavorite"
     case getFavorite = "http://104.199.188.255:8080/api/auth/favorite"
+    case sendEmail = "http://104.199.188.255:8080/sendMail/"
+    case resetPassword = "http://104.199.188.255:8080/api/auth/resetPass"
 }

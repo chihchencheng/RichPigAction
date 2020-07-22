@@ -9,22 +9,23 @@
 import UIKit
 
 class RegisterViewController: UIViewController {
+    let alertService = AlertService()
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.clipsToBounds = true
         return scrollView
     }()
     
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person.circle" )
-        imageView.tintColor = .gray
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 2
-        imageView.layer.borderColor = UIColor.lightGray.cgColor
-        return imageView
-    }()
+//    private let imageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.image = UIImage(systemName: "person.circle" )
+//        imageView.tintColor = .gray
+//        imageView.contentMode = .scaleAspectFit
+//        imageView.layer.masksToBounds = true
+//        imageView.layer.borderWidth = 2
+//        imageView.layer.borderColor = UIColor.lightGray.cgColor
+//        return imageView
+//    }()
     
     private let rtfAccount: UITextField = {
         let field = UITextField()
@@ -117,6 +118,8 @@ class RegisterViewController: UIViewController {
         return button
     }()
     
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,23 +135,33 @@ class RegisterViewController: UIViewController {
          
          // Add subview
          view.addSubview(scrollView)
-         scrollView.addSubview(imageView)
+//         scrollView.addSubview(imageView)
          scrollView.addSubview(rtfAccount)
          scrollView.addSubview(rtfEmail)
          scrollView.addSubview(rtfPassword)
          scrollView.addSubview(rtfPasswordConfirm)
          scrollView.addSubview(rtfName)
          scrollView.addSubview(rbtnSubmit)
+        
          
-         imageView.isUserInteractionEnabled = true
+//         imageView.isUserInteractionEnabled = true
          scrollView.isUserInteractionEnabled = true
          
          let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapChangeProfilePic))
          gesture.numberOfTouchesRequired = 1
          gesture.numberOfTapsRequired = 1
-         imageView.addGestureRecognizer(gesture)
+//         imageView.addGestureRecognizer(gesture)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+        self.view.addGestureRecognizer(tap)
+        
+        
         
     }// end of view did load
+    
+    @objc func dismissKeyBoard(){
+        self.view.endEditing(true)
+    }
     
     @objc private func didTapChangeProfilePic(){
         presentPhotoActionSheet()
@@ -158,13 +171,13 @@ class RegisterViewController: UIViewController {
         super.viewDidLayoutSubviews()
         scrollView.frame = view.bounds
         let size = scrollView.width/3
-        imageView.frame = CGRect(x: (scrollView.width - size)/2,
-                                 y: 20,
-                                 width: size,
-                                 height: size )
-        imageView.layer.cornerRadius = imageView.width/2.0
+//        imageView.frame = CGRect(x: (scrollView.width - size)/2,
+//                                 y: 20,
+//                                 width: size,
+//                                 height: size )
+//        imageView.layer.cornerRadius = imageView.width/2.0
         rtfAccount.frame = CGRect(x: 30,
-                                  y: imageView.bottom + 20,
+                                  y:  40,
                                   width: scrollView.width - 60,
                                   height: 52 )
         rtfEmail.frame = CGRect(x: 30,
@@ -188,8 +201,11 @@ class RegisterViewController: UIViewController {
                                   y: rtfName.bottom + 10,
                                   width: scrollView.width - 60,
                                   height: 52 )
+       
         
     }
+    
+
     
     @objc private func submitButtonTapped(){
         rtfAccount.resignFirstResponder()
@@ -220,6 +236,7 @@ class RegisterViewController: UIViewController {
             return
         }
         
+        
         // 判斷是否註冊成功
         NetworkController.getService.register(username: userAccount , email: email , password: password , name: userName){ [weak self]
             (data) in
@@ -227,14 +244,23 @@ class RegisterViewController: UIViewController {
                 return
             }
             do {
-                let okData = try JSONDecoder().decode(RegisterMsg.self, from: data)
-                print("解析成功：\(okData)")
-                if okData.status == 200 {
-                    print("註冊成功")
-                    let message = okData.message
-                    print(message!)
-                    UserDefaults.standard.set(true, forKey: "Logged_in")
-                    strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+                let okData = try JSONSerialization.jsonObject(with: data)
+                if let okJson = okData as? [String: Any] {
+                    if let status = okJson["status"] as? Int {
+                        if status != 200 {
+                            DispatchQueue.main.async {
+                                let alert = UIAlertController(title: "Message", message: "未知錯誤，請稍後再試", preferredStyle: .alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            }
+                            return
+                        } else {
+                            print("success")
+                            DispatchQueue.main.async {
+                                strongSelf.navigationController?.popToRootViewController(animated: true)
+                            }
+                            
+                        }
+                    }
                 }
             } catch {
                 print(error.localizedDescription)
@@ -265,17 +291,18 @@ class RegisterViewController: UIViewController {
         dismiss(animated: true, completion: nil)
 //        navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func popAler(withMessage message: String){
+        let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 
 
 }// end of class
 extension RegisterViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == rtfAccount {
-            rtfPassword.becomeFirstResponder()
-        }
-        else if textField == rtfPassword {
-            submitButtonTapped()
-        }
+        textField.resignFirstResponder()
         return true
     }
 }
@@ -325,8 +352,8 @@ extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
         //print(info)
-        guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
-        self.imageView.image = selectedImage
+//        guard let selectedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {return}
+//        self.imageView.image = selectedImage
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)

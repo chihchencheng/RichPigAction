@@ -88,6 +88,7 @@ class QuizViewController: UIViewController {
     var secondsLeft = 20
     var selectTimes = 0
     var timer = Timer()
+    var isSelected = [Bool]()
     
     private var star = DataManager.instance.getStar()
     private var heart = DataManager.instance.getHeart()
@@ -101,7 +102,6 @@ class QuizViewController: UIViewController {
     var currentQuestion: QuestionSet?
     var options = [String]()
     var courseArr = [Course]()
-    var isSelected = [Bool]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -184,11 +184,11 @@ class QuizViewController: UIViewController {
                                      width: 70,
                                      height: 70)
         
-        starImageView.frame = CGRect(x: 230,
+        starImageView.frame = CGRect(x: 220,
                                      y: 20,
                                      width: 70,
                                      height: 70)
-        starLabel.frame = CGRect(x: 305,
+        starLabel.frame = CGRect(x: 295,
                                  y: 15,
                                  width: 70,
                                  height: 70)
@@ -364,6 +364,7 @@ extension QuizViewController: UICollectionViewDelegate {
                     if index < (quizArr.count-1){
                         // next game
                         let nextQuestion = quizArr[index + 1]
+                        
                         currentQuestion = nil
                         addingStars(selectTimes: self.selectTimes)
                         self.configureUI(questionSet: nextQuestion)
@@ -395,7 +396,7 @@ extension QuizViewController: UICollectionViewDelegate {
                         
                         
                         let alert = UIAlertController(title: "Message",
-                                                      message: "恭喜完成挑戰，總共獲得\(totalGainStars)顆星星",
+                                                      message: "恭喜完成挑戰，總共獲得\(totalGainStars)顆星星，以及新的小豬圖鑑喔，快去看看吧",
                                                       preferredStyle: UIAlertController.Style.alert)
                         let action = UIAlertAction(title: "OK", style: .default , handler: { // Also action dismisses AlertController when pressed.
                             action in
@@ -411,10 +412,9 @@ extension QuizViewController: UICollectionViewDelegate {
             } else {
                 // wrong
                 
-                cell.setWrongAnswerImage()
-                self.selectTimes += 1
-                
-                //popAler(withMessage: "Wrong answer")
+                    cell.setWrongAnswerImage()
+                isSelected[indexPath.row] = true
+                self.view.makeToast("答錯了，再試試！", duration: 0.5, position: .center)
             }
             
         }
@@ -431,8 +431,12 @@ extension QuizViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AnswerCollectionViewCell.identifier, for: indexPath) as! AnswerCollectionViewCell
+        if isSelected[indexPath.row] {
+            cell.configure(with: UIImage(named: "btnAnswer3")!, answer: (currentQuestion?.options?[indexPath.row])!)
+        } else {
+            cell.configure(with: UIImage(named: "btnAnswer1")!, answer: (currentQuestion?.options?[indexPath.row])!)// level[indexPath.row]
+        }
         
-        cell.configure(with: UIImage(named: "btnAnswer1")!, answer: (currentQuestion?.options?[indexPath.row])!)// level[indexPath.row]
         return cell
     }
     

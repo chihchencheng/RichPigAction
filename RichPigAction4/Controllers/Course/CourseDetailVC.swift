@@ -109,7 +109,7 @@ class CourseDetailVC: UIViewController {
     var allCourseArr = [[Course]]()
     var imgArr = [UIImage]()
     var titleArr = [String]()
-    var index = 0
+    var index = DataManager.instance.getCourseIndex()
     var level = 0
     var favoriteCourse = [Course]()
     
@@ -184,11 +184,11 @@ class CourseDetailVC: UIViewController {
                                      width: 70,
                                      height: 70)
         
-        starImageView.frame = CGRect(x: 230,
+        starImageView.frame = CGRect(x: 220,
                                      y: 20,
                                      width: 70,
                                      height: 70)
-        starLabel.frame = CGRect(x: 305,
+        starLabel.frame = CGRect(x: 295,
                                  y: 15,
                                  width: 70,
                                  height: 70)
@@ -229,6 +229,7 @@ class CourseDetailVC: UIViewController {
        }
     
     private func getImageDownload(){
+        self.index = DataManager.instance.getCourseIndex()
         self.courseArr = allCourseArr[self.index]
         for item in 0...courseArr.count-1  { //stride(from:courseArr.count-1, to: 0, by:-1)
             if let url = URL(string: courseArr[item].url ?? "http://104.199.188.255:8080/files/200706072649+0000ch00.JPG"){

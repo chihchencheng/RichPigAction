@@ -100,23 +100,8 @@ class LevelViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        
 
-        //判斷手機內是否有有效的token
-        if UserDefaults.standard.object(forKey: "Token") == nil {
-            let vc = LoginViewController()
-            let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
-            present(nav, animated: false)
-            UserDefaults.standard.set(false, forKey: "logged_in")
-
-        }else {// 有token，向server請求資料
-            DataManager.instance.updateUserInfo {
-                self.setupInfo()
-                self.getHeadImage()
-            }
-            downloadCourseInfo()
-            
-        }
         view.addSubview(scrollView)
         scrollView.addSubview(backgroundImageView)
         scrollView.addSubview(barImageView)
@@ -127,9 +112,42 @@ class LevelViewController: UIViewController {
         barImageView.addSubview(starImageView)
         barImageView.addSubview(starLabel)
         view.bringSubviewToFront(collectionView)
+        
+        heartImageView.isUserInteractionEnabled = true
+        
+        //判斷手機內是否有有效的token
+        if UserDefaults.standard.object(forKey: "Token") == nil //|| UserDefaults.standard.bool(forKey: "logged_in") == false
+        {
+            print("!!!")
+            let vc = LoginViewController()
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: false)
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "login")
+//            self.present(vc,animated: true,completion: nil)
+            
+            
+        }else {// 有token，向server請求資料
+            print("else")
+            DataManager.instance.updateUserInfo {
+                self.setupInfo()
+                self.getHeadImage()
+            }
+            downloadCourseInfo()
+            
+        }
         guard let currentTime = Date().toMillis() else { return }
         DataManager.instance.setupLoginTime(time: currentTime)
+        
+        heartImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTapped)))
+        barImageView.bringSubviewToFront(heartImageView)
+        
     }// end of view did load
+    
+    @objc private func imageTapped(_ recognizer: UITapGestureRecognizer) {
+        print("image tapped")
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -160,11 +178,11 @@ class LevelViewController: UIViewController {
                                      width: 70,
                                      height: 70)
         
-        starImageView.frame = CGRect(x: 230,
+        starImageView.frame = CGRect(x: 220,
                                      y: 20,
                                      width: 70,
                                      height: 70)
-        starLabel.frame = CGRect(x: 305,
+        starLabel.frame = CGRect(x: 295,
                                  y: 15,
                                  width: 70,
                                  height: 70)
@@ -204,7 +222,8 @@ class LevelViewController: UIViewController {
         setupInfo()
         downloadCourseInfo()
         getHeadImage()
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        downloadCourseInfo()
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
         DataManager.instance.gainHeart()
     }
     
@@ -286,28 +305,51 @@ class LevelViewController: UIViewController {
 extension LevelViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //        if self.singleArr[indexPath.row].type == 0 || self.singleArr[indexPath.row].type == 1 {
-//        let title = "Level: \(self.singleArr[indexPath.row].id ?? 0)"
+//        if self.singleArr[indexPath.row].type == 0 || self.singleArr[indexPath.row].type == 1 {
+//            let title = "Level: \(self.singleArr[indexPath.row].id ?? 0)"
+//        }
+        
         let body = self.singleArr[indexPath.row].title ?? "Data Error"
         if indexPath.row > self.level {
+//            popAler(withMessage: "未達本關卡，請繼續加油喔！")
+            return
+        }
+        if indexPath.row > singleArr.count {
+            popAler(withMessage: "您已挑戰完畢，新關卡開發中！")
             return
         }
         if DataManager.instance.getHeart() <= 0 {
             popAler(withMessage: "愛心數不足！")
             return
         }
-        let alertVC = alertService.alert(title: "富豬行動" , body: body, buttonTitle: "開始") {
-            let vc = (self.storyboard?.instantiateViewController(identifier: "QuizViewController"))! as QuizViewController
-            DispatchQueue.main.async {
-                self.heart -= 1
-                DataManager.instance.setHeart(heart: self.heart)
-                print("選擇關卡，進入下一個畫面之前的\(DataManager.instance.getHeart())")
-                self.heartLabel.text = (String)(self.heart)
-            }
-            UserDefaults.standard.set(indexPath.row, forKey: "gameLevel")
-            self.present(vc, animated: true)
-        }
         
+        
+        
+        let alertVC = alertService.alert(title: "富豬行動" , body: body, buttonTitle: "開始") {
+//            if self.singleArr[indexPath.row].type == 2{
+//                let vc = (self.storyboard?.instantiateViewController(identifier: "GameViewController"))! as GameViewController
+//                DispatchQueue.main.async {
+//                    self.heart -= 1
+//                    DataManager.instance.setHeart(heart: self.heart)
+//                    print("選擇關卡，進入下一個畫面之前的\(DataManager.instance.getHeart())")
+//                    self.heartLabel.text = (String)(self.heart)
+//                }
+//                UserDefaults.standard.set(indexPath.row, forKey: "gameLevel")
+//                self.present(vc, animated: true)
+//            }
+            
+//            else {
+                let vc = (self.storyboard?.instantiateViewController(identifier: "QuizViewController"))! as QuizViewController
+                DispatchQueue.main.async {
+                    self.heart -= 1
+                    DataManager.instance.setHeart(heart: self.heart)
+                    print("選擇關卡，進入下一個畫面之前的\(DataManager.instance.getHeart())")
+                    self.heartLabel.text = (String)(self.heart)
+                }
+                UserDefaults.standard.set(indexPath.row, forKey: "gameLevel")
+                self.present(vc, animated: true)
+//            }
+        }
             self.present(alertVC, animated: true)
     }
     

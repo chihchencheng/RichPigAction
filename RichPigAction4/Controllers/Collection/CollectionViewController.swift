@@ -146,11 +146,11 @@ class CollectionViewController: UIViewController {
                                      width: 70,
                                      height: 70)
         
-        starImageView.frame = CGRect(x: 230,
+        starImageView.frame = CGRect(x: 220,
                                      y: 20,
                                      width: 70,
                                      height: 70)
-        starLabel.frame = CGRect(x: 305,
+        starLabel.frame = CGRect(x: 295,
                                  y: 15,
                                  width: 70,
                                  height: 70)
@@ -178,7 +178,7 @@ class CollectionViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+    
     }
     
     //下載資料
