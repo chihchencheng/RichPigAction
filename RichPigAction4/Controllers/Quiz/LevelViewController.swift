@@ -106,14 +106,14 @@ class LevelViewController: UIViewController {
         scrollView.addSubview(backgroundImageView)
         scrollView.addSubview(barImageView)
         
-        barImageView.addSubview(heartImageView)
+        view.addSubview(heartImageView)
         barImageView.addSubview(heartLabel)
         barImageView.addSubview(headImageView)
         barImageView.addSubview(starImageView)
         barImageView.addSubview(starLabel)
         view.bringSubviewToFront(collectionView)
         
-        heartImageView.isUserInteractionEnabled = true
+        
         
         //判斷手機內是否有有效的token
         if UserDefaults.standard.object(forKey: "Token") == nil //|| UserDefaults.standard.bool(forKey: "logged_in") == false
@@ -140,13 +140,43 @@ class LevelViewController: UIViewController {
         guard let currentTime = Date().toMillis() else { return }
         DataManager.instance.setupLoginTime(time: currentTime)
         
-        heartImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTapped)))
-        barImageView.bringSubviewToFront(heartImageView)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+        heartImageView.isUserInteractionEnabled = true
+        heartImageView.addGestureRecognizer(tapGestureRecognizer)
+        heartImageView.superview?.bringSubviewToFront(heartImageView)
+        
         
     }// end of view did load
     
-    @objc private func imageTapped(_ recognizer: UITapGestureRecognizer) {
-        print("image tapped")
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer){
+        let controller = UIAlertController(title: "訊息", message: "愛心用光了嗎？\n用100顆星星換一個愛心，繼續挑戰", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "好的", style: .default) { (_) in
+            if DataManager.instance.getStar() < 100 {
+                DispatchQueue.main.async {
+                    self.view.makeToast("星星數不足100，休息一下吧", duration: 1.0, position: .center)
+                }
+            } else {
+                guard let currentTime = Date().toMillis() else { return }
+                DataManager.instance.setHeart(heart: DataManager.instance.getHeart()+1)
+                DataManager.instance.setStar(star: DataManager.instance.getStar()-100)
+                
+                NetworkController.getService.updateInfo(level: DataManager.instance.getLevel(),
+                                                        star: DataManager.instance.getStar(),
+                                                        dateTime: currentTime,
+                                                        loveTime: DataManager.instance.getHeart())
+                
+                DispatchQueue.main.async {
+                    
+                    self.starLabel.text = String(DataManager.instance.getStar())
+                    self.heartLabel.text = String(DataManager.instance.getHeart())
+                }
+                
+            }
+        }
+        controller.addAction(okAction)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        present(controller, animated: true, completion: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -206,7 +236,7 @@ class LevelViewController: UIViewController {
             self.star = DataManager.instance.getStar()
             self.heart = DataManager.instance.getHeart()
             self.level = DataManager.instance.getLevel()
-            print(self.level)
+//            print(self.level)
             self.starLabel.text = String(self.star)
             self.heartLabel.text = String(self.heart)
         }
@@ -343,7 +373,7 @@ extension LevelViewController: UICollectionViewDelegate {
                 DispatchQueue.main.async {
                     self.heart -= 1
                     DataManager.instance.setHeart(heart: self.heart)
-                    print("選擇關卡，進入下一個畫面之前的\(DataManager.instance.getHeart())")
+//                    print("選擇關卡，進入下一個畫面之前的\(DataManager.instance.getHeart())")
                     self.heartLabel.text = (String)(self.heart)
                 }
                 UserDefaults.standard.set(indexPath.row, forKey: "gameLevel")

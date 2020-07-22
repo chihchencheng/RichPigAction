@@ -85,6 +85,37 @@ class NetworkController {
                     print("No internet connection")
                 } else {
                     print("Something is wrong")
+                }
+                return
+            }// end of error
+            
+            else{
+                guard let data = data else{return}
+                do{
+                    let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:Any]
+//                    print(json)
+                    let status = json["status"] as? Int
+                    print("狀態:\(status!)")
+                    if status != 200 {
+                        return
+                    }
+                    completion(data)
+                }catch{
+                    print("JSON解析失敗：\(error.localizedDescription)")
+                }
+            }
+        }
+        dataTask?.resume()
+    }
+    
+    private func fetchDataByDataTask(from request: URLRequest, completion: @escaping ([String: Any])->Void){
+        dataTask = defaultSession.dataTask(with: request){ (data, response, error) in
+            if error != nil{
+                let errorCode = (error! as NSError).code
+                if errorCode == -1009 {
+                    print("No internet connection")
+                } else {
+                    print("Something is wrong")
                     print("這裡這裡～～")
                 }
                 return
@@ -94,13 +125,7 @@ class NetworkController {
                 guard let data = data else{return}
                 do{
                     let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:Any]
-                    print(json)
-                    let status = json["status"] as? Int
-                    print("狀態:\(status!)")
-                    if status != 200 {
-                        return
-                    }
-                    completion(data)
+                    completion(json)
                 }catch{
                     print("JSON解析失敗：\(error.localizedDescription)")
                 }
@@ -125,10 +150,10 @@ class NetworkController {
         let dateTime = "&dateTime=\(dateTime)"
         let loveTime = "&loveTime=\(loveTime)"
         let body: String = level+star+dateTime+loveTime
-        print(body)
+//        print(body)
         print("updateInfo")
         useTokenWithPost(url: MyUrl.update.rawValue, body: body) { (json) in
-            print(json)
+//            print(json)
         }
     }
     
@@ -136,11 +161,11 @@ class NetworkController {
         let name = "name=\(name)"
         let email = "&email=\(email)"
         let body: String = name+email
-        print(body)
+//        print(body)
         print("updateUserInfo")
         
         useTokenWithPost(url:MyUrl.updateInfo.rawValue,body:body){ json in
-            print(json)
+//            print(json)
             completion(json)
         }
     }
@@ -149,7 +174,7 @@ class NetworkController {
         let url = MyUrl.addFavorite.rawValue
         let body = "courseLevel="+String(courseIndex)
         useTokenWithPost(url: url, body: body) { json in
-            print("測試加入我的最愛json: \(json)")
+//            print("測試加入我的最愛json: \(json)")
             completion(json)
         }
     }
@@ -166,7 +191,7 @@ class NetworkController {
         let url = MyUrl.removeFavorite.rawValue
         let body = "courseLevel="+index
         useTokenWithPost(url: url, body: body) { (json) in
-            print(json)
+//            print(json)
             completion(json)
         }
     }

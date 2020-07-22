@@ -396,14 +396,12 @@ extension QuizViewController: UICollectionViewDelegate {
                         
                         
                         let alert = UIAlertController(title: "Message",
-                                                      message: "恭喜完成挑戰，總共獲得\(totalGainStars)顆星星，以及新的小豬圖鑑喔，快去看看吧",
+                                                      message: "恭喜完成挑戰，總共獲得\(totalGainStars)顆星星，\n以及新的小豬圖鑑喔，快去看看吧",
                                                       preferredStyle: UIAlertController.Style.alert)
                         let action = UIAlertAction(title: "OK", style: .default , handler: { // Also action dismisses AlertController when pressed.
                             action in
                             self.dismiss(animated: true, completion: nil)
-                            
-                        }
-                        )
+                        })
                         alert.addAction(action)// add action to alert
                         self.present(alert, animated: true, completion: nil)
                         
@@ -412,7 +410,7 @@ extension QuizViewController: UICollectionViewDelegate {
             } else {
                 // wrong
                 
-                    cell.setWrongAnswerImage()
+                cell.setWrongAnswerImage()
                 isSelected[indexPath.row] = true
                 self.view.makeToast("答錯了，再試試！", duration: 0.5, position: .center)
             }

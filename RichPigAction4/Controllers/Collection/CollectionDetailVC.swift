@@ -101,18 +101,18 @@ class CollectionDetailVC: UIViewController {
         label.numberOfLines = 0
         label.font = UIFont.boldSystemFont(ofSize: 30.0)
         label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        label.text = "股神芭菲豬"
+        label.text = ""
         return label
     }()
     
     private var describeLabel: UILabel = {
         let label = UILabel()
         label.adjustsFontSizeToFitWidth = true
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.numberOfLines = 0
         label.font = UIFont(name: "Georgia-BoldItalic", size: 20)
         label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        label.text = "just for testing location and to see how it goes"
+        label.text = ""
         label.layer.cornerRadius = 12
         label.layer.borderWidth = 4
         label.layer.borderColor = #colorLiteral(red: 0.9251550436, green: 0.6507889628, blue: 0.9241239429, alpha: 1)
@@ -146,7 +146,7 @@ class CollectionDetailVC: UIViewController {
         label.numberOfLines = 0
         label.font = UIFont(name: "Georgia-BoldItalic", size: 12)
         label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        label.text = "老僧入定，瀟灑淡然"
+        label.text = ""
         return label
     }()
     
@@ -177,7 +177,7 @@ class CollectionDetailVC: UIViewController {
         label.numberOfLines = 0
         label.font = UIFont(name: "Georgia-BoldItalic", size: 12)
         label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
-        label.text = "錢乃身外之物"
+        label.text = ""
         return label
     }()
     
@@ -291,35 +291,35 @@ class CollectionDetailVC: UIViewController {
         describeLabel.frame = CGRect(x: 30,
                                      y: 180,
                                      width: detailView.frame.width - 60,
-                                     height: detailView.frame.width/3.5)
+                                     height: detailView.frame.width/3)
         
         characView.frame = CGRect(x: 30,
-                                  y: 290,
+                                  y: 300,
                                   width: detailView.frame.width/2.4,
-                                  height: detailView.frame.width/3.8)
+                                  height: detailView.frame.width/5)
         
         characLabel.frame = CGRect(x: 20,
                                    y: 10,
                                    width: 100,
-                                   height: 30)
+                                   height: 20)
         
         characDescLabel.frame = CGRect(x: 5,
-                                       y: 40,
+                                       y: 30,
                                        width: 120,
                                        height: 40)
         
         statusView.frame = CGRect(x: 172,
-                                  y: 290,
+                                  y: 300,
                                   width: detailView.frame.width/2.4,
-                                  height: detailView.frame.width/3.8)
+                                  height: detailView.frame.width/5)
         
         statusLabel.frame = CGRect(x: 20,
                                    y: 10,
                                    width: 100,
-                                   height: 30)
+                                   height: 20)
         
         statusDescLabel.frame = CGRect(x: 10,
-                                       y: 40,
+                                       y: 30,
                                        width: 120,
                                        height: 40)
         shareButton.frame = CGRect(x: detailView.frame.maxX-90,

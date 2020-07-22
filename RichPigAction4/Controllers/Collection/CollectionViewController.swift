@@ -44,7 +44,7 @@ class CollectionViewController: UIViewController {
         label.numberOfLines = 0
         label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
         label.textColor = .systemGreen
-        label.text = "5"
+        label.text = "0"
         return label
     }()
     
@@ -69,7 +69,7 @@ class CollectionViewController: UIViewController {
         label.numberOfLines = 0
         label.font = UIFont(name: "Georgia-BoldItalic", size: 80)
         label.textColor = .systemGreen
-        label.text = "5"
+        label.text = "0"
         return label
     }()
     

@@ -65,7 +65,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "密碼"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-//        field.isSecureTextEntry = true
+        field.isSecureTextEntry = true
         return field
     }()
     private let rtfPasswordConfirm: UITextField = {
@@ -79,7 +79,7 @@ class RegisterViewController: UIViewController {
         field.placeholder = "密碼確認"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-//        field.isSecureTextEntry = true
+        field.isSecureTextEntry = true
         return field
     }()
     private let rtfName: UITextField = {
@@ -170,7 +170,7 @@ class RegisterViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         scrollView.frame = view.bounds
-        let size = scrollView.width/3
+        
 //        imageView.frame = CGRect(x: (scrollView.width - size)/2,
 //                                 y: 20,
 //                                 width: size,
@@ -249,8 +249,11 @@ class RegisterViewController: UIViewController {
                     if let status = okJson["status"] as? Int {
                         if status != 200 {
                             DispatchQueue.main.async {
-                                let alert = UIAlertController(title: "Message", message: "未知錯誤，請稍後再試", preferredStyle: .alert)
-                                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                                let alert = UIAlertController(title: "Title",message: "Message",preferredStyle: UIAlertController.Style.alert)
+                                alert.addAction(UIAlertAction(title: "Okay",
+                                                              style: UIAlertAction.Style.default,
+                                                              handler: {(alert: UIAlertAction!) in print("Foo")}))
+                                
                             }
                             return
                         } else {

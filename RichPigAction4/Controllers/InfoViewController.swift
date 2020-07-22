@@ -270,8 +270,9 @@ class InfoViewController: UIViewController {
         levelLabel2.text = String(DataManager.instance.getLevel())
         accountLabel2.text = DataManager.instance.getUserName()
         
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
-        self.view.addGestureRecognizer(tap)
+        tableView.isUserInteractionEnabled = true
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyBoard))
+//        self.view.addGestureRecognizer(tap)
         
     }
     
@@ -479,6 +480,7 @@ extension InfoViewController: UITableViewDataSource {
 }
 
 extension InfoViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let optionMenu = UIAlertController(title: "Message", message: "從我的最愛移除？", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)

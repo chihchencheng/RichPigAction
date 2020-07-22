@@ -51,6 +51,8 @@ class ModifyVC: UIViewController {
         NetworkController.getService.updateUserInfo(name: name, email: email){data in
             print(data)
             DispatchQueue.main.async {
+                DataManager.instance.setName(name: self.name)
+                DataManager.instance.setEmail(email: self.email)
                  self.view.makeToast("資料更新成功！", duration: 2.0, position: .center)
             }
             DispatchQueue.main.async {

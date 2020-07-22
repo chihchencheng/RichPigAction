@@ -15,5 +15,6 @@ target 'RichPigAction4' do
  pod 'Firebase/Core'
  pod 'lottie-ios'
  pod 'Toast-Swift', '~> 5.0.1'
+ pod 'IQKeyboardManagerSwift'
 
 end
