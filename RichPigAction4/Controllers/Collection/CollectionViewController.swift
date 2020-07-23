@@ -201,6 +201,7 @@ class CollectionViewController: UIViewController {
                         self.piggyArr.append(pig)
                     }
                 }
+                DataManager.instance.setPiggyArr(piggyArr: self.piggyArr)
             }
 //            self.getImageDownload(piggyArr: piggyArr)
             DispatchQueue.main.async {

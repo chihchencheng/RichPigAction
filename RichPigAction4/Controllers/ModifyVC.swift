@@ -48,15 +48,24 @@ class ModifyVC: UIViewController {
         }
         name = nameField.text ?? self.name
         email = emailFied.text ?? self.email
-        NetworkController.getService.updateUserInfo(name: name, email: email){data in
-            print(data)
-            DispatchQueue.main.async {
+        var message = ""
+        NetworkController.getService.updateUserInfo(name: self.name, email: self.email){ (data) in
+            
+            if data["status"] as? Int == 200 {
+                
                 DataManager.instance.setName(name: self.name)
                 DataManager.instance.setEmail(email: self.email)
-                 self.view.makeToast("資料更新成功！", duration: 2.0, position: .center)
-            }
-            DispatchQueue.main.async {
-            self.dismiss(animated: true, completion: nil)
+                message = "狀態代碼：\(data["status"] ?? -1)! \n訊息：修改成功"
+                DispatchQueue.main.async {
+                    self.view.makeToast(message, duration: 1.0, position: .center)
+                }
+                
+            } else if data["status"] as? Int == 500 {
+                message = "狀態代碼：\(data["status"] ?? 500)!  訊息： \(data["error"] ?? "未知錯誤")"
+                DispatchQueue.main.async {
+                    self.view.makeToast(message, duration: 1.0, position: .center)
+                }
+                print("500: \(message)")
             }
         }
         

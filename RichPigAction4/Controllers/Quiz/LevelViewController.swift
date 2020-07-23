@@ -108,7 +108,7 @@ class LevelViewController: UIViewController {
         
         view.addSubview(heartImageView)
         barImageView.addSubview(heartLabel)
-        barImageView.addSubview(headImageView)
+        view.addSubview(headImageView)
         barImageView.addSubview(starImageView)
         barImageView.addSubview(starLabel)
         view.bringSubviewToFront(collectionView)
@@ -145,8 +145,21 @@ class LevelViewController: UIViewController {
         heartImageView.addGestureRecognizer(tapGestureRecognizer)
         heartImageView.superview?.bringSubviewToFront(heartImageView)
         
+        //頭像
+//        let headTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(headTapped(tapGestureRecognizer:)))
+//        headImageView.isUserInteractionEnabled = true
+//        headImageView.addGestureRecognizer(headTapGestureRecognizer)
+//        headImageView.superview?.bringSubviewToFront(headImageView)
+        
         
     }// end of view did load
+    
+    @objc func headTapped(tapGestureRecognizer: UITapGestureRecognizer){
+        
+        let vc = (self.storyboard?.instantiateViewController(identifier: "CardDetailAlert"))! as CardDetailAlert
+        present(vc, animated: true)
+        
+    }
     
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer){
         let controller = UIAlertController(title: "訊息", message: "愛心用光了嗎？\n用100顆星星換一個愛心，繼續挑戰", preferredStyle: .alert)

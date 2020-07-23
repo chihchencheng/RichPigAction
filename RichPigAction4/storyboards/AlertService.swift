@@ -40,5 +40,11 @@ class AlertService {
         let alertVC = storyboard.instantiateViewController(identifier: "modify") as! Modify
         return alertVC
     }
+    
+    func cardDetailAlert() -> CardDetailAlert {
+        let storyboard = UIStoryboard(name: "CardDetailAlert", bundle: .main)
+        let alertVC = storyboard.instantiateViewController(withIdentifier: "CardDetailAlert") as! CardDetailAlert
+        return alertVC
+    }
 }
 

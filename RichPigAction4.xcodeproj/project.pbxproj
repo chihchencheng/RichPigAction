@@ -58,6 +58,8 @@
 		1489A46824BB75A90032AB17 /* AllAnswersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1489A46624BB75A90032AB17 /* AllAnswersCollectionViewCell.swift */; };
 		1489A46924BB75A90032AB17 /* AllAnswersCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1489A46724BB75A90032AB17 /* AllAnswersCollectionViewCell.xib */; };
 		1489A46B24BB7E500032AB17 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1489A46A24BB7E500032AB17 /* GameView.swift */; };
+		148EE82F24C9948F0036A349 /* CardDetailAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 148EE82E24C9948F0036A349 /* CardDetailAlert.storyboard */; };
+		148EE83324C99DD80036A349 /* CardDetailAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148EE83224C99DD80036A349 /* CardDetailAlert.swift */; };
 		14BAB7D524BDD647000194B5 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BAB7D424BDD647000194B5 /* AlertViewController.swift */; };
 		14BAB7D724BDEED8000194B5 /* LoginAlert.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14BAB7D624BDEED8000194B5 /* LoginAlert.storyboard */; };
 		14BAB7D924BDF1B3000194B5 /* LoginAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BAB7D824BDF1B3000194B5 /* LoginAlertViewController.swift */; };
@@ -124,6 +126,8 @@
 		1489A46624BB75A90032AB17 /* AllAnswersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAnswersCollectionViewCell.swift; sourceTree = "<group>"; };
 		1489A46724BB75A90032AB17 /* AllAnswersCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AllAnswersCollectionViewCell.xib; sourceTree = "<group>"; };
 		1489A46A24BB7E500032AB17 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		148EE82E24C9948F0036A349 /* CardDetailAlert.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CardDetailAlert.storyboard; sourceTree = "<group>"; };
+		148EE83224C99DD80036A349 /* CardDetailAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailAlert.swift; sourceTree = "<group>"; };
 		14BAB7D424BDD647000194B5 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		14BAB7D624BDEED8000194B5 /* LoginAlert.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginAlert.storyboard; sourceTree = "<group>"; };
 		14BAB7D824BDF1B3000194B5 /* LoginAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAlertViewController.swift; sourceTree = "<group>"; };
@@ -316,6 +320,8 @@
 				144DB79024C357AD00AFE110 /* ModifyInfoAlertView.storyboard */,
 				14F5912424C469AC00DAFE30 /* Modify.storyboard */,
 				14F5912624C469E200DAFE30 /* Modify.swift */,
+				148EE83224C99DD80036A349 /* CardDetailAlert.swift */,
+				148EE82E24C9948F0036A349 /* CardDetailAlert.storyboard */,
 			);
 			path = storyboards;
 			sourceTree = "<group>";
@@ -401,6 +407,7 @@
 				14EFCAF624BCD6CC00B83AA7 /* clock.json in Resources */,
 				1416A63324B85CD700A373AC /* LaunchScreen.storyboard in Resources */,
 				1489A46924BB75A90032AB17 /* AllAnswersCollectionViewCell.xib in Resources */,
+				148EE82F24C9948F0036A349 /* CardDetailAlert.storyboard in Resources */,
 				144DB79124C357AD00AFE110 /* ModifyInfoAlertView.storyboard in Resources */,
 				1422758E24B9877000E80352 /* PigCardCollectionViewCell.xib in Resources */,
 				14330FCF24BF43F700C8D28D /* FavoriteTableViewCell.xib in Resources */,
@@ -495,6 +502,7 @@
 				14BAB7D524BDD647000194B5 /* AlertViewController.swift in Sources */,
 				1416A65324B8606800A373AC /* Extensions.swift in Sources */,
 				1489A46B24BB7E500032AB17 /* GameView.swift in Sources */,
+				148EE83324C99DD80036A349 /* CardDetailAlert.swift in Sources */,
 				1422759524B9B34500E80352 /* AnswerCollectionViewCell.swift in Sources */,
 				1453FA4324C02B540083686D /* MyTapBarViewController.swift in Sources */,
 				14330FD124BF46E700C8D28D /* CodedTableViewCell.swift in Sources */,

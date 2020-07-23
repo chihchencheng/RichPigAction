@@ -376,8 +376,7 @@ class CollectionDetailVC: UIViewController {
                                     self.describeLabel.text = self.piggy.desc
                                     self.characDescLabel.text = self.piggy.expect
                                     self.statusDescLabel.text = self.piggy.trait
-                                    
-                                    
+                                
                                 }
                                 
                             }

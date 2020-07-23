@@ -28,6 +28,8 @@ class DataManager {
     var collection = [UIImage]()
     var courseIndex = 0
     var allCourseArr = [[Course]]()
+    var piggyArr = [Piggy]()
+    var piggy = Piggy()
     
     
     fileprivate init(){}
@@ -74,11 +76,11 @@ class DataManager {
     }
     
     func setHeadImage(image: UIImage){
-        self.userImage = image
+        DataManager.instance.userImage = image
     }
     
     func getHeadImage() -> UIImage {
-        return self.userImage
+        return DataManager.instance.userImage
     }
     
     func updateUserInfo(callBack: @escaping () -> Void){
@@ -180,7 +182,21 @@ class DataManager {
         DataManager.instance.allCourseArr = allCourseArr
     }
     func getAllCourseArr() -> [[Course]]{
-        DataManager.instance.getAllCourseArr()
+        DataManager.instance.allCourseArr
+    }
+    
+    func setPiggyArr(piggyArr: [Piggy]) {
+        DataManager.instance.piggyArr = piggyArr
+    }
+    
+    func getPiggy() -> Piggy{
+        return DataManager.instance.piggyArr[self.level]
+    }
+    
+    func setPersonalPiggyInfo()  {
+        NetworkController.getService.getHeadImagebyLevel(completion: { (data) in
+            print(data)
+        })
     }
     
 }
