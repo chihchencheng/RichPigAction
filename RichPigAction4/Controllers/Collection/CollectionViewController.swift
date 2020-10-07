@@ -266,8 +266,8 @@ class CollectionViewController: UIViewController {
     
     func useTokenWithGet(url:String ,completion: @escaping (Data) -> Void){
         var request = URLRequest(url:URL(string:url)!)
-        request.httpMethod = "GET"  //"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0MjkyODIzLCJleHAiOjE1OTQzNzkyMjN9.T822HM56DAZhVeacPhI_2EhcnGZIJk6-xQmJWhIAs4rCpBVC9MO3KjpXzk-zypE4-ZYeEYsj-q7OmHT86YWC4Q"
-        request.setValue("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyaWNoUGlnIiwiaWF0IjoxNTk0NDc1MzM3LCJleHAiOjE1OTk2NTkzMzd9.Zev2q2Jxz4GoTTd3OO1y1eXgDMs9k8iU_W62b-C39HeHbV_OEHGSpxhjBrWkWJY5fBi10qLGkxSGsyq6Iz6Huw", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "GET"  
+        request.setValue("Bearer, forHTTPHeaderField: "Authorization")
         //        print(NetworkController.token)
         
         let task = URLSession.shared.dataTask(with: request){ data,response ,error in
